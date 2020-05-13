@@ -119,7 +119,6 @@
             <div class="container">
     
     
-
     
     <article class="post-wrap">
         <header class="post-header">
@@ -143,6 +142,9 @@
                             
                         </span>
                     
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
                 </div>
             
         </header>
@@ -160,7 +162,13 @@ yum install supervisor
 
 Debian / Ubuntu可以直接通过apt安装：
 apt-get install supervisor</code></pre><p>运行</p>
-<pre><code>supervisord -c /etc/supervisord.conf</code></pre><p>1、web-ui配置</p>
+<pre><code>supervisord -c /etc/supervisord.conf</code></pre><p>关闭</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">supervisorctl shutdown</span><br></pre></td></tr></table></figure>
+
+<p>如果没有conf文件，可执行下列命令生成</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo_supervisord_conf &gt; &#x2F;etc&#x2F;supervisord.conf</span><br></pre></td></tr></table></figure>
+
+<p>1、web-ui配置</p>
 <pre><code>vim /etc/supervisord.conf
 找到
 ;[inet_http_server]         ; inet (TCP) server disabled by default
@@ -204,11 +212,18 @@ supervisorctl reload</code></pre>
         <footer id="footer" class="footer">
     <div class="copyright">
         <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
-	<a target="_blank" style="background-color: transparent;color: #333;text-decoration: none;" 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
 	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
 	</span>
     </div>
 </footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
     </div>
 </body>

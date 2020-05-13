@@ -14,7 +14,7 @@
 
 
 
-<title>手工 | 唯吾鹰扬</title>
+<title>Tag: 知识整理 | 唯吾鹰扬</title>
 
 
 
@@ -116,120 +116,74 @@
 <script src="/js/jquery-2.0.3.min.js"></script>
 <script src="/js/search.js"></script>
         <div class="main">
-            <div class="container">
+            
+
+    
+<div class="container">
+    <div class="post-wrap tags">
+        <h2 class="post-title">-&nbsp;标签库&nbsp;·&nbsp;知识整理-</h2>
+    </div>
+    <div class="post-wrap archive">
     
     
-        <div class="post-toc">
-    <div class="tocbot-list">
-    </div>
-    <div class="tocbot-list-menu">
-        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
-        <a onclick="go_top()">返回顶部</a>
-        <a onclick="go_bottom()">拉到底部</a>
-    </div>
+        
+
+        
+            <h3>2020</h3>
+        
+
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2020/05/12/%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/php/php-fpm%E4%BC%98%E5%8C%96/">PHP-FPM优化</a>
+            <span class="archive-item-date">2020年05月12日</span>
+        </article>
+    
+        
+
+        
+
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2020/05/08/%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/php/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/">PHP面向对象设计五大原则</a>
+            <span class="archive-item-date">2020年05月08日</span>
+        </article>
+    
+        
+
+        
+
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2020/05/08/%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/php/php%E7%9A%84abstract%E5%92%8Cinterface/">php的abstract和interface区别</a>
+            <span class="archive-item-date">2020年05月08日</span>
+        </article>
+    
+        
+
+        
+
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2020/05/08/%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/php/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/">网络协议</a>
+            <span class="archive-item-date">2020年05月08日</span>
+        </article>
+    
+    
 </div>
-
-<script>
-    document.ready(
-        function () {
-            tocbot.init({
-                tocSelector: '.tocbot-list',
-                contentSelector: '.post-content',
-                headingSelector: 'h1, h2, h3, h4, h5',
-                collapseDepth: 1,
-                orderedList: false,
-                scrollSmooth: true,
-            })
-        }
-    )
-
-    function expand_toc() {
-        var b = document.querySelector(".tocbot-toc-expand");
-        tocbot.init({
-            tocSelector: '.tocbot-list',
-            contentSelector: '.post-content',
-            headingSelector: 'h1, h2, h3, h4, h5',
-            collapseDepth: 6,
-            orderedList: false,
-            scrollSmooth: true,
-        });
-        b.setAttribute("onclick", "collapse_toc()");
-        b.innerHTML = "关闭"
-    }
-
-    function collapse_toc() {
-        var b = document.querySelector(".tocbot-toc-expand");
-        tocbot.init({
-            tocSelector: '.tocbot-list',
-            contentSelector: '.post-content',
-            headingSelector: 'h1, h2, h3, h4, h5',
-            collapseDepth: 1,
-            orderedList: false,
-            scrollSmooth: true,
-        });
-        b.setAttribute("onclick", "expand_toc()");
-        b.innerHTML = "展开"
-    }
-
-    function go_top() {
-        window.scrollTo(0, 0);
-    }
-
-    function go_bottom() {
-        window.scrollTo(0, document.body.scrollHeight);
-    }
-
-</script>
-    
-
-    
-    <article class="post-wrap">
-        <header class="post-header">
-            <h1 class="post-title">手工</h1>
-            
-                <div class="post-meta">
-                    
-                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
-                    
-
-                    
-                        <span class="post-time">
-                        日期: <a href="#">2020年03月31日&nbsp;&nbsp;23:29:02</a>
-                        </span>
-                    
-                    
-                        <span class="post-category">
-                    分类:
-                            
-                                <a href="/categories/docker/">docker</a>
-                            
-                        </span>
-                    
-                </div>
-            
-        </header>
-
-        <div class="post-content">
-            <p>测试cname</p>
-<h3 id="测试图片"><a href="#测试图片" class="headerlink" title="测试图片"></a>测试图片</h3><p><img src="/2020/03/31/%E6%89%8B%E5%B7%A5/vv.jpg" alt="pic"></p>
-
-        </div>
-
-
-
-
-    </article>
 </div>
 
         </div>
         <footer id="footer" class="footer">
     <div class="copyright">
         <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
-	<a target="_blank" style="background-color: transparent;color: #333;text-decoration: none;" 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
 	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
 	</span>
     </div>
 </footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
     </div>
 </body>

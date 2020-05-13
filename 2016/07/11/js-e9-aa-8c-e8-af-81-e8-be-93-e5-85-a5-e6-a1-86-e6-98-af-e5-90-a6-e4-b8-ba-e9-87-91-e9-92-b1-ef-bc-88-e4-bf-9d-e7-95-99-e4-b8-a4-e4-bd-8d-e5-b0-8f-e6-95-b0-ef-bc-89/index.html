@@ -119,7 +119,6 @@
             <div class="container">
     
     
-
     
     <article class="post-wrap">
         <header class="post-header">
@@ -143,13 +142,15 @@
                             
                         </span>
                     
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
                 </div>
             
         </header>
 
         <div class="post-content">
-            <p>//验证input标签输入的是否是金钱的数量（两位小数）<br>function clearNoNum(obj){<br>obj.value = obj.value.replace(/[^\d.]/g,””); //清除”数字”和”.”以外的字符<br>obj.value = obj.value.replace(/^\./g,””); //验证第一个字符是数字而不是<br>obj.value = obj.value.replace(/\.{2,}/g,”.”); //只保留第一个. 清除多余的<br>obj.value = obj.value.replace(“.”,”$#$”).replace(/\./g,””).replace(“$#$”,”.”);<br>obj.value = obj.value.replace(/^(\-)<em>(\d+)\.(\d\d).</em>$/,’$1$2.$3’); //只能输入两个小数<br>}<br><input id="packagefee" type="text" value="1" placeholder="请输入包装费" 
-onkeyup="clearNoNum(this)" onblur="clearNoNum(this)"/></p>
+            <p>//验证input标签输入的是否是金钱的数量（两位小数）<br>function clearNoNum(obj){<br>obj.value = obj.value.replace(/[^\d.]/g,””); //清除”数字”和”.”以外的字符<br>obj.value = obj.value.replace(/^\./g,””); //验证第一个字符是数字而不是<br>obj.value = obj.value.replace(/\.{2,}/g,”.”); //只保留第一个. 清除多余的<br>obj.value = obj.value.replace(“.”,”$#$”).replace(/\./g,””).replace(“$#$”,”.”);<br>obj.value = obj.value.replace(/^(\-)<em>(\d+)\.(\d\d).</em>$/,’$1$2.$3’); //只能输入两个小数<br>}<br><input id="packagefee" type="text" value="1" placeholder="请输入包装费" onkeyup="clearNoNum(this)" onblur="clearNoNum(this)"></p>
 <p>ps:2016年10月21日更新 今天我女朋友对我说这个方法有点问题： 输入金钱并验证成功后，input失去焦点后；再重新获得焦点，这时去修改金钱中间数字的时候，输入第一个数字后光标焦点会自动跳转到金钱的最后，所以重新写了一下这个方法，特此更新</p>
 <pre><code>    function clearNoNum(obj){
     value= obj.value.replace(/\[^\\d.\]/g,&quot;&quot;); //清除&quot;数字&quot;和&quot;.&quot;以外的字符
@@ -186,11 +187,18 @@ onkeyup="clearNoNum(this)" onblur="clearNoNum(this)"/></p>
         <footer id="footer" class="footer">
     <div class="copyright">
         <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
-	<a target="_blank" style="background-color: transparent;color: #333;text-decoration: none;" 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
 	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
 	</span>
     </div>
 </footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
     </div>
 </body>
