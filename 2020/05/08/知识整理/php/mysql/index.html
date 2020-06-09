@@ -298,6 +298,10 @@
 <li>尽量避免大事务操作，提高系统并发能力。</li>
 <li>尽量避免向客户端返回大数据量，若数据量过大，应该考虑相应需求是否合理。</li>
 </ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#SELECT b.* FROM auth_item a INNER JOIN auth_item_child c ON a.id &#x3D; c.parent INNER JOIN auth_item b ON c.child!&#x3D;b.id WHERE a.id &#x3D; 3 AND b.id!&#x3D;3 ORDER BY b.type ASC,b.id ASC;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#SELECT c.* FROM auth_item AS a INNER JOIN auth_item AS b ON a.type&#x3D;b.type INNER JOIN auth_item AS c ON a.id&#x3D;c.id OR b.id&#x3D;c.id WHERE a.created_at&#x3D;1590029454 AND b.created_at&#x3D;1590028569;</span><br></pre></td></tr></table></figure>
+
+
+
 <p>转载：</p>
 <ol>
 <li><a href="https://segmentfault.com/a/1190000018371218" target="_blank" rel="noopener">https://segmentfault.com/a/1190000018371218</a></li>

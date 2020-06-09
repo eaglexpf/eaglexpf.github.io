@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>跨云部署docker swarm | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">拉到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "关闭"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">跨云部署docker swarm</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2020年06月07日&nbsp;&nbsp;12:30:44</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <blockquote>
+<p>跨云部署docker swarm必须使用大于19.03的docker版本</p>
+</blockquote>
+<h3 id="组建跨云服务器的局域网"><a href="#组建跨云服务器的局域网" class="headerlink" title="组建跨云服务器的局域网"></a>组建跨云服务器的局域网</h3><h4 id="安装openvpn服务器"><a href="#安装openvpn服务器" class="headerlink" title="安装openvpn服务器"></a>安装openvpn服务器</h4><ol>
+<li><p>使用GitHub上的一键安装脚本；地址：<a href="https://github.com/Nyr/openvpn-install" target="_blank" rel="noopener">https://github.com/Nyr/openvpn-install</a> </p>
+</li>
+<li><p>配置服务器的配置文件</p>
+<ul>
+<li><p>服务器配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"> vim &#x2F;etc&#x2F;openvpn&#x2F;server&#x2F;server.conf</span><br><span class="line"> </span><br><span class="line"> ;local 172.17.0.10</span><br><span class="line"> port 1194</span><br><span class="line"> proto udp</span><br><span class="line"> dev tun</span><br><span class="line"> ca ca.crt</span><br><span class="line"> cert server.crt</span><br><span class="line"> key server.key</span><br><span class="line"> dh dh.pem</span><br><span class="line"> auth SHA512</span><br><span class="line"> tls-crypt tc.key</span><br><span class="line"> topology subnet</span><br><span class="line"> server 10.8.0.0 255.255.255.0</span><br><span class="line"> push &quot;route 0.0.0.0 0.0.0.0&quot;</span><br><span class="line"> ;push &quot;redirect-gateway def1 bypass-dhcp&quot;</span><br><span class="line"> ifconfig-pool-persist ipp.txt</span><br><span class="line"> ;push &quot;dhcp-option DNS 183.60.83.19&quot;</span><br><span class="line"> ;push &quot;dhcp-option DNS 183.60.82.98&quot;</span><br><span class="line"> keepalive 10 120</span><br><span class="line"> cipher AES-256-CBC</span><br><span class="line"> user nobody</span><br><span class="line"> group nobody</span><br><span class="line"> persist-key</span><br><span class="line"> persist-tun</span><br><span class="line"> status openvpn-status.log</span><br><span class="line"> verb 3</span><br><span class="line"> crl-verify crl.pem</span><br><span class="line"> explicit-exit-notify</span><br><span class="line"> </span><br><span class="line"> ## 主要修改内容：</span><br><span class="line"> 1. 增加&#96;push &quot;route 0.0.0.0 0.0.0.0&quot;&#96;</span><br><span class="line"> 2. 注释&#96;push &quot;redirect-gateway def1 bypass-dhcp&quot;&#96;,&#96;push &quot;dhcp-option DNS 183.60.83.19&quot;&#96;和&#96;push &quot;dhcp-option DNS 183.60.82.98&quot;&#96;</span><br><span class="line"> </span><br><span class="line"> ## 注意：windows使用openvpn gui时会造成只能访问局域网，不能访问外网；解决方式如下</span><br><span class="line"> 原配置：</span><br><span class="line"> client</span><br><span class="line"> dev tun</span><br><span class="line"> proto udp</span><br><span class="line"> remote 49.234.201.19 1194</span><br><span class="line"> resolv-retry infinite</span><br><span class="line"> nobind</span><br><span class="line"> persist-key</span><br><span class="line"> persist-tun</span><br><span class="line"> remote-cert-tls server</span><br><span class="line"> auth SHA512</span><br><span class="line"> cipher AES-256-CBC</span><br><span class="line"> ignore-unknown-option block-outside-dns</span><br><span class="line"> block-outside-dns</span><br><span class="line"> verb 3</span><br><span class="line"> 修改内容：</span><br><span class="line"> 删除&#96;block-outside-dns&#96;</span><br><span class="line"> windows配置删除block-outside-dns这一行，就行了</span><br><span class="line">因为这个设置， OpenVPN 会添加 Windows 防火墙记录</span><br><span class="line"> 参考网址：https:&#x2F;&#x2F;www.v2ex.com&#x2F;t&#x2F;521393#reply19</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>指定客户端ip</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">已有配置：ifconfig-pool-persist ipp.txt</span><br><span class="line">修改ipp.txt的文件内容，指定用户的ip</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 网上查到的方法</span><br><span class="line">1、在server.conf文件中增加客户端配目录，ccd可以任意指定：</span><br><span class="line">	client-config-dir ccd</span><br><span class="line"> </span><br><span class="line">2、进入ccd目录后，用客户名（就是common name）建立文件。</span><br><span class="line">例如：客户名：litifeng  ip：10.8.0.6</span><br><span class="line">则名为litifeng的文件中，写入下面代码：</span><br><span class="line">	ifconfig-push 10.8.0.6 255.255.255.0</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><p>重启服务器的openvpn服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart openvpn-server@server.service</span><br><span class="line">systemctl status openvpn-server@server.service</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h3 id="客户端安装vpn"><a href="#客户端安装vpn" class="headerlink" title="客户端安装vpn"></a>客户端安装vpn</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">yum -y install epel-release</span><br><span class="line">yum -y install openvpn</span><br><span class="line"></span><br><span class="line">启动vpn,client.ovpn为服务器生成的文件</span><br><span class="line">openvpn --daemon --cd &#x2F;etc&#x2F;openvpn&#x2F;client --config client.ovpn --log-append &#x2F;var&#x2F;log&#x2F;openvpn.log</span><br><span class="line">查看log</span><br><span class="line">tail -f &#x2F;var&#x2F;log&#x2F;openvpn.log</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="初始化docker-swarm"><a href="#初始化docker-swarm" class="headerlink" title="初始化docker swarm"></a>初始化docker swarm</h3><p>跨云部署docker swarm时routingMesh等都无法使用，因为docker swarm需要使用4789的udp端口；而部分云服务商将4789端口自用了，所以在19.03版本之前的docker是无法使用docker swarm服务的</p>
+<ol>
+<li><p>开放iptables端口，所有节点全部开放</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-A INPUT -p tcp -m state --state NEW -m tcp --dport 2376 -j ACCEPT</span><br><span class="line">-A INPUT -p tcp -m state --state NEW -m tcp --dport 2377 -j ACCEPT</span><br><span class="line">-A INPUT -p udp -m state --state NEW -m udp --dport 4789 -j ACCEPT</span><br><span class="line">-A INPUT -p udp -m state --state NEW -m udp --dport 5789 -j ACCEPT</span><br><span class="line">-A INPUT -p tcp -m state --state NEW -m tcp --dport 7946 -j ACCEPT</span><br><span class="line">-A INPUT -p udp -m state --state NEW -m udp --dport 7946 -j ACCEPT</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p>初始化docker swarm</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker swarm init --advertise-addr 10.8.0.1:2377 --listen-addr 10.8.0.1:2377  --data-path-port 5789</span><br><span class="line"></span><br><span class="line">## 参数说明</span><br><span class="line">--advertise-addr 指定其他节点用来连接到当前管理节点的 IP 和端口。这一属性是可选的，当节点上有多个 IP 时，可以用于指定使用哪个IP。此外，还可以用于指定一个节点上没有的 IP，比如一个负载均衡的 IP。</span><br><span class="line"></span><br><span class="line">--listen-addr 指定用于承载 Swarm 流量的 IP 和端口。其设置通常与 --advertise-addr 相匹配，但是当节点上有多个 IP 的时候，可用于指定具体某个 IP。并且，如果 --advertise-addr 设置了一个远程 IP 地址（如负载均衡的IP地址），该属性也是需要设置的。建议执行命令时总是使用这两个属性来指定具体 IP 和端口。</span><br><span class="line"></span><br><span class="line">--data-path-port</span><br><span class="line">该标志允许您配置用于数据路径通信的UDP端口号。提供的端口号必须在1024-49151范围内。如果未设置此标志或将其设置为0，则使用默认端口号4789。数据路径端口只能在初始化群集时配置，并且适用于加入群集的所有节点。以下示例初始化一个新的Swarm，并将数据路径端口配置为UDP端口5789。</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="3">
+<li><p>加入docker swarm</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">## 获取加入集群的命令</span><br><span class="line">docker swarm join-token worker      &#x2F;&#x2F;获取工作节点的token</span><br><span class="line">docker swarm join-token manager     &#x2F;&#x2F;获取管理节点的token</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<ol start="4">
+<li><p>创建overlay网络</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">docker network create \</span><br><span class="line">--driver overlay \</span><br><span class="line">--attachable \</span><br><span class="line">my_net</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 如果创建的ingress网络未指定--attachable参数，则ingress网络只允许服务连接到overlay网络中</span><br><span class="line">&#x2F;&#x2F; 想要连接单一容器到overlay网络，就必须在创建overlay网络时添加--attachable参数，</span><br><span class="line">&#x2F;&#x2F; 并且单一容器并不是暴露所有端口到overlay网络中，需要自己发布</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>
