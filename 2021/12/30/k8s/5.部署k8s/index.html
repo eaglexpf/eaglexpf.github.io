@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>5.部署k8s | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">拉到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "关闭"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">5.部署k8s</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2021年12月30日&nbsp;&nbsp;15:17:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/k8s/">k8s</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="1-服务器配置"><a href="#1-服务器配置" class="headerlink" title="1.服务器配置"></a>1.服务器配置</h3><p>共使用3台服务器，依次配置<code>hostname</code>、<code>固定IP</code>、<code>hosts</code>、<code>防火墙</code>、<code>selinux</code>和<code>Swap</code></p>
+<h4 id="1-1-配置HOSTNAME"><a href="#1-1-配置HOSTNAME" class="headerlink" title="1.1 配置HOSTNAME"></a>1.1 配置HOSTNAME</h4><ul>
+<li>master服务器：<code>hostnamectl --static set-hostname k8s-master</code></li>
+<li>node-1服务器：<code>hostnamectl --static set-hostname k8s-node1</code></li>
+<li>node-2服务器：<code>hostnamectl --static set-hostname k8s-node2</code></li>
+</ul>
+<h4 id="1-2-配置固定IP"><a href="#1-2-配置固定IP" class="headerlink" title="1.2 配置固定IP"></a>1.2 配置固定IP</h4><p>编辑文件<code>/etc/sysconfig/network-scripts/ifcfg-eth0</code>，修改<code>BOOTPROTO</code>的值为<code>static</code>，并在文件追加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">IPADDR&#x3D;&quot;192.168.0.11&quot;</span><br><span class="line">GATEWAY&#x3D;&quot;192.168.0.1&quot;</span><br><span class="line">NETMASK&#x3D;&quot;255.255.255.0&quot;</span><br><span class="line">DNS1&#x3D;&quot;218.2.2.2&quot;</span><br><span class="line">DNS2&#x3D;&quot;218.4.4.4&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-3-配置HOSTS"><a href="#1-3-配置HOSTS" class="headerlink" title="1.3 配置HOSTS"></a>1.3 配置HOSTS</h4><p>配置每台服务器的host，让每台服务器可以使用域名互相访问</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt; &#x2F;etc&#x2F;hosts</span><br><span class="line">192.168.0.11 work</span><br><span class="line">192.168.0.12 k8s-node1</span><br><span class="line">192.168.0.13 k8s-node2</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>最后一行回车之后，<code>ctrl+c</code>或者<code>ctrl+d</code>结束输入</p>
+</blockquote>
+<h4 id="1-4-配置防火墙"><a href="#1-4-配置防火墙" class="headerlink" title="1.4 配置防火墙"></a>1.4 配置防火墙</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop firewalld</span><br><span class="line">sudo systemctl disable firewalld</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-5-配置SELinux"><a href="#1-5-配置SELinux" class="headerlink" title="1.5 配置SELinux"></a>1.5 配置SELinux</h4><p><code>SELinux</code>，安全增强型<code>Linux</code>，是一种采用安全架构的<code>Linux</code>系统。因为我们不是专业的<code>Linux</code>运维工程师，并且防止在后续部署过程中遇到因为<code>SELinux</code>产生的问题，这里直接关闭<code>SELinux</code>。</p>
+<ul>
+<li>查看<code>SELinux</code>是否开启：执行命令<code>/usr/sbin/sestatus -v</code>，查看<code>SELinux status</code>的状态是否为<code>enabled</code></li>
+<li>关闭<code>SELinux</code>：编辑文件<code>vi /etc/selinux/config</code>，设置<code>SELINUX</code>为<code>disabled</code></li>
+</ul>
+<h4 id="1-6-配置SWAP"><a href="#1-6-配置SWAP" class="headerlink" title="1.6 配置SWAP"></a>1.6 配置<code>SWAP</code></h4><p><code>k8s</code>想法是将实例紧密包装到尽可能接近<code>100%</code>，所有的部署都应该与<code>CPU</code>、内存限制固定在一起。所以，如果调度程序发送一个<code>Pod</code>到一台机器，它不应该使用交换。同时，<code>k8s</code>的设计者考虑到性能的原因，关闭<code>swap</code>。如果在运行容器数量较多时，考虑节省资源的资源，可以添加<code>kubelet</code>参数<code>--fail-swap-on=false</code>来解决这个问题。</p>
+<p>关闭<code>Swap</code>的步骤：</p>
+<ul>
+<li><code>swapoff -a</code></li>
+<li>编辑<code>/etc/fstab</code>，注释<code>swap</code>所在的行</li>
+<li><code>free</code> # 可以通过这个命令查看swap是否关闭了</li>
+</ul>
+<h3 id="2-部署容器"><a href="#2-部署容器" class="headerlink" title="2. 部署容器"></a>2. 部署容器</h3><p>这里的容器运行时指的是：负责容器运行的软件，可选的有：<code>containerd</code>、<code>docker</code>和<code>CRI-O</code>，我们选择<code>docker</code>作为容器运行时。</p>
+<p>配置<code>k8s</code>集群，需要为每个节点安装一个容器运行时，用来为<code>Pod</code>提供运行环境</p>
+<h4 id="2-1-为容器进行时配置Cgroups"><a href="#2-1-为容器进行时配置Cgroups" class="headerlink" title="2.1 为容器进行时配置Cgroups"></a>2.1 为容器进行时配置Cgroups</h4><p><code>Cgroups</code>是<code>Linux</code>内核提供的一种可以限制单个进程或者多个进程所使用的资源的机制，可以对<code>CPU</code>、内存等资源实现精细化的控制。<code>Docker</code>就使用<code>Cgroups</code>来对<code>CPU</code>、内存等部分资源进行控制。</p>
+<p>如果<code>Linux</code>系统发行版使用<code>systemd</code>来初始化系统时，初始化进程会生成并使用一个<code>root</code>控制组，充当<code>cgroup</code>管理器。这时<code>systemd</code>和<code>Cgroups</code>紧密集成，并将为每个<code>systemd</code>单位分配一个<code>Cgroup</code>。更多<code>Cgroup</code>的内容可查看这里。</p>
+<p>在安装容器运行时和<code>kubelet</code>时，可以为其指定一个<code>Cgroups</code>管理器，但<code>k8s</code>官网并不推荐这种配置，在资源压力下会变得不稳定。</p>
+<p>容器运行时和<code>kubelet</code>以及<code>systemd</code>使用同一个<code>Cgroups</code>管理器，单个管理器会简化分配资源的视图，并且默认情况下对可用资源和使用的资源具有更一直的管理。</p>
+<p>对于<code>Docker</code>容器运行时，可以设置<code>native.cgroupdriver=system</code>选项来配置。</p>
+<h4 id="2-2-安装docker"><a href="#2-2-安装docker" class="headerlink" title="2.2 安装docker"></a>2.2 安装<code>docker</code></h4><p>需要在所有的服务器节点中安装<code>Docker</code></p>
+<ol>
+<li>安装所需包<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure></li>
+<li>新增<code>docker</code>库<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum-config-manager --add-repo https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br></pre></td></tr></table></figure></li>
+<li>安装<code>docker-ce</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum update -y &amp;&amp; sudo yum install -y containerd.io-1.2.13 docker-ce-19.03.11 docker-ce-cli-19.03.11</span><br></pre></td></tr></table></figure></li>
+<li>配置<code>Docker Daemon</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">## 创建&#x2F;etc&#x2F;docker目录</span><br><span class="line">sudo mkdir &#x2F;etc&#x2F;docker</span><br><span class="line"></span><br><span class="line">## 设置Docker Daemon</span><br><span class="line">cat &lt;&lt;EOF | sudo tee &#x2F;etc&#x2F;docker&#x2F;daemon.json</span><br><span class="line">&#123;</span><br><span class="line">  &quot;exec-opts&quot;: [&quot;native.cgroupdriver&#x3D;systemd&quot;],</span><br><span class="line">  &quot;log-driver&quot;: &quot;json-file&quot;,</span><br><span class="line">  &quot;log-opts&quot;: &#123;</span><br><span class="line">    &quot;max-size&quot;: &quot;100m&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;storage-driver&quot;: &quot;overlay2&quot;,</span><br><span class="line">  &quot;storage-opts&quot;: [</span><br><span class="line">    &quot;overlay2.override_kernel_check&#x3D;true&quot;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure></li>
+<li>配置<code>Docker</code>开机启动<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br><span class="line">sudo systemctl enable docker</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="3-安装kubeadm、kubelet和kubectl"><a href="#3-安装kubeadm、kubelet和kubectl" class="headerlink" title="3. 安装kubeadm、kubelet和kubectl"></a>3. 安装kubeadm、kubelet和kubectl</h3><h4 id="3-1-查看节点MAC地址和product-uuid的唯一性"><a href="#3-1-查看节点MAC地址和product-uuid的唯一性" class="headerlink" title="3.1 查看节点MAC地址和product_uuid的唯一性"></a>3.1 查看节点MAC地址和product_uuid的唯一性</h4><ul>
+<li>通过命令ifconfig -a查看网络的MAC地址，其中ether后面的为网卡的MAC地址<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig -a</span><br></pre></td></tr></table></figure></li>
+<li>使用命令cat /sys/class/dmi/id/product_uuid对product_uuid校验</li>
+</ul>
+<p>正常情况，硬件设备的网络MAC地址和product_uuid都会有唯一值，但是虚拟机中可能会存在重复值。如果这两个配置不唯一，在安装kubeadm时可能会失败</p>
+<h4 id="3-2-允许iptables检查桥接流量"><a href="#3-2-允许iptables检查桥接流量" class="headerlink" title="3.2 允许iptables检查桥接流量"></a>3.2 允许iptables检查桥接流量</h4><p>使用命令lsmod | grep br_netfilter来查看br_netfilter模块是否被加载。如果该模块没有被加载，可执行sudo modprobe br_netfilter来加载该模块。</p>
+<p>设置服务节点中给的sysctl配置中的net.bridge.bridge-nf-call-iptables值为1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ cat &lt;&lt;EOF | sudo tee &#x2F;etc&#x2F;modules-load.d&#x2F;k8s.conf</span><br><span class="line">br_netfilter</span><br><span class="line">EOF</span><br><span class="line">$ cat &lt;&lt;EOF | sudo tee &#x2F;etc&#x2F;sysctl.d&#x2F;k8s.conf</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables &#x3D; 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables &#x3D; 1</span><br><span class="line">EOF</span><br><span class="line">$ sudo sysctl --system</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-3-安装kubeadm、kubelet和kubectl"><a href="#3-3-安装kubeadm、kubelet和kubectl" class="headerlink" title="3.3 安装kubeadm、kubelet和kubectl"></a>3.3 安装kubeadm、kubelet和kubectl</h4><p>需要在每台服务器中安装：</p>
+<ul>
+<li>kubeadm，用来初始化集群的指令</li>
+<li>kubelet，在集群中的每个节点上用来启动Pod和容器等</li>
+<li>kubectl，用来与集群通信的命令行工具</li>
+</ul>
+<p>kubeadmin、kubelet和kubectl需要单独安装，因此，需要确保他们的版本相匹配</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ cat &gt; &#x2F;etc&#x2F;yum.repos.d&#x2F;kubernetes.repo &lt;&lt; EOF</span><br><span class="line">[kubernetes]</span><br><span class="line">name&#x3D;Kubernetes</span><br><span class="line">baseurl&#x3D;https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;kubernetes&#x2F;yum&#x2F;repos&#x2F;kubernetes-el7-x86_64</span><br><span class="line">enabled&#x3D;1</span><br><span class="line">gpgcheck&#x3D;0</span><br><span class="line">repo_gpgcheck&#x3D;0</span><br><span class="line">gpgkey&#x3D;https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;kubernetes&#x2F;yum&#x2F;doc&#x2F;yum-key.gpg https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;kubernetes&#x2F;yum&#x2F;doc&#x2F;rpm-package-key.gpg</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"># 将 SELinux 设置为 permissive 模式（相当于将其禁用）</span><br><span class="line">$ setenforce 0</span><br><span class="line">$ sed -i &#39;s&#x2F;^SELINUX&#x3D;enforcing$&#x2F;SELINUX&#x3D;permissive&#x2F;&#39; &#x2F;etc&#x2F;selinux&#x2F;config</span><br><span class="line"></span><br><span class="line">$ yum install -y kubelet kubeadm kubectl --disableexcludes&#x3D;kubernetes</span><br><span class="line"></span><br><span class="line">$ systemctl enable --now kubelet</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置master节点"><a href="#配置master节点" class="headerlink" title="配置master节点"></a>配置master节点</h3><ol>
+<li>在<code>work</code>容器中执行<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ kubeadm init \</span><br><span class="line">  --apiserver-advertise-address&#x3D;192.168.0.31 \</span><br><span class="line">  --image-repository registry.aliyuncs.com&#x2F;google_containers \</span><br><span class="line">  --service-cidr&#x3D;10.96.0.0&#x2F;12 \</span><br><span class="line">  --pod-network-cidr&#x3D;10.244.0.0&#x2F;16</span><br></pre></td></tr></table></figure>
+其中，</li>
+</ol>
+<p>–apiserver-advertise-address，API服务器所公布的其正在监听的IP地址，如果没有设置，将会使用默认网络接口<br>–image-repository，拉取镜像的容器仓库<br>–service-cidr，为服务的虚拟IP地址另外指定的IP地址段，默认值为”10.96.0.0/12”<br>–pod-network-cidr， 指明 pod 网络可以使用的 IP 地址段。如果设置了这个参数，控制平面将会为每一个节点自动分配 CIDRs</p>
+<ol start="2">
+<li><p>为用户设置权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir -p $HOME&#x2F;.kube</span><br><span class="line">$ sudo cp -i &#x2F;etc&#x2F;kubernetes&#x2F;admin.conf $HOME&#x2F;.kube&#x2F;config</span><br><span class="line">$ sudo chown $(id -u):$(id -g) $HOME&#x2F;.kube&#x2F;config</span><br></pre></td></tr></table></figure></li>
+<li><p>安装POD网络插件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl apply -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;coreos&#x2F;flannel&#x2F;master&#x2F;Documentation&#x2F;kube-flannel.yml</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>token过期重新获取join命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@test ~]# kubeadm token generate #生成token</span><br><span class="line">pmiad9.1g4qrc4yvkqxggse  #下条命令需要使用这个结果</span><br><span class="line">[root@test ~]# kubeadm token create pmiad9.1g4qrc4yvkqxggse --print-join-command --ttl&#x3D;0  #根据token输出添加命令</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

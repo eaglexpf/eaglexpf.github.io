@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>9.配置linux的vpn客户端 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">拉到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "关闭"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">9.配置linux的vpn客户端</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2022年01月28日&nbsp;&nbsp;0:27:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/k8s/">k8s</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="安装软件"><a href="#安装软件" class="headerlink" title="安装软件"></a>安装软件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># Ubuntu and Debian</span><br><span class="line">apt-get update</span><br><span class="line">apt-get install strongswan xl2tpd net-tools</span><br><span class="line"></span><br><span class="line"># Fedora</span><br><span class="line">yum install strongswan xl2tpd net-tools</span><br><span class="line"></span><br><span class="line"># CentOS</span><br><span class="line">yum install epel-release</span><br><span class="line">yum --enablerepo&#x3D;epel install strongswan xl2tpd net-tools</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建-VPN-变量（替换为你自己的值）："><a href="#创建-VPN-变量（替换为你自己的值）：" class="headerlink" title="创建 VPN 变量（替换为你自己的值）："></a>创建 VPN 变量（替换为你自己的值）：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">VPN_SERVER_IP&#x3D;&#39;你的VPN服务器IP&#39;</span><br><span class="line">VPN_IPSEC_PSK&#x3D;&#39;你的IPsec预共享密钥&#39;</span><br><span class="line">VPN_USER&#x3D;&#39;你的VPN用户名&#39;</span><br><span class="line">VPN_PASSWORD&#x3D;&#39;你的VPN密码&#39;</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置-strongSwan："><a href="#配置-strongSwan：" class="headerlink" title="配置 strongSwan："></a>配置 strongSwan：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; &#x2F;etc&#x2F;ipsec.conf &lt;&lt;EOF</span><br><span class="line"># ipsec.conf - strongSwan IPsec configuration file</span><br><span class="line"></span><br><span class="line">conn myvpn</span><br><span class="line">  auto&#x3D;add</span><br><span class="line">  keyexchange&#x3D;ikev1</span><br><span class="line">  authby&#x3D;secret</span><br><span class="line">  type&#x3D;transport</span><br><span class="line">  left&#x3D;%defaultroute</span><br><span class="line">  leftprotoport&#x3D;17&#x2F;1701</span><br><span class="line">  rightprotoport&#x3D;17&#x2F;1701</span><br><span class="line">  right&#x3D;$VPN_SERVER_IP</span><br><span class="line">  ike&#x3D;aes128-sha1-modp2048</span><br><span class="line">  esp&#x3D;aes128-sha1</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">cat &gt; &#x2F;etc&#x2F;ipsec.secrets &lt;&lt;EOF</span><br><span class="line">: PSK &quot;$VPN_IPSEC_PSK&quot;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">chmod 600 &#x2F;etc&#x2F;ipsec.secrets</span><br><span class="line"></span><br><span class="line"># For CentOS and Fedora ONLY</span><br><span class="line">mv &#x2F;etc&#x2F;strongswan&#x2F;ipsec.conf &#x2F;etc&#x2F;strongswan&#x2F;ipsec.conf.old 2&gt;&#x2F;dev&#x2F;null</span><br><span class="line">mv &#x2F;etc&#x2F;strongswan&#x2F;ipsec.secrets &#x2F;etc&#x2F;strongswan&#x2F;ipsec.secrets.old 2&gt;&#x2F;dev&#x2F;null</span><br><span class="line">ln -s &#x2F;etc&#x2F;ipsec.conf &#x2F;etc&#x2F;strongswan&#x2F;ipsec.conf</span><br><span class="line">ln -s &#x2F;etc&#x2F;ipsec.secrets &#x2F;etc&#x2F;strongswan&#x2F;ipsec.secrets</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置-xl2tpd："><a href="#配置-xl2tpd：" class="headerlink" title="配置 xl2tpd："></a>配置 xl2tpd：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; &#x2F;etc&#x2F;xl2tpd&#x2F;xl2tpd.conf &lt;&lt;EOF</span><br><span class="line">[lac myvpn]</span><br><span class="line">lns &#x3D; $VPN_SERVER_IP</span><br><span class="line">ppp debug &#x3D; yes</span><br><span class="line">pppoptfile &#x3D; &#x2F;etc&#x2F;ppp&#x2F;options.l2tpd.client</span><br><span class="line">length bit &#x3D; yes</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">cat &gt; &#x2F;etc&#x2F;ppp&#x2F;options.l2tpd.client &lt;&lt;EOF</span><br><span class="line">ipcp-accept-local</span><br><span class="line">ipcp-accept-remote</span><br><span class="line">refuse-eap</span><br><span class="line">require-chap</span><br><span class="line">noccp</span><br><span class="line">noauth</span><br><span class="line">mtu 1280</span><br><span class="line">mru 1280</span><br><span class="line">noipdefault</span><br><span class="line">defaultroute</span><br><span class="line">usepeerdns</span><br><span class="line">connect-delay 5000</span><br><span class="line">name &quot;$VPN_USER&quot;</span><br><span class="line">password &quot;$VPN_PASSWORD&quot;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">chmod 600 &#x2F;etc&#x2F;ppp&#x2F;options.l2tpd.client</span><br></pre></td></tr></table></figure>
+<p>至此 VPN 客户端配置已完成。按照下面的步骤进行连接。</p>
+<p>注： 当你每次尝试连接到 VPN 时，必须重复下面的所有步骤。</p>
+<h2 id="创建-xl2tpd-控制文件："><a href="#创建-xl2tpd-控制文件：" class="headerlink" title="创建 xl2tpd 控制文件："></a>创建 xl2tpd 控制文件：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p &#x2F;var&#x2F;run&#x2F;xl2tpd</span><br><span class="line">touch &#x2F;var&#x2F;run&#x2F;xl2tpd&#x2F;l2tp-control</span><br></pre></td></tr></table></figure>
+<h2 id="重启服务："><a href="#重启服务：" class="headerlink" title="重启服务："></a>重启服务：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">service strongswan restart</span><br><span class="line"></span><br><span class="line"># 适用于 Ubuntu 20.04，如果 strongswan 服务不存在</span><br><span class="line">ipsec restart</span><br><span class="line"></span><br><span class="line">service xl2tpd restart</span><br></pre></td></tr></table></figure>
+
+<h2 id="开始-IPsec-连接："><a href="#开始-IPsec-连接：" class="headerlink" title="开始 IPsec 连接："></a>开始 IPsec 连接：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Ubuntu and Debian</span><br><span class="line">ipsec up myvpn</span><br><span class="line"></span><br><span class="line"># CentOS and Fedora</span><br><span class="line">strongswan up myvpn</span><br></pre></td></tr></table></figure>
+<h2 id="开始-L2TP-连接："><a href="#开始-L2TP-连接：" class="headerlink" title="开始 L2TP 连接："></a>开始 L2TP 连接：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;c myvpn&quot; &gt; &#x2F;var&#x2F;run&#x2F;xl2tpd&#x2F;l2tp-control</span><br></pre></td></tr></table></figure>
+<p>运行 ifconfig 并且检查输出。现在你应该看到一个新的网络接口 ppp0。</p>
+<h2 id="检查你现有的默认路由："><a href="#检查你现有的默认路由：" class="headerlink" title="检查你现有的默认路由："></a>检查你现有的默认路由：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip route</span><br></pre></td></tr></table></figure>
+<p>在输出中查找以下行： default via X.X.X.X …。记下这个网关 IP，并且在下面的两个命令中使用。</p>
+<p>从新的默认路由中排除你的 VPN 服务器的公有 IP（替换为你自己的值）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route add 你的VPN服务器的公有IP gw X.X.X.X</span><br></pre></td></tr></table></figure>
+<p>如果你的 VPN 客户端是一个远程服务器，则必须从新的默认路由中排除你的本地电脑的公有 IP，以避免 SSH 会话被断开 （替换为实际值）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route add 你的本地电脑的公有IP gw X.X.X.X</span><br></pre></td></tr></table></figure>
+<p>添加一个新的默认路由，并且开始通过 VPN 服务器发送数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route add default dev ppp0</span><br></pre></td></tr></table></figure>
+<p>至此 VPN 连接已成功完成。检查 VPN 是否正常工作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -qO- http:&#x2F;&#x2F;ipv4.icanhazip.com; echo</span><br></pre></td></tr></table></figure>
+<p>以上命令应该返回 你的 VPN 服务器 IP。</p>
+<p>要停止通过 VPN 服务器发送数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route del default dev ppp0</span><br></pre></td></tr></table></figure>
+<h2 id="要断开连接："><a href="#要断开连接：" class="headerlink" title="要断开连接："></a>要断开连接：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Ubuntu and Debian</span><br><span class="line">echo &quot;d myvpn&quot; &gt; &#x2F;var&#x2F;run&#x2F;xl2tpd&#x2F;l2tp-control</span><br><span class="line">ipsec down myvpn</span><br><span class="line"></span><br><span class="line"># CentOS and Fedora</span><br><span class="line">echo &quot;d myvpn&quot; &gt; &#x2F;var&#x2F;run&#x2F;xl2tpd&#x2F;l2tp-control</span><br><span class="line">strongswan down myvpn</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h2><p><a href="https://github.com/hwdsl2/setup-ipsec-vpn/blob/master/docs/clients-zh.md#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E9%85%8D%E7%BD%AE-linux-vpn-%E5%AE%A2%E6%88%B7%E7%AB%AF" target="_blank" rel="noopener">参考地址</a></p>
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>
