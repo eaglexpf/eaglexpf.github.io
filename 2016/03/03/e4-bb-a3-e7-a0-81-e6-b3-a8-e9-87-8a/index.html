@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>代码注释 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">代码注释</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2016年03月03日&nbsp;&nbsp;10:27:14</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/%E5%85%A8%E9%83%A8%E6%96%87%E7%AB%A0/">全部文章</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <!--    
+                                         MDMN88N    
+                                        ODMMDNDNMNN    
+                                       M8DMNNMMMNNN    
+                                       M7DMID8ZOMNMN    
+                                   N8??NODIN7MNIZ?N    
+                             Z~==?I7$O78D7NDZ8M8NM    
+                   O~+II77?7??8D8OOO8DD8D8N$MOI$=N    
+                 :~8D$~~?7Z$7DZZ8DDDNN888N8N88I~$$+~+N    
+               M~DD8ZZ8Z$77I$ODNNNNNNN8D8MNN8++?$I?7D8OO+    
+              7=NDO88Z7?++?78$7NNDDD88NNDDNDO$8ND8O77Z7??+    
+             M+DDOZZ$I+??IZ7?Z8$8$7I8NNDN8D7D$IZ8NDD8$I????    
+             Z+N8ZZZIII7$77$ZIOD8$8Z$7777D8DDDOII?IZ$I?I??I    
+            ?I+NDZZ77$$ZZOZIIZ88OZ8$II??I?NOI++++++?$$777I7?    
+          M==$?NDOZZO888O77$ODOO8Z$$7I???787?++++?==?8Z$7777    
+          I~NN7ONDDDDOOOZZO8DDOO8O$$77I??$O7I??????+INNOO$ZI    
+          +NNN88DNNNNN7NDNNND888OZZ$$7I??IO77IIIIIIIINNDIODI?    
+         +?NIN8DOOOO87NNNMMNND8OOZZ$$77II8O7777777$$7MMNDI?+IZ    
+        ?8Z$$NNDOZ$+DOI+$MMND88OZ$$$$$$$ONZ777777$Z$NNO$O?I+I8?M8   ZDDM MN    
+       D8O7?IDNN=+NNO$O$DMMNND8OOOOOOO88NNZ$$$$ZZO8DMN8$I$OO$NOII?INZO$N8N7II    
+       ~~ND8Z$O?8DNDMDO8MMMNMNDDDD8888D8DND888DD8DNNNNN8O$O8DN8OZZNDOMDNMNNZ7$    
+      I7+88ODO?DNM78N?NNONMMNDDDD8OZZZO8OZZZOZ$8ON7N8MDNNMNNNMND8DDDZ8MMZ7DMDD+    
+     ?ND$?D$8+OMMNZNO?8DO?MMMMNDNNDDO$OOZ$8ND88DM   O8NNNMNN8NNND88NNMNNNZ$$O8O    
+     ?NZNN$DD?NZZZDD7$NOI$7NNMMNND8OZONOZZ8DNN        ODMNNNOO8OO8ONNNNI$ZNDD?=    
+     +NNNNDNNOND8N8888Z77O7$OMMNNNNND8NDDDDNO8         8MDMNN8DONMMNMNOD$OODDO    
+     IDDDNDNNNDM8OZ8DOOZD7Z7NMMMNDOO$N88DNNNDIN         MMMMNDDDDDNNN8$ZONN7~    
+      N8NNDNDNNMNOODNZDND88DMMMMND8O$D8O8DMNMMD?I?N       MNNMMMMMMNMNNO8ZON    
+       M8MNNDNDDDNNMZON$ON8MMMMNDNDNNMN888MMMZ8$7+?????      8O88D8OMDNDD8$    
+         8NMNNNNNNNDDNN8N8$MMMMMMNMMNMMMMMMM8MDD8Z7?++???    
+           M8DNNNDMMMMMNNNNMNMMMMMMMMNNMMMNMDMMMMND8Z7?????    
+                 =8MMMNN8ZO$DNMMMMMMMNNMMMMDDDNMMMMMNDO7?+??    
+                =IMMMNN8$7I77ONMMMNNNNMMMNNNDZ$7$$Z8NNNDZ7I???    
+               O8DNMNNDZ7III78NMMMMMMMMMMMMMMD8Z7II7$O88D8OZI?I7    
+              D?NNMMNDO$7II7ZNNMNMMMMMMNNNMMMMMN8$77I7$$ZZO8O8N??    
+              OONNNMNDZ7IIII$8DNMMMMMMMDMMMMMMMMNDOZ$7III7$88DII7N    
+              +DNNMMN8$777ZDNDDNM        MNMMMMMMMMMMMN888DZOOO7+I    
+              7NNNMND8Z$$8NNDDNM                NMMMMMDMMMDDOZD$??D    
+             IONNNMND8OODNN8DNM                  :DMMNMMMMDNM8NDZI    
+             ~NMMNNDOZOOND88NM                  ~INMNMMMMMMMMNNMZMO    
+           D?$8MMMN88ZZ8N88D8                    Z8MDMMNMMMNMMOZ?7?    
+        OIII=NMMMMOO88$$NDD8                     ONZMMMMMNNNNMZZ7    
+      ~8N788MMNMNDNZIZODN$M                      MMM8DNNDNNDNNDO    
+     :8OMNNMMNMMMNMMM$DNND                        +MDMMMDDDDDMD    
+      $DMNMMMMMN8O$$8M8M8                         NMNMMMDDNO    
+     M$MDMMMMNMMNNN8MMNN                         7NZD8NNNDN    
+     MM8MMMMMDMNNNN8DN7                         OMNNDNDZZO?+    
+      N8M8MMMMI8DN8Z8$                         ZNNDNNN8$$?++?M    
+      OMMNMNNNN7NNDOZO                         NNNDDNNNOI$$?I7OZM    
+     DOMMMNN8NNNND8DM                           DMNNNNNNOIZD$7OO$II8    
+     ?MNMM8ON8DNDI                                  MDNNN8$$8OD7DIMD    
+    ~NNMMMNNDNO7M                                      $NND8$IIID$7I    
+    =NMNN8Z7ZZ                                          8NNNNNNDO?I$    
+    +8NN8DO$I?                                              N DNNDNM    
+   =$NNN8DII++I    
+  ?NNNNNONO7?=7    
+ DDND8NODZI7Z+I7    
+8DN8ON8ZND$NZI?7    
+NDNOND$ON87DNN?I    
+   NNMNNMZ8MN$I7    
+         N   N    
+-->
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

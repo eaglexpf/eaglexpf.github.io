@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>yii2基础后台构建 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">yii2基础后台构建</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2016年05月16日&nbsp;&nbsp;4:02:12</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/%E5%85%A8%E9%83%A8%E6%96%87%E7%AB%A0/">全部文章</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>说明：<br>    使用了yii-admin和yii-adminlte<br>1、正常安装yii2，过程请自行百度 2、URL美化设置     在\backend\config\main.php中或\common\config\main-local.php中的components数组中添加如下代码：</p>
+<pre><code>&apos;urlManager&apos; =&gt; \[
+    &apos;enablePrettyUrl&apos; =&gt; true,
+    &apos;showScriptName&apos; =&gt; false,
+    &apos;suffix&apos;            =&gt;    &apos;.html&apos;,
+    &apos;rules&apos; =&gt; \[
+    \],
+\],</code></pre><p>3、在\backend\web\目录中添加.htaccess文件，否则可能会报403错误</p>
+<p><img src="http://xupengfei.net/assets/72e1b72c/dialogs/attachment/fileTypeImages/icon_rar.gif" alt>)<a href="/ueditor/php/upload/file/20160628/1467093929241616.rar" title="htaccess.rar">htaccess.rar</a> 4、因为使用了composer来下载yii-admin和yii-adminlte，但国内下载的时候网速真不敢让人恭维，所以需要对composer进行一些设置使用国内的镜像 进入yii目录，执行如下命令：</p>
+<p>composer config repo.packagist composer <a href="https://packagist.phpcomposer.com" target="_blank" rel="noopener">https://packagist.phpcomposer.com</a></p>
+<p>5、使用composer安装yii-adminlte： 进入yii根目录：</p>
+<p>composer require dmstr/yii2-adminlte-asset “2.*”</p>
+<p>将vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app目录下的layouts和site复制到对应项目的view目录下 6、使用composer安装yii-admin：</p>
+<p>composer require mdmsoft/yii2-admin “~2.0”</p>
+<p>7、配置数据库，在main.php配置文件中添加如下代码：</p>
+<pre><code>&apos;db&apos; =&gt; \[
+    &apos;class&apos; =&gt; &apos;yii\\db\\Connection&apos;,
+    &apos;dsn&apos; =&gt; &apos;mysql:host=localhost;dbname=yiiadmin&apos;,
+    &apos;username&apos; =&gt; &apos;root&apos;,
+    &apos;password&apos; =&gt; &apos;&apos;,
+    &apos;charset&apos; =&gt; &apos;utf8&apos;,
+\],</code></pre><p>运行vendor/yiisoft/yii2/rbac/migrations/schema-mysql.sql和vendor\mdmsoft\yii2-admin\migrations\schema-mysql.sql文件中的sql语句创建数据表 8、yii-admin配置： 在main.php中添加如下代码：</p>
+<p>components数组外添加如下代码：<br>        ‘language’  =&gt;   ‘zh-CN’,<br>        ‘modules’ =&gt; [<br>            ‘admin’ =&gt; [<br>                ‘class’ =&gt; ‘mdm\admin\Module’,<br>    //          ‘layout’ =&gt; ‘right-menu’, // it can be ‘@path/to/your/layout’.<br>                ‘mainLayout’ =&gt; ‘@backend/views/layouts/main.php’,<br>                ‘menus’ =&gt; [<br>    //              ‘assignment’ =&gt; [<br>    //                  ‘label’ =&gt; ‘aaa’ // 更改label<br>    //              ],<br>    //              ‘route’ =&gt; null, // 禁用菜单<br>                ]<br>             ],<br>        ],</p>
+<pre><code>&apos;aliases&apos; =&gt; \[
+    &apos;@mdm/admin&apos; =&gt; &apos;@vendor/mdmsoft/yii2-admin&apos;,
+\],
+
+&apos;as access&apos; =&gt; \[
+    &apos;class&apos; =&gt; &apos;mdm\\admin\\components\\AccessControl&apos;,
+    &apos;allowActions&apos; =&gt; \[</code></pre><p>//          ‘admin/*’<br>        ]<br>    ],<br>components数组内添加如下代码：<br>                //权限配置<br>        ‘authManager’ =&gt; [<br>            ‘class’ =&gt; ‘yii\rbac\DbManager’,<br>        ],</p>
+<p>9、进入\backend\view\layout文件夹下left.php文件： 在section中添加如下代码：</p>
+<pre><code>&lt;?php 
+    use mdm\\admin\\components\\MenuHelper; 
+    $callback = function($menu){ 
+        $data = json_decode($menu\[&apos;data&apos;\], true); 
+        $items = $menu\[&apos;children&apos;\]; 
+        $return = \[ 
+            &apos;label&apos; =&gt; $menu\[&apos;name&apos;\], 
+            &apos;url&apos; =&gt; \[$menu\[&apos;route&apos;\]\], 
+        \]; 
+        //处理我们的配置 
+        if ($data) { 
+            //visible 
+            isset($data\[&apos;visible&apos;\]) &amp;&amp; $return\[&apos;visible&apos;\] = $data\[&apos;visible&apos;\]; 
+            //icon 
+            isset($data\[&apos;icon&apos;\]) &amp;&amp; $data\[&apos;icon&apos;\] &amp;&amp; $return\[&apos;icon&apos;\] = $data\[&apos;icon&apos;\]; 
+            //other attribute e.g. class... 
+            $return\[&apos;options&apos;\] = $data; 
+        } 
+        //没配置图标的显示默认图标 
+        (!isset($return\[&apos;icon&apos;\]) || !$return\[&apos;icon&apos;\]) &amp;&amp; $return\[&apos;icon&apos;\] = &apos;fa fa-circle-o&apos;; 
+        $items &amp;&amp; $return\[&apos;items&apos;\] = $items; 
+        return $return; 
+    }; 
+    //这里我们对一开始写的菜单menu进行了优化
+    echo dmstr\\widgets\\Menu::widget( \[ 
+        &apos;options&apos; =&gt; \[&apos;class&apos; =&gt; &apos;sidebar-menu&apos;\], 
+        &apos;items&apos; =&gt; MenuHelper::getAssignedMenu(Yii::$app-&gt;user-&gt;id, null, $callback), 
+    \] ); 
+?&gt;</code></pre>
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>js验证输入框是否为金钱（保留两位小数） | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">js验证输入框是否为金钱（保留两位小数）</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2016年07月11日&nbsp;&nbsp;10:45:26</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/%E5%85%A8%E9%83%A8%E6%96%87%E7%AB%A0/">全部文章</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>//验证input标签输入的是否是金钱的数量（两位小数）<br>function clearNoNum(obj){<br>obj.value = obj.value.replace(/[^\d.]/g,””); //清除”数字”和”.”以外的字符<br>obj.value = obj.value.replace(/^\./g,””); //验证第一个字符是数字而不是<br>obj.value = obj.value.replace(/\.{2,}/g,”.”); //只保留第一个. 清除多余的<br>obj.value = obj.value.replace(“.”,”$#$”).replace(/\./g,””).replace(“$#$”,”.”);<br>obj.value = obj.value.replace(/^(\-)<em>(\d+)\.(\d\d).</em>$/,’$1$2.$3’); //只能输入两个小数<br>}<br><input id="packagefee" type="text" value="1" placeholder="请输入包装费" onkeyup="clearNoNum(this)" onblur="clearNoNum(this)"></p>
+<p>ps:2016年10月21日更新 今天我女朋友对我说这个方法有点问题： 输入金钱并验证成功后，input失去焦点后；再重新获得焦点，这时去修改金钱中间数字的时候，输入第一个数字后光标焦点会自动跳转到金钱的最后，所以重新写了一下这个方法，特此更新</p>
+<pre><code>    function clearNoNum(obj){
+    value= obj.value.replace(/\[^\\d.\]/g,&quot;&quot;); //清除&quot;数字&quot;和&quot;.&quot;以外的字符
+    if(obj.value!==value){
+        obj.value   =   value;
+    }
+    value = obj.value.replace(/^\\./g,&quot;&quot;); //验证第一个字符是数字而不是
+    if(obj.value!==value){
+        obj.value   =   value;
+    }
+    value = obj.value.replace(/\\.{2,}/g,&quot;.&quot;); //只保留第一个. 清除多余的
+        if(obj.value!==value){
+    obj.value   =   value;
+    }
+    value = obj.value.replace(&quot;.&quot;,&quot;$#$&quot;).replace(/\\./g,&quot;&quot;).replace(&quot;$#$&quot;,&quot;.&quot;);
+        if(obj.value!==value){
+    obj.value   =   value;
+    }
+    value = obj.value.replace(/^(\\-)*(\\d+)\\.(\\d\\d).*$/,&apos;$1$2.$3&apos;); //只能输入两个小数
+        if(obj.value!==value){
+    obj.value   =   value;
+    }
+}</code></pre><p>备注： 这个方法也有问题： （1）如果输入的格式正确，光标不会跳转，但输入格式错误的话，光标还是会跳转到最后; （2）在原来小数点前加新小数点的话会将原小数点及小数点后数字删除<br>具体解决方案还没想到，想到了再更新 替换方案： 用户输入错误的话不将错误删除，而是返回错误提示信息即可</p>
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

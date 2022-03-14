@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>微信小程序涂鸦功能的实现 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">微信小程序涂鸦功能的实现</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2018年10月24日&nbsp;&nbsp;18:02:54</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/%E5%85%A8%E9%83%A8%E6%96%87%E7%AB%A0/">全部文章</a>
+                            
+                                <a href="/categories/%E5%85%A8%E9%83%A8%E6%96%87%E7%AB%A0/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/">微信小程序</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <pre><code>//wxml文件
+&lt;view class=&quot;page-body&quot;&gt;
+  &lt;view class=&quot;page-body-wrapper&quot;&gt;
+    &lt;canvas canvas-id=&quot;canvas&quot; class=&quot;canvas&quot; bindtouchstart=&quot;toachStart&quot; bindtouchmove=&quot;toachMove&quot; bindtouchend=&quot;toachEnd&quot;&gt;&lt;/canvas&gt;
+  &lt;/view&gt;
+&lt;/view&gt;
+
+//js文件
+
+Page({
+  data: {
+    radius:10,
+    fillColor:&apos;#FFB6C1&apos;,
+  },
+  onReady: function () {
+    console.log(this.colorRgb(this.data.fillColor));
+    var context = wx.createCanvasContext(&quot;canvas&quot;, this);
+    this.setData({
+      context:context
+    })
+    context.drawImage(&apos;https://imgsa.baidu.com/exp/pic/item/0e655ca7d933c8951b305a6ada1373f082020012.jpg&apos;, 50, 50, 200, 200);
+    context.draw();
+    context.save();
+  },
+  toachStart:function(e){
+    this.toachMove(e)
+  },
+  toachMove: function (e) {
+    let startX1 = e.changedTouches[0].x
+    let startY1 = e.changedTouches[0].y
+    let self = this;
+    //判断当前涂鸦是否在图片范围内
+    wx.canvasGetImageData({
+      canvasId: &apos;canvas&apos;,
+      x: startX1-self.data.radius,
+      y: startY1 - self.data.radius,
+      width: this.data.radius*2,
+      height: this.data.radius*2,
+      success(res) {
+        var bool = true;
+        for(var i=0;i&lt;res.data.length;i++){
+          if(i%4==3){
+            if(res.data[i]==0){
+              bool = false
+            }
+          }
+        }
+        if(bool){
+          self.drawHeart(startX1, startY1);
+
+        }
+      }
+    })
+
+
+  },
+  toachEnd:function(e){
+    this.toachMove(e)
+  },
+  /**
+   * 绘制圆形
+   */
+  drawCir: function (x, y) {
+    var context = wx.createCanvasContext(&quot;canvas&quot;, this);
+    context.beginPath();//开始一个新的路径  
+    context.arc(x, y, this.data.radius, 0, 2 * Math.PI, true);//设置一个原点(x,y)，半径为为radius的圆的路径到当前路径  
+    context.setFillStyle(this.data.fillColor)//设置填充色
+    // context.setStrokeStyle(this.data.fillColor)
+    context.fill();//填充颜色
+    // context.stroke();//对当前路径进行描边  
+    context.closePath();//关闭当前路径  
+    context.draw(true);
+  },
+  /**
+   * 绘制自定义图片
+   */
+  drawImg:function(pointX,pointY){
+    var src = &quot;https://ardownload.kayunzh.com/server/crayon.png&quot;;
+    var context = wx.createCanvasContext(&quot;canvas&quot;, this);
+    context.drawImage(src, pointX-this.data.radius, pointY-this.data.radius, this.data.radius*2, this.data.radius*2);
+    context.draw(true);
+  },
+  /**
+   * 绘制五角星
+   */
+  drawStar: function (x, y){
+    var r = this.data.radius/2;
+    var R = this.data.radius;
+    var context = wx.createCanvasContext(&quot;canvas&quot;, this);
+    context.beginPath();//开始一个新的路径  
+
+    //设置是个顶点的坐标，根据顶点制定路径   
+    for (var i = 0; i &lt; 5; i++) {
+      context.lineTo(Math.cos((18 + i * 72) / 180 * Math.PI) * R + x, -Math.sin((18 + i * 72) / 180 * Math.PI) * R + y);
+      context.lineTo(Math.cos((54 + i * 72) / 180 * Math.PI) * r + x, -Math.sin((54 + i * 72) / 180 * Math.PI) * r + y);
+    }
+
+    context.setFillStyle(this.data.fillColor)//设置填充颜色
+    context.setStrokeStyle(this.data.fillColor)//设置描边颜色
+    context.fill();
+    context.stroke();//对当前路径进行描边  
+    context.closePath();//关闭当前路径  
+    context.draw(true);
+  },
+  /**
+   * 绘制桃心
+   */
+  drawHeart: function (pointX, pointY) {
+    var context = wx.createCanvasContext(&quot;canvas&quot;, this); 
+    context.beginPath();//开始一个新的路径 
+
+
+    context.translate(pointX, pointY);
+    // 控制心形大小
+    var size = this.data.radius / 20;
+
+    for (let i = 0; i &lt; 30; i++) {
+      var step = i / 30 * (Math.PI * 2);//设置心上面两点之间的角度，具体分成多少份，好像需要去试。
+      var vector = {
+        x: (15 * Math.pow(Math.sin(step), 3))*size,
+        y: -(13 * Math.cos(step) - 5 * Math.cos(2 * step) - 2 * Math.cos(3 * step) - Math.cos(4 * step))*size
+      }
+      context.lineTo(vector.x, vector.y);
+    }
+    context.setFillStyle(this.data.fillColor)//设置填充颜色
+    context.setStrokeStyle(this.data.fillColor)//设置描边颜色
+    context.fill();
+    context.stroke();//对当前路径进行描边  
+    context.closePath();//关闭当前路径  
+    context.translate(-pointX, -pointY);
+    context.draw(true);
+
+  },
+  drawHeart2: function (pointX, pointY) {
+    var context = wx.createCanvasContext(&quot;canvas&quot;, this);
+    context.beginPath();//开始一个新的路径 
+
+
+    // 将画布的原点（0,0），移动到(200,200)
+    // 移动原点是为了能让整个心形显示出来
+    context.translate(pointX, pointY);
+
+    // t 代表弧度
+    var t = 0;
+    // vt 代表 t 的增量
+    var vt = 0.01;
+    // maxt 代表 t 的最大值
+    var maxt = 2 * Math.PI;
+    // 需要循环的次数
+    var maxi = Math.ceil(maxt / vt);
+    // 保存所有点的坐标的数组
+    var pointArr = [];
+    // 控制心形大小
+    var size = this.data.radius/20;
+    // x 用来暂时保存每次循环得到的 x 坐标
+    var x = 0;
+    // y 用来暂时保存每次循环得到的 y 坐标
+    var y = 0;
+
+    // 根据方程得到所有点的坐标
+    for (var i = 0; i &lt;= maxi; i++) {
+      // x=16 * (sin(t)) ^ 3;
+      var x = 16 * Math.pow(Math.sin(t), 3);
+      // y=13 * cos(t) - 5 * cos(2 * t) - 2 * cos(3 * t) - cos(4 * t)
+      var y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+      t += vt;
+      pointArr.push([x * size, -y * size]);
+    }
+
+    // 根据点的坐标，画出心形线
+    context.moveTo(pointArr[0][0], pointArr[0][1]);
+    // 把每个点连接起来
+    for (var i = 1; i &lt; pointArr.length; i++) {
+      x = pointArr[i][0];
+      y = pointArr[i][1];
+      context.lineTo(x, y);
+    }
+
+
+
+    context.setFillStyle(this.data.fillColor)//设置填充颜色
+    context.setStrokeStyle(this.data.fillColor)//设置描边颜色
+    context.fill();
+    context.stroke();//对当前路径进行描边  
+    context.closePath();//关闭当前路径  
+    context.translate(-pointX, -pointY);
+    context.draw(true);
+  },
+  colorRgb: function (sColor){
+    var reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
+      if (sColor &amp;&amp; reg.test(sColor)) {
+        if (sColor.length === 4) {
+          var sColorNew = &quot;#&quot;;
+          for (var i = 1; i &lt; 4; i += 1) {
+            sColorNew += sColor.slice(i, i + 1).concat(sColor.slice(i, i + 1));
+          }
+          sColor = sColorNew;
+        }
+        //处理六位的颜色值
+        var sColorChange = [];
+        for (var i = 1; i &lt; 7; i += 2) {
+          sColorChange.push(parseInt(&quot;0x&quot; + sColor.slice(i, i + 2)));
+        }
+        return sColorChange;
+        // return &quot;RGB(&quot; + sColorChange.join(&quot;,&quot;) + &quot;)&quot;;
+      } else {
+        return sColor;
+      }
+  },
+
+  onUnload: function () {
+    clearInterval(this.interval)
+  }
+})</code></pre>
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

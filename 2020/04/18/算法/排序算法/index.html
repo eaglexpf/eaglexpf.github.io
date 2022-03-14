@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>PHP排序算法 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">拉到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "关闭"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">PHP排序算法</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2020年04月18日&nbsp;&nbsp;23:23:07</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>对一组数据，比较相邻数据的大小，向值较小的数据放在前面，值大的放在后面。（升序排列）</p>
+<p>对于一个长度为N的数组，我们需要排序 N-1 轮，每 i 轮 要比较 N-i 次。对此我们可以用双重循环语句，外层循环控制循环轮次，内层循环控制每轮的比较次数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">　function order($arr)&#123;</span><br><span class="line">   　　$count &#x3D; count($arr);</span><br><span class="line">   　　$temp &#x3D; 0; </span><br><span class="line">  　　 &#x2F;&#x2F;外层控制排序轮次</span><br><span class="line">   　　for($i&#x3D;0; $i&lt;$count-1; $i++)&#123;</span><br><span class="line">       　　&#x2F;&#x2F;内层控制每轮比较次数</span><br><span class="line">       　　for($j&#x3D;0; $j&lt; $count-1-$i; $j++)&#123;</span><br><span class="line">             　　if($arr[$j] &gt; $arr[$j+1])&#123;</span><br><span class="line">                 　　$temp        &#x3D; $arr[$j];</span><br><span class="line">                 　　$arr[$j]     &#x3D; $arr[$j+1];</span><br><span class="line">                 　　$arr[$j+1]   &#x3D; $temp;</span><br><span class="line">            　　&#125;</span><br><span class="line">      　　 &#125;</span><br><span class="line">   　　&#125; </span><br><span class="line">　　    return $arr;</span><br><span class="line">    &#125;     </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$arr&#x3D; array(6,3,8,2,9,1);</span><br><span class="line">$res &#x3D;  order($arr);</span><br><span class="line">var_dump($res);</span><br></pre></td></tr></table></figure>
+
+<h2 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h2><h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p>在一组数据中，选出最小的一个数与第一个位置交换；然后在剩下的数据中找出最小的数与第二个位置交换，循环到倒数第二个数与最后一个数比较为止</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">function selectSort($arr) &#123;</span><br><span class="line">	&#x2F;&#x2F;双重循环完成，外层控制轮数，内层控制比较次数</span><br><span class="line">	$len&#x3D;count($arr);</span><br><span class="line">    for($i&#x3D;0; $i&lt;$len-1; $i++) &#123;</span><br><span class="line">        &#x2F;&#x2F;先假设最小的值的位置</span><br><span class="line">        $p &#x3D; $i;</span><br><span class="line">        for($j&#x3D;$i+1; $j&lt;$len; $j++) &#123;</span><br><span class="line">            &#x2F;&#x2F;$arr[$p] 是当前已知的最小值</span><br><span class="line">            if($arr[$p] &gt; $arr[$j]) &#123;</span><br><span class="line">            &#x2F;&#x2F;比较，发现更小的,记录下最小值的位置；并且在下次比较时采用已知的最小值进行比较。</span><br><span class="line">                $p &#x3D; $j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        &#x2F;&#x2F;已经确定了当前的最小值的位置，保存到$p中。如果发现最小值的位置与当前假设的位置$i不同，则位置互换即可。</span><br><span class="line">        if($p !&#x3D; $i) &#123;</span><br><span class="line">            $tmp &#x3D; $arr[$p];</span><br><span class="line">            $arr[$p] &#x3D; $arr[$i];</span><br><span class="line">            $arr[$i] &#x3D; $tmp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F;返回最终结果</span><br><span class="line">    return $arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h2><h3 id="原理-2"><a href="#原理-2" class="headerlink" title="原理"></a>原理</h3><p>在一组数据中，假设前面的数是已经排好顺序的，现在要把第n个数插入到前面的有序数据中，使得这第n个数也是排好顺序的。将这个数据和前面最后一个数据比较，如果小于最后一个数据则交换位置，如此反复循环，知道全部排好顺序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">function insert_sort($arr) &#123;</span><br><span class="line">    &#x2F;&#x2F;获取数组单元个数</span><br><span class="line">    $count &#x3D; count($arr);</span><br><span class="line">    &#x2F;&#x2F;外层循环用于从未排序区域中取出待排序元素</span><br><span class="line">    for ($i&#x3D;1; $i &lt; $count; $i++) &#123;</span><br><span class="line">        &#x2F;&#x2F;获取当前需要插入已排序区域的元素值</span><br><span class="line">        $temp &#x3D; $arr[$i];</span><br><span class="line">        &#x2F;&#x2F;内层循环用于从已排序区域寻找待排序元素的插入位置</span><br><span class="line">        for ($j&#x3D;$i-1; $j &gt;&#x3D; 0; $j--) &#123;</span><br><span class="line">            &#x2F;&#x2F;如果$arr[$i]比已排序区域的$arr[$j]小，就后移$arr[$j]</span><br><span class="line">            if ($temp &lt; $arr[$j]) &#123;        </span><br><span class="line">                $arr[$j+1] &#x3D; $arr[$j];   </span><br><span class="line">                $arr[$j] &#x3D; $temp;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                &#x2F;&#x2F;如果$arr[$i]不小于$arr[$j]，则对已排序区无需再排序</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return $arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><h3 id="原理-3"><a href="#原理-3" class="headerlink" title="原理"></a>原理</h3><p>选择一个基准元素，通常选择第一个元素或最后一个元素。通过一趟扫描，将待排序列分成两部分，一部分比基准元素小，一部分大于等于基准元素。此时基准元素在其排好序后的正确位置，然后再用同样的方法递归的排序划分的两部分</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">function quickSort($arr) &#123;</span><br><span class="line">    &#x2F;&#x2F;先判断是否需要继续进行</span><br><span class="line">    $length &#x3D; count($arr);</span><br><span class="line">    if($length &lt;&#x3D; 1) &#123;</span><br><span class="line">        return $arr;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F;选择第一个元素作为基准</span><br><span class="line">    $base_num &#x3D; $arr[0];</span><br><span class="line">    &#x2F;&#x2F;遍历除了标尺外的所有元素，按照大小关系放入两个数组内</span><br><span class="line">    &#x2F;&#x2F;初始化两个数组</span><br><span class="line">    $left_array &#x3D; array();  &#x2F;&#x2F;小于基准的</span><br><span class="line">    $right_array &#x3D; array();  &#x2F;&#x2F;大于基准的</span><br><span class="line">    for($i&#x3D;1; $i&lt;$length; $i++) &#123;</span><br><span class="line">        if($base_num &gt; $arr[$i]) &#123;</span><br><span class="line">            &#x2F;&#x2F;放入左边数组</span><br><span class="line">            $left_array[] &#x3D; $arr[$i];</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            &#x2F;&#x2F;放入右边</span><br><span class="line">            $right_array[] &#x3D; $arr[$i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F;再分别对左边和右边的数组进行相同的排序处理方式递归调用这个函数</span><br><span class="line">    $left_array &#x3D; quick_sort($left_array);</span><br><span class="line">    $right_array &#x3D; quick_sort($right_array);</span><br><span class="line">    &#x2F;&#x2F;合并</span><br><span class="line">    return array_merge($left_array, array($base_num), $right_array);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="顺序查找"><a href="#顺序查找" class="headerlink" title="顺序查找"></a>顺序查找</h2><h3 id="原理-4"><a href="#原理-4" class="headerlink" title="原理"></a>原理</h3><p>从数组的第一个元素开始一个一个向下查找，如果有和目标一致的元素，查找成功；如果到最后一个元素仍没有目标元素，则查找失败。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function search($arr,$k)&#123;</span><br><span class="line">　　　　 $n &#x3D; count($arr);</span><br><span class="line">    for($i&#x3D;0; $i&lt;$n; $i++)&#123;</span><br><span class="line">        if($arr[$i]&#x3D;&#x3D;$k)&#123;</span><br><span class="line">        	return $i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return -1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="二分查找法"><a href="#二分查找法" class="headerlink" title="二分查找法"></a>二分查找法</h2><h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><ol>
+<li>必须采用顺序存储结构。</li>
+<li>必须按关键字大小有序排列。</li>
+</ol>
+<h3 id="原理-5"><a href="#原理-5" class="headerlink" title="原理"></a>原理</h3><p>先取数组中间的值<code>floor((low+top)/2)</code>，然后通过与所需查找的数字进行比较，若比中间值大，则将首值替换为中间位置下一个位置，继续第一步的操作；若比中间值小，则将尾值替换为中间位置的上一个位置，继续第一部操作，重复第二部操作直到找出目标数字。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 非递归</span><br><span class="line">&#x2F;**</span><br><span class="line"> * 二分查找算法</span><br><span class="line"> * @param array $arr 待查找区间</span><br><span class="line"> * @param int $number 查找数</span><br><span class="line"> * @return int        返回找到的键</span><br><span class="line"> *&#x2F;</span><br><span class="line">function binary_search($arr, $number) &#123;</span><br><span class="line">    &#x2F;&#x2F; 非数组或者数组为空，直接返回-1</span><br><span class="line">    if (!is_array($arr) || empty($arr)) &#123;</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F; 初始变量值</span><br><span class="line">    $len &#x3D; count($arr);</span><br><span class="line">    $lower &#x3D; 0;</span><br><span class="line">    $high &#x3D; $len - 1;</span><br><span class="line">    &#x2F;&#x2F; 最低点比最高点大就退出</span><br><span class="line">    while ($lower &lt;&#x3D; $high) &#123;</span><br><span class="line">        &#x2F;&#x2F; 以中间点作为参照点比较</span><br><span class="line">        $middle &#x3D; intval(($lower + $high) &#x2F; 2);</span><br><span class="line">        if ($arr[$middle] &gt; $number) &#123;</span><br><span class="line">            &#x2F;&#x2F; 查找数比参照点小，舍去右边</span><br><span class="line">            $high &#x3D; $middle - 1;</span><br><span class="line">        &#125; else if ($arr[$middle] &lt; $number) &#123;</span><br><span class="line">            &#x2F;&#x2F; 查找数比参照点大，舍去左边</span><br><span class="line">            $lower &#x3D; $middle + 1;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            &#x2F;&#x2F; 查找数与参照点相等，则找到返回</span><br><span class="line">            return $middle;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F; 未找到，返回-1</span><br><span class="line">    return -1;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 递归</span><br><span class="line">&#x2F;**</span><br><span class="line"> * @param array $arr 待查找区间</span><br><span class="line"> * @param int $number 查找数</span><br><span class="line"> * @param int $lower 区间最低点</span><br><span class="line"> * @param int $high 区间最高点</span><br><span class="line"> * @return int</span><br><span class="line"> *&#x2F;</span><br><span class="line">function binary_search_recursion(&amp;$arr, $number, $lower, $high) &#123;</span><br><span class="line">    &#x2F;&#x2F; 以区间的中间点作为参照点比较</span><br><span class="line">    $middle &#x3D; intval(($lower + $high) &#x2F; 2);</span><br><span class="line">    &#x2F;&#x2F; 最低点比最高点大就退出</span><br><span class="line">    if ($lower &gt; $high) &#123;</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">    if ($number &gt; $arr[$middle]) &#123;</span><br><span class="line">        &#x2F;&#x2F; 查找数比参照点大，舍去左边继续查找</span><br><span class="line">        return binary_search_recursion($arr, $number, $middle + 1, $high);</span><br><span class="line">    &#125; elseif ($number &lt; $arr[$middle]) &#123;</span><br><span class="line">        &#x2F;&#x2F; 查找数比参照点小，舍去右边继续查找</span><br><span class="line">        return binary_search_recursion($arr, $number, $lower, $middle - 1);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        return $middle;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="遍历文件夹下的所有文件和子文件夹"><a href="#遍历文件夹下的所有文件和子文件夹" class="headerlink" title="遍历文件夹下的所有文件和子文件夹"></a>遍历文件夹下的所有文件和子文件夹</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">function my_scandir($dir)&#123;</span><br><span class="line">    $files &#x3D; array();</span><br><span class="line">    if($handle &#x3D; opendir($dir)) &#123;</span><br><span class="line">        while (($file &#x3D; readdir($handle))!&#x3D;&#x3D; false) &#123;</span><br><span class="line">            if($file !&#x3D; &#39;..&#39; &amp;&amp; $file !&#x3D; &#39;.&#39;) &#123;</span><br><span class="line">                if(is_dir($dir.&quot;&#x2F;&quot;.$file))&#123;</span><br><span class="line">                    $files[$file]&#x3D;my_scandir($dir.&quot;&#x2F;&quot;.$file);</span><br><span class="line">                &#125;else&#123;</span><br><span class="line">                    $files[] &#x3D; $file;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        closedir($handle);</span><br><span class="line">        return $files;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>svn提交代码后自动更新到服务器 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">svn提交代码后自动更新到服务器</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2015年12月11日&nbsp;&nbsp;10:49:20</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/%E5%85%A8%E9%83%A8%E6%96%87%E7%AB%A0/">全部文章</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>在本地敲完代码后每次更新到服务器都用用ssh工具更新代码，一来这样更新代码十分繁琐，二来这样做就很难再找到以前的代码了。所以今天就在服务器上搭建了一个svn服务器并做了一个自动更新代码到测试服务器。 1、进入你的svn库中的hooks文件夹，拷贝一份post-commit.tmpl文件：</p>
+<p>cp post-commit.tmpl post-commit</p>
+<p>2、修改post-commit文件，将文件内容改为：</p>
+<p>#!/bin/sh<br>export LANG=”zh_CN.UTF-8”<br>#更新到远程的服务器<br>#/home/xxx/svn.php 为svn.php在svn服务器上的存放地址<br>/usr/local/php/bin/php /home/xxx/svn.php</p>
+<p>3、重新启动svn服务</p>
+<p>killall svnserve<br>svnserve -d -r /home/svn/repositories</p>
+<p>3、svn.php代码为</p>
+<p>&lt;?php<br>/**</p>
+<ul>
+<li>svn钩子post-commit里执行的文件</li>
+<li>存放在svn服务器上</li>
+<li>/<br>$updateUrl = “<a href="http://xupengfei.net/update.php&quot;;//远程测试服务器上的update.php的地址" target="_blank" rel="noopener">http://xupengfei.net/update.php&quot;;//远程测试服务器上的update.php的地址</a><br>$ch = curl_init();<br>curl_setopt($ch, CURLOPT_URL, $updateUrl);<br>curl_setopt($ch, CURLOPT_HEADER, 0);<br>curl_exec($ch);<br>curl_close($ch);</li>
+</ul>
+<p>4、远程服务器update.php文件代码为：  </p>
+<p>&lt;?php<br>/**</p>
+<ul>
+<li>svn服务器上的钩子需要模拟访问的文件，必须是外网可以访问的</li>
+<li>存放在远程服务器上</li>
+<li>/<br>error_reporting(E_ALL);<br>//设置下字符集，有不认识的字符，也会导致不可更新<br>putenv(“LC_CTYPE=zh_CN.UTF-8”);<br>//“/home/myweb/“ 为代码更新到的指定目录路径<br>$handle = popen(‘svn up –username yourname –password yourpassword /home/myweb/ 2&gt;&amp;1 –no-auth-cache’,’r’);<br>//echo “‘$handle’; “ . gettype($handle) . “\n”;<br>$read = stream_get_contents($handle);<br>//TODO 如果在$read中可以匹配到“error/conflict”，就应该发送邮件到管理员的邮箱了！<br>echo $read;<br>pclose($handle);</li>
+</ul>
+<p>5、在update.php文件中–no-auth-cache比较重要，如果没有该参数则会出现错误：———————————————————————– ATTENTION! Your password for authentication realm: /home/svn/repositories can only be stored to disk unencrypted! You are advised to configure your system so that Subversion can store passwords encrypted, if possible. See the documentation for details. You can avoid future appearances of this warning by setting the value of the ‘store-plaintext-passwords’ option to either ‘yes’ or ‘no’ in ‘/sbin/.subversion/servers’. ———————————————————————– Store password unencrypted (yes/no)? svn: Can’t read stdin: End of file found 6、在使用之前记得对服务器要更新的目录先做一次检出</p>
+<p>svn co svn://115.28.39.17/ aaa</p>
+<p>如果出现错误；则是因为检出时使用的root权限，而web访问则是没有权限的 svn: Can’t open file ‘/home/web/svn/myweb/aaa/115.28.39.17/.svn/lock’: Permission denied 解决方法</p>
+<p>chmod o+w aaa/.svn -R</p>
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

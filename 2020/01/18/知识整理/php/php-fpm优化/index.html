@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>PHP-FPM优化 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">拉到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "关闭"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">PHP-FPM优化</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2020年01月18日&nbsp;&nbsp;23:23:07</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/">知识整理</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="etc-php-ini"><a href="#etc-php-ini" class="headerlink" title="/etc/php.ini"></a>/etc/php.ini</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">#;;;;;;;;;;;;;;;;;</span><br><span class="line"># Error logging ;</span><br><span class="line">#;;;;;;;;;;;;;;;;;</span><br><span class="line">expose_php &#x3D; Off # 关闭php版本信息</span><br><span class="line">display_error &#x3D; Off # 屏幕不显示错误日志</span><br><span class="line">error_reporting &#x3D; E_WARNING &amp; E_ERROR # 记录php错误日志至后台</span><br><span class="line">log_errors &#x3D; On # 开启日志</span><br><span class="line">error_log &#x3D; &#x2F;var&#x2F;log&#x2F;php_error.log # 错误日志记录的位置</span><br><span class="line">date.timezone &#x3D; PRC # 时区调整,默认PRC, 建议调整为Asia&#x2F;Shanghai</span><br><span class="line"></span><br><span class="line">#;;;;;;;;;;;;;;;</span><br><span class="line"># File Uploads ;</span><br><span class="line">#;;;;;;;;;;;;;;;</span><br><span class="line">file_uploads &#x3D; On # 开启文件上传功能，默认启动</span><br><span class="line">upload_max_filesize &#x3D; 300M # 允许上传文件的最大大小</span><br><span class="line">post_max_size &#x3D; 300M # 允许客户端单个POST请求发送的最大数据</span><br><span class="line">max_file_uploads &#x3D; 20 # 允许同时上传的文件的最大数量</span><br><span class="line">memory_limit &#x3D; 128M # 每个脚本执行最大内存</span><br><span class="line"></span><br><span class="line">#&#x2F;etc&#x2F;php.ini优化配置如下</span><br><span class="line">sql.safe_mode &#x3D; Off</span><br><span class="line">post_max_size &#x3D; 300M</span><br><span class="line">upload_max_filesize &#x3D; 300M</span><br><span class="line">max_file_uploads &#x3D; 20</span><br><span class="line">memory_limit &#x3D; 128M</span><br><span class="line">date.timezone &#x3D; Asia&#x2F;Shanghai</span><br><span class="line"></span><br><span class="line">expose_php &#x3D; Off</span><br><span class="line">display_error &#x3D; Off</span><br><span class="line">error_reporting &#x3D; E_WARNING &amp; E_ERROR</span><br><span class="line">log_errors &#x3D; On</span><br><span class="line">error_log &#x3D; &#x2F;var&#x2F;log&#x2F;php_error.log</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#PHP 默认的会话处理程序会拖慢大型应用，因为这个处理程序会把会话数据存储在硬盘中，需要创建不必要的磁盘I&#x2F;O，浪费时间。我们应该把会话数据保存在内存中，例如可以使用 Memcached 或 Redis。这么做还有个额外好处 —— 以后便于伸缩。如果会话数据存储在硬盘中，不便于增加额外的服务器，如果把会话数据存放在 Memcached 或 Redis 里，任何一台分布式 PHP-FPM 服务器都能访问会话数据。如果想把会话数据保存在 Memcached 中，需要做如下配置：</span><br><span class="line">session.save_handler &#x3D; &#39;memcached&#39;</span><br><span class="line">session.save_path &#x3D; &#39;127.0.0.1:11211&#39;</span><br></pre></td></tr></table></figure>
+
+<h3 id="etc-php-fpm-conf"><a href="#etc-php-fpm-conf" class="headerlink" title="/etc/php-fpm.conf"></a>/etc/php-fpm.conf</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">#第一部分，fpm配置</span><br><span class="line">;include&#x3D;etc&#x2F;fpm.d&#x2F;*.conf</span><br><span class="line"></span><br><span class="line">#第二部分，全局配置</span><br><span class="line">[global]</span><br><span class="line">;pid &#x3D; &#x2F;var&#x2F;log&#x2F;php-fpm&#x2F;php-fpm.pid #pid文件存放的位置</span><br><span class="line">;error_log &#x3D; &#x2F;var&#x2F;log&#x2F;php-fpm&#x2F;php-fpm.log #错误日志存放的位置</span><br><span class="line">;log_level &#x3D; error #日志级别, alert, error, warning, notice, debug</span><br><span class="line">rlimit_files &#x3D; 65535 #php-fpm进程能打开的文件数</span><br><span class="line">events.mechanism &#x3D; epoll #使用epoll事件模型处理请求</span><br><span class="line"></span><br><span class="line">#第三部分，进程池定义</span><br><span class="line">[www] #池名称</span><br><span class="line">user &#x3D; www #进程运行的用户</span><br><span class="line">group &#x3D; www #进程运行的组</span><br><span class="line">;listen &#x3D; &#x2F;dev&#x2F;shm&#x2F;php-fpm.sock #监听在本地socket文件</span><br><span class="line">listen &#x3D; 127.0.0.1:9000 #监听在本地tcp的9000端口</span><br><span class="line">;listen.allowed_clients &#x3D; 127.0.0.1 #允许访问FastCGI进程的IP，any不限制</span><br><span class="line"></span><br><span class="line">; Choose how the process manager will control the number of child processes.</span><br><span class="line">; Possible Values:</span><br><span class="line">; static - a fixed number (pm.max_children) of child processes;</span><br><span class="line">; dynamic - the number of child processes are set dynamically based on the</span><br><span class="line">; following directives:</span><br><span class="line">; pm.max_children - the maximum number of children that can</span><br><span class="line">; be alive at the same time.</span><br><span class="line">; pm.start_servers - the number of children created on startup.</span><br><span class="line">; pm.min_spare_servers - the minimum number of children in &#39;idle&#39;</span><br><span class="line">; state (waiting to process). If the number</span><br><span class="line">; of &#39;idle&#39; processes is less than this</span><br><span class="line">; number then some children will be created.</span><br><span class="line">; pm.max_spare_servers - the maximum number of children in &#39;idle&#39;</span><br><span class="line">; state (waiting to process). If the number</span><br><span class="line">; of &#39;idle&#39; processes is greater than this</span><br><span class="line">; number then some children will be killed.</span><br><span class="line">; Note: This value is mandatory.</span><br><span class="line"></span><br><span class="line">pm &#x3D; dynamic #</span><br><span class="line">pm.max_children &#x3D; 512 #最大启动的php-fpm进程数</span><br><span class="line">pm.start_servers &#x3D; 32 #初始启动的php-fpm进程数</span><br><span class="line">pm.min_spare_servers &#x3D; 32 #最少的空闲php-fpm进程数</span><br><span class="line">pm.max_spare_servers &#x3D; 64 #最大的空闲php-fpm进程数</span><br><span class="line">pm.max_requests &#x3D; 1500 #每一个进程能响应的请求数</span><br><span class="line">pm.process_idle_timeout &#x3D; 15s;</span><br><span class="line"></span><br><span class="line"># 错误日志</span><br><span class="line">php_flag[display_errors] &#x3D; off</span><br><span class="line">php_admin_value[error_log] &#x3D; &#x2F;soft&#x2F;log&#x2F;php&#x2F;php-www_error.log</span><br><span class="line">php_admin_flag[log_errors] &#x3D; on</span><br><span class="line"></span><br><span class="line"># 将查询超过5s的连接记录至慢查询日志中</span><br><span class="line">request_slowlog_timeout &#x3D; 5s</span><br><span class="line">slowlog &#x3D; &#x2F;var&#x2F;log&#x2F;php&#x2F;slow.log</span><br></pre></td></tr></table></figure>
+
+<h3 id="etc-php-fpm-d-www-conf"><a href="#etc-php-fpm-d-www-conf" class="headerlink" title="/etc/php-fpm.d/www.conf"></a>/etc/php-fpm.d/<a href="http://www.conf" target="_blank" rel="noopener">www.conf</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">[global]</span><br><span class="line">pid &#x3D; &#x2F;var&#x2F;run&#x2F;php-fpm.pid</span><br><span class="line"></span><br><span class="line">error_log &#x3D; &#x2F;var&#x2F;log&#x2F;php&#x2F;php-fpm.log</span><br><span class="line">log_level &#x3D; warning</span><br><span class="line">rlimit_files &#x3D; 655350</span><br><span class="line">events.mechanism &#x3D; epoll</span><br><span class="line"></span><br><span class="line">[www]</span><br><span class="line">user &#x3D; nginx</span><br><span class="line">group &#x3D; nginx</span><br><span class="line">listen &#x3D; 127.0.0.1:9000</span><br><span class="line">listen.owner &#x3D; www</span><br><span class="line">listen.group &#x3D; www</span><br><span class="line">listen.mode &#x3D; 0660</span><br><span class="line"></span><br><span class="line">listen.allowed_clients &#x3D; 127.0.0.1</span><br><span class="line">pm &#x3D; dynamic</span><br><span class="line">pm.max_children &#x3D; 512</span><br><span class="line">pm.start_servers &#x3D; 10</span><br><span class="line">pm.min_spare_servers &#x3D; 10</span><br><span class="line">pm.max_spare_servers &#x3D; 30</span><br><span class="line">pm.process_idle_timeout &#x3D; 15s;</span><br><span class="line">pm.max_requests &#x3D; 2048</span><br><span class="line">pm.status_path &#x3D; &#x2F;phpfpm_status</span><br><span class="line"></span><br><span class="line">#php-www模块错误日志</span><br><span class="line">php_flag[display_errors] &#x3D; off</span><br><span class="line">php_admin_value[error_log] &#x3D; &#x2F;var&#x2F;log&#x2F;php&#x2F;php-www.log</span><br><span class="line">php_admin_flag[log_errors] &#x3D; on</span><br><span class="line"></span><br><span class="line">#php慢查询日志</span><br><span class="line">request_slowlog_timeout &#x3D; 5s</span><br><span class="line">slowlog &#x3D; &#x2F;var&#x2F;log&#x2F;php&#x2F;php-slow.log</span><br></pre></td></tr></table></figure>
+
+<p>参考地址：</p>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/135865719" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/135865719</a></li>
+</ul>
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

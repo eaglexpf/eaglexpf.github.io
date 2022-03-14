@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>PHP设计模式 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">拉到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "关闭"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">PHP设计模式</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2018年07月26日&nbsp;&nbsp;15:34:59</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/PHP/">PHP</a>
+                            
+                                <a href="/categories/PHP/%E5%85%A8%E9%83%A8%E6%96%87%E7%AB%A0/">全部文章</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="适配器模式"><a href="#适配器模式" class="headerlink" title="适配器模式"></a>适配器模式</h3><blockquote>
+<p>适配器设计模式只是将某个对象的接口适配为另一个对象所期望的接口</p>
+</blockquote>
+<p>基类-》对象引用基类 适配器adapter继承基类，并实现新方法-》对象引用adapter类 例如；基类有设置和获取名称两个方法，现在需要活动名称的长度；这时新建一个adapter类继承基类，并实现新方法获取长度</p>
+<pre><code>//设置名称并打印
+class GetName{
+    private $name;
+    public function getName(){
+        return $this-&gt;name;
+    }
+    public function setName($name){
+        $this-&gt;name = $name;
+    }
+}
+
+
+$user = new GetName();
+$user-&gt;setName(&apos;adapter&apos;);
+var_dump($user-&gt;getName());
+
+
+//新需求，要打印名称的长度
+class GetNameApater extends GetName{
+    public function __construct(){
+        parent::__contruct();
+    }
+    public function getNameLength(){
+        return strlen($this-&gt;name);
+    }
+}
+$user = new GetName();
+$user-&gt;setName(&apos;adapter&apos;);
+var_dump($user-&gt;getName());
+var_dump($user-&gt;getNameLength());</code></pre><h3 id="建造者模式"><a href="#建造者模式" class="headerlink" title="建造者模式"></a>建造者模式</h3><blockquote>
+<p>建造者设计模式定义了处理其他对象的复杂构建的对象设计</p>
+</blockquote>
+<p>初始化对象时需要设置多个默认值或调用其他方法时</p>
+<blockquote>
+<p>建造者设计模式的目的是为了消除其他对象的复杂创建过程。使用建造者设计模式可以在某个对象的构造和配置方法改变时尽可能的减少重复更改代码</p>
+</blockquote>
+<pre><code>//初始化一个产品类
+class product{
+    protected $type;
+    protected $num;
+    protected $name;
+    public function setType($type){
+        $this-&gt;type = $type;
+    }
+    public function setNum($num){
+        $this-&gt;num = $num;
+    }
+    public function setName($name){
+        $this-&gt;name = $name;
+    }
+}
+//使用方式
+$product = new product();
+$product-&gt;setType(&apos;type&apos;);
+$product-&gt;setNum(10);
+$product-&gt;setName(&apos;name&apos;);
+
+
+//建造者模式
+class productBuilder{
+    protected $_product = NULL;
+    protected $_configs = [];
+    public function __construct($config){
+        $this-&gt;_product = new product();
+        $this-&gt;_configs = $config;
+    }
+    public function build(){
+        $this-&gt;_product-&gt;setType($this-&gt;_configs[&apos;type&apos;]);
+        $this-&gt;_product-&gt;setNum($this-&gt;_configs[&apos;num&apos;]);
+        $this-&gt;_product-&gt;setName($this-&gt;_configs[&apos;name&apos;]);
+    }
+    public function getProduct(){
+        return $this-&gt;_product;
+    }
+}
+
+$builder = new productBuilder($configs);
+$builder-&gt;build();
+$product = $builder-&gt;getProduct();</code></pre><h3 id="数据访问对象模式"><a href="#数据访问对象模式" class="headerlink" title="数据访问对象模式"></a>数据访问对象模式</h3><blockquote>
+<p>数据访问对象设计模式描述了如何创建提供透明访问任何数据源的对象 为了减少重复和抽象化数据，最好的方法是基于数据访问对象创建一个类</p>
+</blockquote>
+<pre><code>abstract class baseDAO{
+    private $_connection;
+    public function __construct(){
+        $this-&gt;_connectDB(DB_USER,DB_PASS,DB_HOST,DB_DATABASE);
+    }
+    public function _connectDB($user,$pass,$host,$db){
+        $this-&gt;_connection = mysql_connect($host,$user,$pass);
+        mysql_select_db($db,$this-&gt;_connection);
+    }
+    public function fetch($value,$key = NULL){
+        if(is_null($key)){
+            $key = $this-&gt;_primaryKey;
+        }
+        $sql = &quot;select * from {$this-&gt;_tableName} where {$key}=&apos;{$value}&apos;&quot;;
+        $results = mysql_query($sql,$this-&gt;_connection);
+
+        $rows = [];
+        while($result = mysql_fetch_array($results)){
+            $rows[] = $result;
+        }
+        return $rows;
+    }
+    public function update($keyArray){
+        $sql = &quot;update {$this-&gt;_tableName} set &quot;;
+        $updates = [];
+        foreach($keyArray as $column=&gt;$value){
+            $updates[] = &quot;{$column}=&apos;{$value}&apos; &quot;;
+        }
+        $sql .= implode(&apos;,&apos;,$updates);
+        $sql .= &quot;where {$this-&gt;_primaryKey}=&apos;{$keyArray[$this-&gt;_primaryKey]}&apos;&quot;
+    }
+}
+
+
+class userDAO extends baseDAO{
+    protected $_tableName = &apos;userTable&apos;;
+    protected $_primaryKey = &apos;id&apos;;
+    public function getUserByFirstName($name){
+        $result = $this-&gt;fetch($name,&apos;firstname&apos;);
+        return $result;
+    }
+}
+
+
+define(&apos;DB_USER&apos;,&apos;user&apos;);
+define(&apos;DB_PASS&apos;,&apos;pass&apos;);
+define(&apos;DB_HOST&apos;,&apos;localhost&apos;);
+define(&apos;DB_DATABASE&apos;,&apos;test&apos;);
+
+$user = new userDAO();
+
+$userDetailsArray = $user-&gt;fetch(1);
+
+$updates = [&apos;id&apos; =&gt;  1,&apos;firstName&apos; =&gt; &apos;test&apos;];
+$user-&gt;update($updates);
+
+$allTestUser = $user-&gt;getUserByFirstName(&apos;test&apos;);</code></pre><h3 id="装饰器模式"><a href="#装饰器模式" class="headerlink" title="装饰器模式"></a>装饰器模式</h3><blockquote>
+<p>如果已有对象的部分内容或功能性发生改变，但是不需要修改原始对象的结构，那么使用装饰器设计模式最合适 当引入的需求要求在不影响现有基本代码稳定性的前提下对应用程序的内容或功能性进行很小的改动时，最好的做法就是创建装饰器对象</p>
+</blockquote>
+<pre><code>class CD{
+    public $trackList;
+    public function __construct(){
+        $this-&gt;trackList = [];
+    }
+    public function addTrack($track){
+        $this-&gt;trackList[] = $track;
+    }
+    public function getTrackList(){
+        $output = &apos;&apos;;
+        foreach($this-&gt;trackList as $num=&gt;$track){
+            $output .= ($num+1).&quot;) {$track}. &quot;;
+        }
+        return $output;
+    }
+}
+
+$tracksFromExternalSource = [&apos;What It Means&apos;,&apos;Brr&apos;,&apos;Goodbye&apos;];
+
+$myCD = new CD();
+
+foreach($tracksFromExternalSource as $track){
+    $myCD-&gt;addTrack($track);
+}
+
+print &quot;The CD contains&quot;.$myCD-&gt;getTrackList();
+
+//更改需求，要求输出的内容全部大写
+
+class CDTrackListDecoratorCaps{
+    private $_cd;
+    public function __construct(CD $cd){
+        $this-&gt;_cd = $cd;
+    }
+    public function makeCaps(){
+        foreach($this-&gt;_cd-&gt;trackList as &amp;$strack){
+            $track = strtoupper($track);
+        }
+    }
+}
+
+$myCD = new CD();
+
+foreach($tracksFromExternalSource as $track){
+    $myCD-&gt;addTrack($track);
+}
+
+$myCDCaps = new CDTrackListDecoratorCaps($myCD);
+$myCDCaps-&gt;makeCaps();
+
+print &quot;The CD contains the following tracks: &quot;.$myCD-&gt;getTrackList();</code></pre><h3 id="委托模式"><a href="#委托模式" class="headerlink" title="委托模式"></a>委托模式</h3><blockquote>
+<p>通过分配或委托至其他对象，委托设计模式能够去除核心对象中的判决和复杂的功能性</p>
+</blockquote>
+<pre><code>class Playlist{
+    private $_songs;
+    public function __construct(){
+        $this-&gt;_songs = [];
+    }
+
+    public function addSong($location,$title){
+        $song = [&apos;location&apos;=&gt;$location,&apos;title&apos;=&gt;$title];
+        $this-&gt;_songs[] = $song;
+    }
+
+    public function getM3U(){
+        $m3u = &quot;#EXTM#U\n\n&quot;;
+
+        foreach($this-&gt;_songs as $song){
+            $m3u .= &quot;#EXTINF:-1,{$song[&apos;title&apos;]}\n&quot;;
+            $m3u .= &quot;{$song[&apos;location&apos;]}\n&quot;;
+        }
+
+        return $m3u;
+    }
+
+    public function getPLS(){
+        $pls = &quot;[playlist]\nNumberOfEntries=&quot;.count($this-&gt;_songs).&quot;\n\n&quot;;
+
+        foreach($this-&gt;_songs as $songCount =&gt; $song){
+            $counter = $songCount + 1;
+            $pls .= &quot;File{$counter}={$song[&apos;location&apos;]}\n&quot;;
+            $pls .= &quot;Length{$counter}=-1\n\n&quot;;
+        }
+
+        return $pls;
+
+    }
+
+}
+
+$playlist = new Playlist();
+$playlist-&gt;addSong(&apos;/home/music/brr.mp3&apos;,&apos;Brr&apos;);
+$playlist-&gt;addSong(&apos;/home/music/goodbye.mp3&apos;,&apos;Goodbye&apos;);
+
+if($externalRetrievedType == &apos;pls&apos;){
+    $playlistCountent = $playlist-&gt;getPLS();
+}else{
+    $playlistCountent = $playlist-&gt;getM3U();
+}
+
+
+//使用委托模式
+
+class newPlaylist{
+    private $_songs;
+    private $_typeObject;
+
+    public function __construct($type){
+        $this-&gt;_songs = [];
+        $object = &quot;{$type}Playlist&quot;;
+        $this-&gt;_typeObject = new $object;
+    }
+    public function addSong($location,$title){
+        $song = [&apos;location&apos;=&gt;$location,&apos;title&apos;=&gt;$title];
+        $this-&gt;_songs[] = $song;
+    }
+    public function getPlaylist(){
+        $playlist = $this-&gt;_typeObject-&gt;getPlaylist($this-&gt;_songs);
+        return $playlist;
+    }
+}
+
+class m3uPlaylistDelegate{
+    public function getPlaylist($songs){
+        $m3u = &quot;#EXTM3U\n\n&quot;;
+
+        foreach($songs as $song){
+            $m3u .= &quot;#EXTINF:-1,{$song[&apos;title&apos;]}\n&quot;;
+            $m3u .= &quot;{$song[&apos;location&apos;]}\n&quot;;
+        }
+
+        return $m3u;
+    }
+}
+
+class plsPlaylistDelegate{
+    public function getPlaylist($songs){
+        $pls = &quot;[playlist]\nNumberOfEntries=&quot;.count($songs).&quot;\n\n&quot;;
+
+        foreach($songs as $songCount =&gt; $song){
+            $counter = $songCount + 1;
+            $pls .= &quot;File{$counter}={$song[&apos;location&apos;]}\n&quot;;
+            $pls .= &quot;Length{$counter}=-1\n\n&quot;;
+        }
+
+        return $pls;
+    }
+}
+
+$externalRetrievedType = &apos;pls&apos;;
+$playlist = new newPlaylist($externalRetrievedType);
+$playlistCountent = $playlist-&gt;getPlaylist();</code></pre><h3 id="外观模式"><a href="#外观模式" class="headerlink" title="外观模式"></a>外观模式</h3><blockquote>
+<p>通过在必须的逻辑和方法的集合前创建简单的外观接口，外观设计模式隐藏了来自调用对象的复杂性 在程序中包含许多复杂的逻辑步骤和方法调用时，最佳的做法是创建一个机遇外观设计模式的对象</p>
+</blockquote>
+<pre><code>class CD{
+    public $tracks = [];
+    public $band = &apos;&apos;;
+    public $title = &apos;&apos;;
+
+    public function __construct($title,$band,$tracks){
+        $this-&gt;title = $title,
+        $this-&gt;band = $band;
+        $this-&gt;tracks = $tracks
+    }
+}
+
+$tracksFromExternalSource = [&apos;What It Means&apos;,&apos;Brr&apos;,&apos;Goodbye&apos;];
+$title = &apos;Waste of a Rib&apos;;
+$band = &apos;Never Again&apos;;
+
+$cd = new CD($title,$band,$tracksFromExternalSource);
+
+//使用外观模式
+
+class CDUpperCase{
+    public static function makeString(CD $cd){
+        $cd-&gt;$type = strtoupper($cd-&gt;type);
+    }
+    public static function makeArray(CD $cd,$type){
+        $cd-&gt;$type = array_map(&apos;strtoupper&apos;,$cd-&gt;$type);
+    }
+}
+class CDMakeXML{
+    public static function create(CD $cd){
+        $doc = new DomDocument();
+
+        $root = $doc-&gt;createElement(&apos;CD&apos;);
+        $root = $doc-&gt;appendChild($root);
+
+        $title = $doc-&gt;createElement(&apos;TITLE&apos;,$cd-&gt;title);
+        $title = $root-&gt;appendChild($title);
+
+        $band = $doc-&gt;createElement(&apos;BAND&apos;,$cd-&gt;band);
+        $band = $root-&gt;appendChild($band);
+
+        $tracks = $doc-&gt;createElement(&apos;TRACKS&apos;);
+        $tracks = $root-&gt;appendChild($tracks);
+
+        foreach($cd-&gt;tracks as $track){
+            $track = $doc-&gt;createElement(&apos;TRACK&apos;,$track);
+            $track = $tracks-&gt;appendChild($track);
+        }
+
+        return $doc-&gt;saveXML();
+    }
+}
+//错误的使用方式
+CDUpperCase::makeString($cd,&apos;title&apos;);
+CDUpperCase::makeString($cd,&apos;band&apos;);
+CDUpperCase::makeArray($cd,&apos;tracks&apos;);
+
+print CDMakeXML::create($cd);
+
+//正确的使用方式
+class WebServiceFacade{
+    public static function makeXMLCall(CD $cd){
+        CDUpperCase::makeString($cd,&apos;title&apos;);
+        CDUpperCase::makeString($cd,&apos;band&apos;);
+        CDUpperCase::makeArray($cd,&apos;tracks&apos;);
+
+        $xml = CDMakeXML::create($cd);
+        return $xml;
+    }
+}
+
+print WebServiceFacade::makeXMLCall($cd);</code></pre><h3 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h3><blockquote>
+<p>工厂设计模式提供获取某个对象的新实例的一个接口，同时使调用代码避免确定实际实例化基类的步骤</p>
+</blockquote>
+<pre><code>//第一种类型的CD
+class CD{
+    public $title = &apos;&apos;;
+    public $band = &apos;&apos;;
+    public $tracks = [];
+
+    public function __construct(){}
+
+    public function setTitle($title){
+        $this-&gt;title = $title;
+    }
+    public function setBand($band){
+        $this-&gt;band = $band;
+    }
+    public function addTrack($track){
+        $this-&gt;tracks[] = $track;
+    }
+}
+
+//初始化方式
+$tracksFromExternalSource = [&apos;What It Means&apos;,&apos;Brr&apos;,&apos;Goodbye&apos;];
+$title = &apos;Waste of a Rib&apos;;
+$band = &apos;Never Again&apos;;
+
+$cd = new CD();
+$cd-&gt;setTitle($title);
+$cd-&gt;setBand($band);
+foreach($tracksFromExternalSource as $track){
+    $cd-&gt;addTrack($track);
+}
+
+
+//第二种类型的CD
+class enhancedCD{
+    public $title = &apos;&apos;;
+    public $band = &apos;&apos;;
+    public $tracks = [];
+
+    public function __construct(){
+        $this-&gt;tracks[] = &apos;DATA TRACK&apos;;
+    }
+    public function setTitle($title){
+        $this-&gt;title = $title;
+    }
+    public function setBand($band){
+        $this-&gt;band = $band;
+    }
+    public function addTrack($track){
+        $this-&gt;tracks[] = $track;
+    }
+}
+
+//用户工厂模式
+class CDFactory{
+    public static function create($type){
+        $class = strtolower($type).&quot;CD&quot;;
+        return new $class;
+    }
+}
+
+$type = &apos;enhanced&apos;;
+
+$cd = CDFactory::create($type);
+$cd-&gt;setTitle($title);
+$cd-&gt;setBand($band);
+foreach($tracksFromExternalSource as $track){
+    $cd-&gt;addTrack($track);
+}</code></pre><h3 id="解释器模式-没懂"><a href="#解释器模式-没懂" class="headerlink" title="解释器模式 (没懂)"></a>解释器模式 (没懂)</h3><blockquote>
+<p>解释器设计模式用于分析一个实体的关键元素，并且针对每个原色都提供自己的解释或相应的动作</p>
+</blockquote>
+<pre><code>class User{
+    protected $_username = &apos;&apos;;
+    public function __construct($username){
+        $this-&gt;_username = $username;
+    }
+    public function getProfilePage(){
+        $profile = &quot;&lt;h2&gt;I like Nerve Again!&lt;/h2&gt;&quot;;
+        $profile .= &quot;I love all of their songs. My favorite CD:&lt;br /&gt;&quot;;
+        $profile .= &quot;{ {myCD.getTitle}}&quot;;
+
+        return $profile;
+    }
+}
+
+class userCD{
+    protected $_user = NULL;
+    public function setUser($user){
+        $this-&gt;_user = $user;
+    }
+    public function getTitle(){
+        $title = &apos;Waste of a Rib&apos;;
+        return $title;
+    }
+}
+
+class userCDInterpreter{
+    protected $_user = NULL;
+    public function setUser($user){
+        $this-&gt;_user = $user;
+    }
+    public function getInterpreted(){
+        $prefile = $this-&gt;_user-&gt;getProfilePage();
+        if(preg_match_all(&apos;/\{\{myCD\.(.*?)\}\}/&apos;,$profile,$triggers,PREG_SET_ORDER)){
+            $replacements = [];
+
+            foreach($triggers as $trigger){
+                $replacements[] = $trigger[1];
+            }
+
+            $replacements = array_unique($replacements);
+
+            $myCD = new userCD();
+            $myCD-&gt;setUser($this-&gt;_user);
+
+            foreach($replacements as $replacement){
+                $profile = str_replace(&quot;{ {myCD.{$replacement}}}&quot;,call_user_func([$myCD,$replacement],$profile));
+            }
+        }
+        return $profile;
+    }
+}
+
+$username = &apos;test_name&apos;;
+
+$user = new User($username);
+$interpreter = new userCDInterpreter();
+$interpreter-&gt;setUser($user);
+
+print &quot;&lt;h1&gt;{$username}&apos;s Profile&lt;/h1&gt;&quot;;
+print $interpreter-&gt;getInterpreted();</code></pre><h3 id="迭代器模式-（不懂）"><a href="#迭代器模式-（不懂）" class="headerlink" title="迭代器模式 （不懂）"></a>迭代器模式 （不懂）</h3><blockquote>
+<p>迭代器设计模式可帮助构造特定对象，那些对象能够提供单一标准接口循环或迭代任何类型的可计数数据</p>
+</blockquote>
+<pre><code>class CD{
+    public $band = &apos;&apos;;
+    public $title = &apos;&apos;;
+    public $trackList = [];
+
+    public function __construct($band,$title){
+        $this-&gt;band = $band;
+        $this-&gt;title = $title;
+    }
+
+    public function addTrack($track){
+        $this-&gt;trackList[] = $track;
+    }
+}
+
+//迭代器类
+class CDSearchByBandIterator implements Iterator{
+    private $_CDs = [];
+    private $_valid = FALSE;
+
+    public function __construct($bandName){
+        $db = mysql_connect(&apos;localhost&apos;,&apos;user&apos;,&apos;pass&apos;);
+        mysql_select_db(&apos;test&apos;);
+
+        $sql = &quot;select CD.id,CD.band,CD.title,tracks.tracknum, &quot;;
+        $sql .= &quot;tracks.title as tracktitle &quot;;
+        $sql .= &quot;from CD left join tracks on CD.id=tracks.cid where band=&apos;&quot;;
+        $sql .= mysql_real_escape_string($bandName);
+        $sql .= &quot;&apos; order by tracks.tracknum&quot;;
+        $results = mysql_query($sql);
+
+        $cdID = 0;
+        $cd = NULL;
+
+        while($result = mysql_fetch_array($results)){
+            if($result[&apos;id&apos;] !== $cdID){
+                if(!is_null($cd)){
+                    $this-&gt;_CDs[] = $cd;
+                }
+                $cdID = $result[&apos;id&apos;];
+                $cd = new CD($result[&apos;band&apos;],$result[&apos;title&apos;]);
+            }
+            $cd-&gt;addTrack($result[&apos;tracktitle&apos;]);
+        }
+        $this-&gt;_CDs[] = $cd;
+    }
+    public function next(){
+        $this-&gt;_valid = (next($this-&gt;_CDs)===FALSE)?FALSE:TRUE;
+    }
+    public function rewind(){
+        $this-&gt;_valid = (reset($this-&gt;_CDs)===FALSE)?FALSE:TRUE;
+    }
+    public function valid(){
+        return $this-&gt;_valid;
+    }
+    public function current(){
+        return current($this-&gt;CDs);
+    }
+    public function key(){
+        return key($this-&gt;CDs);
+    }
+}</code></pre><h3 id="中介者模式"><a href="#中介者模式" class="headerlink" title="中介者模式"></a>中介者模式</h3><blockquote>
+<p>中介者设计模式用于开发一个对象，这个对象能够在类似对象相互之间不直接交互的情况下传送或调解对这些对象的集合的修改 处理具有类似属性并且属性需要保持同步的非耦合对象时，最佳的做法是使用基于中介者设计模式的对象</p>
+</blockquote>
+<pre><code>class CD{
+    public $band = &apos;&apos;;
+    public $title = &apos;&apos;;
+
+    public function save(){
+        var_dump($this);
+    }
+
+    public function changeBandName($newName){
+        $this-&gt;band = $newName;
+        $this-&gt;save();
+    }
+}
+
+//中介者模式
+
+class CD{
+    public $band = &apos;&apos;;
+    public $title = &apos;&apos;;
+    protected $_mediator;
+
+    public function __construct($mediator=null){
+        $this-&gt;_mediator = $mediator;
+    }
+    public function save(){
+        var_dump($this);
+    }
+
+    public function changeBandName($newName){
+        if(!is_null($this-&gt;_mediator)){
+            $this-&gt;_mediator-&gt;change($this,[&apos;band&apos;=&gt;$newName]);
+        }
+        $this-&gt;band = $newName;
+        $this-&gt;save();
+    }
+}
+
+class MP3Archive{
+    public $band = &apos;&apos;;
+    public $title = &apos;&apos;;
+    protected $_mediator;
+
+    public function __construct($mediator=null){
+        $this-&gt;_mediator = $mediator;
+    }
+
+    public function save(){
+        var_dump($this);
+    }
+
+    public function changeBandName($newName){
+        if(!is_null($this-&gt;_mediator)){
+            $this-&gt;_mediator-&gt;change($this,[&apos;band&apos;=&gt;$newName]);
+        }
+        $this-&gt;band = $newName;
+        $this-&gt;save();
+    }
+
+
+}
+
+class MusicContrainerMediator{
+    protected $_containers = [];
+
+    public function __construct(){
+        $this-&gt;_containers[] = &apos;CD&apos;;
+        $this-&gt;_containers[] = &apos;MP3Archive&apos;;
+    }
+
+    public function change($originalObject,$newValue){
+        $title = $originalObject-&gt;title;
+        $band = $originalObject-&gt;band;
+
+        foreach($this-&gt;_containers as $container){
+            if(!($changedObject instanceof $container)){
+                $object = new $container;
+                $object-&gt;title = $title;
+                $object-&gt;band = $band;
+
+                foreach($newValue as $key=&gt;$val){
+                    $object-&gt;$key = $val;
+                }
+
+                $object-&gt;save();
+            }
+        }
+    }
+}
+
+$titleFromDB = &apos;Waste of a Rib&apos;;
+$bandFromDB = &apos;Never Again&apos;;
+
+$mediator = new MusicContainerMediator();
+
+$cd = new CD($mediator);
+$cd-&gt;title = $titleFromDB;
+$cd-&gt;band = $bandFromDB;
+
+$cd-&gt;changeBandName(&apos;Maybe Once More&apos;);</code></pre><h3 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h3><blockquote>
+<p>观察者设计模式能够更便利地创建查看目标对象状态的对象，并且提供与核心对象非耦合的指定功能性</p>
+</blockquote>
+<pre><code>class CD{
+    public $title = &apos;&apos;;
+    public $band = &apos;&apos;;
+    protected $_observers = [];
+
+    public function __construct($title,$band){
+        $this-&gt;title = $title;
+        $this-&gt;band = $band;
+    }
+
+    public function attachObserver($type,$observer){
+        $this-&gt;_observers[$type][] = $observer;
+    }
+
+    public function notifyObserver($type){
+        if(isset($this-&gt;_observers[$type])){
+            foreach($this-&gt;_observers[$type] as $observer){
+                $observer-&gt;update($this);
+            }
+        }
+    }
+
+    public function buy(){
+        $this-&gt;notifyObserver(&apos;purchased&apos;);
+    }
+}
+
+class buyCDNotifyStreamObserver{
+    public function update(CD $cd){
+        $activity = &quot;The CD names {$cd-&gt;title} by &quot;;
+        $activity .= &quot;{$cd-&gt;band} was just purchased. &quot;;
+        activityStream::addNewItem($activity);
+    }
+}
+
+class activityStream{
+    public static function addNewItem($item){
+        print $item;
+    }
+}
+
+$title = &apos;Waste of a Rib&apos;;
+$band = &apos;Never Again&apos;;
+$cd = new CD($title,$band);
+
+$observer = new buyCDNotifyStreamObserver();
+
+$cd-&gt;attachObserver(&apos;purchased&apos;,$observer);
+$cd-&gt;buy();</code></pre><h3 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h3><blockquote>
+<p>原型设计模式创建对象的方式是赋值和克隆初始对象或原型，这种方式比创建新实例更为有效</p>
+</blockquote>
+<pre><code>class CD{
+    public $band = &apos;&apos;;
+    public $title = &apos;&apos;;
+    public $trackList = [];
+
+    public function __construct($id){
+        $handle = mysql_connect(&apos;localhost&apos;,&apos;user&apos;,&apos;pass&apos;);
+        mysql_select_db(&apos;CD&apos;,$handle);
+
+        $query = &quot;select band,title from CDS where id = {$id}&quot;;
+
+        $results = mysql_query($query,$handle);
+
+        if($row = mysql_fetch_assoc($results)){
+            $this-&gt;band = $row[&apos;band&apos;];
+            $this-&gt;title = $row[&apos;title&apos;];
+        }
+    }
+
+    public function buy(){
+        var_dump($this);
+    }
+}
+
+class MixtapeCD extends CD{
+    public function __clone(){
+        $this-&gt;title = &apos;Mixtape&apos;;
+    }
+}
+
+$externalPurchaseInfoBandID = 12;
+$bandMixProto = new MixtapeCD($externalPurchaseInfoBandID);
+
+$externalPurchaseInfo = [];
+$externalPurchaseInfo[] = [&apos;brrr&apos;,&apos;goodbye&apos;];
+$externalPurchaseInfo[] = [&apos;what it means&apos;,&apos;brrr&apos;];
+
+foreach($externalPurchaseInfo as $mixed){
+    $cd = clone $bandMixProto;
+    $cd-&gt;trackList = $mixed;
+    $cd-&gt;buy();
+}</code></pre><h3 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h3><blockquote>
+<p>代理设计模式构建了透明置于两个不同对象之内的一个对象，从而能够截取或代理这两个对象间的通信或访问</p>
+</blockquote>
+<pre><code>class CD{
+    protected $_title = &apos;&apos;;
+    protected $_band = &apos;&apos;;
+    protected $_handle = null;
+
+    public function __construct($title,$band){
+        $this-&gt;_title = $title;
+        $this-&gt;_band = $band;
+    }
+    public function buy(){
+        $this-&gt;_connect();
+
+        $query = &quot;update CDs set bought=1 where band=&apos;&quot;;
+        $query .= mysql_real_escape_string($this-&gt;_band,$this-&gt;_handle);
+        $query .= &quot; &apos;and title=&apos; &quot;;
+        $query .= mysql_real_escape_string($this-&gt;_title,$this-&gt;_handle);
+        $query .= &quot;&apos;&quot;;
+
+        mysql_query($query,$this-&gt;_handle);
+    }
+    protected function _connect(){
+        $this-&gt;_handle = mysql_connect(&apos;localhost&apos;,&apos;user&apos;,&apos;pass&apos;);
+        mysql_select_db(&apos;CD&apos;,$this-&gt;_handle);
+    }
+}
+
+$externalTitle = &apos;Waste of a Rib&apos;;
+$externalBand = &apos;Never Again&apos;;
+
+$cd = new CD($externalTitle,$externalBand);
+$cd-&gt;buy();
+
+//代理
+
+class DallasNOCCDProxy extends CD{
+    protected function _connect(){
+        $this-&gt;_handle = mysql_connect(&apos;dallas&apos;,&apos;user&apos;,&apos;pass&apos;);
+        mysql_select_db(&apos;CD&apos;);
+    }
+}
+
+$externalTitle = &apos;Waste of a Rib&apos;;
+$externalBand = &apos;Never Again&apos;;
+
+$cd = new DallasNOCCDProxy($externalTitle,$externalBand);
+$cd-&gt;buy();</code></pre><h3 id="单元素模式"><a href="#单元素模式" class="headerlink" title="单元素模式"></a>单元素模式</h3><blockquote>
+<p>通过提供对自身共享实例的访问，单元素设计模式用于限制特定对象只能被创建一次</p>
+</blockquote>
+<pre><code>class InventoryConnection{
+    protected static $_instance = NULL;
+    protected $_handle = NULL;
+
+    public static function getInstance(){
+        if(!self::$_instance instanceof self){
+            self::$_instance = new self;
+        }
+        return self::$_instance;
+    }
+
+    protected function __construct(){
+        $this-&gt;_handle = mysql_connect(&apos;localhost&apos;,&apos;user&apos;,&apos;pass&apos;);
+        mysql_select_db(&apos;CD&apos;,$this-&gt;_handle);
+    }
+
+    public function updateQuantity($band,$title,$number){
+        $query = &quot;update CDs set amount=amount+&quot;.intval($number);
+        $query .= &quot; where band=&apos;&quot;.mysql_real_escape_string($band).&quot;&apos;&quot;;
+        $query .= &quot; and title=&apos;&quot;.mysql_real_excape_string($title).&quot;&apos;&quot;;
+
+        mysql_query($query,$this-&gt;_handle);
+    }
+}
+
+class CD{
+    protected $_title = &apos;&apos;;
+    protected $_band = &apos;&apos;;
+
+    public function __construct($title,$band){
+        $this-&gt;_title = $title;
+        $this-&gt;_band = $band;
+    }
+
+    public function buy(){
+        $inventory = InventoryConnection::getInstance();
+        $inventory-&gt;updateQuantity($this-&gt;_band,$this-&gt;_title,-1);
+    }
+}
+
+$boughtCDs = [];
+$boughtCDs[] = [&apos;band&apos;=&gt;&apos;Never Again&apos;,&apos;Waste of a Rib&apos;];
+$boughtCDs[] = [&apos;band&apos;=&gt;&apos;Therapee&apos;,&apos;Long Road&apos;];
+
+foreach($boughtCDs as $boughtCD){
+    $cd = new CD($boughtCD[&apos;title&apos;],$boughtCD[&apos;band&apos;]);
+    $cd-&gt;buy();
+}</code></pre><h3 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h3><blockquote>
+<p>策略设计模式帮助构建的对象不必自身包含逻辑，而是能够根据需要利用其它对象中的算法</p>
+</blockquote>
+<pre><code>class CD{
+    public $title = &apos;&apos;;
+    public $band = &apos;&apos;;
+    public function __construct($title,$band){
+        $this-&gt;title = $title;
+        $this-&gt;band = $band;
+    }
+    public function getAsXML(){
+        $doc = new DomDocument();
+        $root = $doc-&gt;createElement(&apos;CD&apos;);
+        $root = $doc-&gt;appendChild($root);
+        $title = $doc-&gt;createElement(&apos;TITLE&apos;,$this-&gt;title);
+        $title = $root-&gt;appendChild($title);
+        $band = $doc-&gt;createElement(&apos;BAND&apos;,$this-&gt;band);
+        $band = $root-&gt;appendChild($band);
+
+        return $doc-&gt;saveXML();
+    }
+}
+
+$externalBand = &apos;Never Again&apos;;
+$externalTitle = &apos;Waste of a Rib&apos;;
+
+$cd = new CD($externalTitle,$externalBand);
+
+print $cd-&gt;getAsXML();
+
+//策略模式
+class CDusesStrategy{
+    public $title = &apos;&apos;;
+    public $band = &apos;&apos;;
+
+    protected $_strategy;
+
+    public function __construct($title,$band){
+        $this-&gt;title = $title;
+        $this-&gt;band = $band;
+    }
+    public function setStrategyContest($strategyObject){
+        $this-&gt;_strategy = $strategyObject;
+    }
+    public function get(){
+        return $this-&gt;_strategy-&gt;get($this);
+    }
+}
+
+class CDAsXMLStrategy{
+    public function get(CDusesStrategy $cd){
+        $doc = new DomDocument();
+        $root = $doc-&gt;createElement(&apos;CD&apos;);
+        $root = $doc-&gt;appendChild($root);
+        $title = $doc-&gt;createElement(&apos;TITLE&apos;,$this-&gt;title);
+        $title = $root-&gt;appendChild($title);
+        $band = $doc-&gt;createElement(&apos;BAND&apos;,$this-&gt;band);
+        $band = $root-&gt;appendChild($band);
+
+        return $doc-&gt;saveXML();
+    }
+}
+
+class CDAsJSONStrategy{
+    public function get(CDusesStrategy $cd){
+        $json = [];
+        $json[&apos;CD&apos;][&apos;title&apos;] = $cd-&gt;title;
+        $json[&apos;CD&apos;];&apos;band&apos;] = $cd-&gt;band;
+
+        return $json_encode($json);
+    }
+}
+
+$cd = new CDusesStrategy($externalTitle,$externalBand);
+
+$cd-&gt;setStrategyContext(new CDAsXMLStrategy());
+print $cd-&gt;get();
+
+$cd-&gt;setStrategyContext(new CDAsJSONStrategy());
+print $cd-&gt;get($cd);</code></pre><h3 id="模板模式"><a href="#模板模式" class="headerlink" title="模板模式"></a>模板模式</h3><blockquote>
+<p>模板设计模式创建了一个实施一组方法和功能的抽象对象，子类通常将这个对象作为模板用于自己的设计 创建 定义了设计的常规步骤，但实际逻辑留给子类进行详细说明的对象时</p>
+</blockquote>
+<pre><code>abstract class SaleItemTemplate{
+    public $price = 0;
+    public final function setPriceAdjustments(){
+        $this-&gt;price += $this-&gt;taxAddition();
+        $this-&gt;price += $this-&gt;oversizedAddition();
+    }
+
+    protected function oversizedAddition(){
+        return 0;
+    }
+
+    abstract protected function taxAddition();
+}
+
+class CD extends SaleItemTemplate{
+    public $band;
+    public $title;
+
+    public function __construct($band,$title,$price){
+        $this-&gt;band = $band;
+        $this-&gt;title = $title,
+        $this-&gt;price = $price;
+    }
+    protected function taxAddition(){
+        return round($this-&gt;price*.05,2);
+    }
+
+
+}
+
+class BandEndorsedCaseOfCereal extends SaleItemTemplate{
+    public $band;
+    public function __construct($band,$price){
+        $this-&gt;band = $band;
+        $this-&gt;price = $price;
+    }
+    protected function taxAddItion(){
+        return 0;
+    }
+    protected function oversizedAddition(){
+        return round($this-&gt;price*.20,2);
+    }
+}
+
+$externalTitle = &quot;Waste of a Rib&quot;:
+$externalBand = &quot;Never Again&quot;;
+$externalCDPrice = 12.99;
+$externalCerealPrice = 90;
+
+$cd = new CD($externalBand,$externalTitle,$externalCDPrice);
+$cd-&gt;setPriceAdjustments();
+
+print &apos;The total cost for CD item is: $&apos;.$cd-&gt;price.&apos;&lt;br /&gt;&apos;;
+
+$cereal = new BandEndorsedCaseOfCereal($externalBand,$externalCerealPrice);
+$cereal-&gt;setPriceAdjustments();
+
+print &apos;The total cost for the Cereal case is: $&apos;.$creal-&gt;price;</code></pre><h3 id="访问者模式"><a href="#访问者模式" class="headerlink" title="访问者模式"></a>访问者模式</h3><blockquote>
+<p>访问者设计模式构造了包含某个算法的截然不同的对象，在父对象以标准方式使用这些对象时就会将该算法应用于父对象</p>
+</blockquote>
+<pre><code>class CD{
+    public $band;
+    public $title;
+    public $price;
+    public function __construct($band,$title,$price){
+        $this-&gt;band = $band;
+        $this-&gt;title = $title;
+        $this-&gt;price = $price;
+    }
+    public function buy(){
+
+    }
+    public function acceptVisitor($visitor){
+        $visitor-&gt;visitCD($this);
+    }
+}
+
+class CDVisitorLogPurchase{
+    public function visitCD($cd){
+        $logline = &quot;{$cd-&gt;title} by {$cd-&gt;band} was purchased for {$cd-&gt;price}&quot;;
+        $logline .= &quot;at&quot; . sdate(&apos;r&apos;).&quot;\n&quot;;
+
+        file_put_contents(&apos;/logs/purchases.log&apos;,$logline,FILE_APPEND);
+    }
+}
+
+$externalBand = &apos;Never Again&apos;;
+$externalTitle = &apos;Wate of a Rib&apos;;
+$externalPrice = 9.99;
+
+$cd = new CD($externalBand,$externalTitle,$externalPrice);
+$cd-&gt;buy();
+$cd-&gt;acceptVisitor(new CDVisitorLogPurchase());
+
+
+class CDVisitorPopulateDiscountList{
+    public function visitCD($cd){
+        if($cd-&gt;price&lt;10){
+            $this-&gt;_populateDiscountList($cd);
+        }
+    }
+    protected function _populateDiscountList($cd){
+
+    }
+}</code></pre>
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

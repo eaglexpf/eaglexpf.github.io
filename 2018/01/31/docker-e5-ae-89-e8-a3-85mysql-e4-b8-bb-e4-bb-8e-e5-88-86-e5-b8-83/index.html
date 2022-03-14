@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>docker安装mysql主从分布 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">拉到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "关闭"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">docker安装mysql主从分布</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2018年01月31日&nbsp;&nbsp;12:44:08</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/docker/">docker</a>
+                            
+                                <a href="/categories/docker/%E5%85%A8%E9%83%A8%E6%96%87%E7%AB%A0/">全部文章</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <blockquote>
+<p>在centos虚拟机上做的实验</p>
+</blockquote>
+<h4 id="1、获取mysql镜像"><a href="#1、获取mysql镜像" class="headerlink" title="1、获取mysql镜像"></a>1、获取mysql镜像</h4><pre><code>docker pull mysql:5.7</code></pre><h4 id="2、设置配置文件"><a href="#2、设置配置文件" class="headerlink" title="2、设置配置文件"></a>2、设置配置文件</h4><pre><code>1、主服务器：
+新建目录：docker/mysql/master/conf/
+新建文件：master.cnf
+[mysqld]
+server_id = 999  ##mysql服务器的唯一标识，每个都不一样
+
+log-bin = mysql-bin
+
+2、从服务器：
+新建目录：docker/mysql/slave01/conf/
+新建文件：slave01.cnf
+[mysqld]
+server_id = 1  ##mysql服务器的唯一标识，每个都不一样
+
+log-bin = mysql-bin</code></pre><h4 id="3、分别创建mysql主从服务器的docker容器"><a href="#3、分别创建mysql主从服务器的docker容器" class="headerlink" title="3、分别创建mysql主从服务器的docker容器"></a>3、分别创建mysql主从服务器的docker容器</h4><pre><code>docker run -p 29001:3306 --name master 
+    -v /docker/mysql/master/conf:/etc/mysql/conf.d -v /docker/mysql/master/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7
+
+docker run -p 29002:3306 --name slave01 
+    -v /docker/mysql/slave01/conf:/etc/mysql/conf.d -v /docker/mysql/master/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7</code></pre><h4 id="4、mysql主服务器设置："><a href="#4、mysql主服务器设置：" class="headerlink" title="4、mysql主服务器设置："></a>4、mysql主服务器设置：</h4><pre><code>docker exec -i -t master /bin/bash
+
+mysql -u root -p
+//创建一个同步数据的账号
+GRANT REPLICATION SLAVE ON *.* to &apos;backup&apos;@&apos;%&apos; identified by &apos;123456&apos;;
+//查看状态，记住File、Position的值，在Slaver中将用到
+show master status;</code></pre><h4 id="5、mysql从服务器设置："><a href="#5、mysql从服务器设置：" class="headerlink" title="5、mysql从服务器设置："></a>5、mysql从服务器设置：</h4><pre><code>docker exec -i -t slave01 /bin/bash
+
+mysql -u root -p
+
+//设置主库链接
+change master to master_host=&apos;192.168.56.101&apos;,master_user=&apos;backup&apos;,
+    master_password=&apos;123456&apos;,master_log_file=&apos;mysql-bin.000003&apos;,master_log_pos=154,master_port=29001;
+
+//启动从库同步    
+start slave; 
+
+//查看状态  
+show slave status\G;</code></pre><p><a href="https://i.loli.net/2018/08/09/5b6bdf61cc82b.png" target="_blank" rel="noopener" title="undefined"><img src="https://i.loli.net/2018/08/09/5b6bdf61cc82b.png" alt="undefined" title="undefined"></a> 这种情况说明mysql主从同步配置成功</p>
+<blockquote>
+<p>备注1：</p>
+</blockquote>
+<p>我一开始总是报错：Slave_IO_Running: Connecting；原因是在设置主库链接时我将ip地址设置为localhost；改为实际ip192.168.56.101即可  </p>
+<blockquote>
+<p>备注2（从服务器设置）：</p>
+</blockquote>
+<ol>
+<li>master_host：主库地址</li>
+<li>master_user：主库创建的同步账号</li>
+<li>master_password：主库创建的同步密码</li>
+<li>master_log_file：主库产生的日志（File）</li>
+<li>master_log_pos：主库日志记录偏移量（Position）</li>
+<li>master_port：主库使用的端口，默认为3306；我的是29001</li>
+</ol>
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

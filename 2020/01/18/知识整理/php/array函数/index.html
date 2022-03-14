@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>php的数组相关函数 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">拉到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "关闭"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">php的数组相关函数</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2020年01月18日&nbsp;&nbsp;23:23:07</a>
+                        </span>
+                    
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h2><ul>
+<li><code>array_column()</code>返回数组中某一个单列的值</li>
+<li><code>array_keys()</code>返回数组中所有的键名</li>
+<li><code>array_merge()</code>把一个或多个数组合并成一个数组</li>
+<li><code>array_pop()</code>删除数组的最后一个元素（出栈）</li>
+<li><code>array_push()</code>把一个或多个元素插入数组的末尾（入栈）</li>
+<li><code>array_rand()</code>返回数组中一个或多个随机的键</li>
+<li><code>array_search()</code>搜索数组中给定的值并返回键名</li>
+<li><code>array_shift()</code>删除数组首个元素并返回被删除元素的值</li>
+<li><code>array_unshift()</code>在数组头部添加一个或多个元素</li>
+<li><code>array_sum()</code>返回数组中值的和</li>
+<li><code>array_unique()</code>删除数组中重复的值</li>
+<li><code>array_values()</code>返回数组中所有的值</li>
+<li><code>arsort()</code>按照 键值 对关联数组进行降序排序</li>
+<li><code>asort()</code>按照 键值 对关联数组进行升序排序</li>
+<li><code>count()</code>返回数组中元素的数量</li>
+<li><code>in_array()</code>检查数组中是否存在指定的值</li>
+<li><code>krsort()</code>对数组按照键名逆向排序</li>
+<li><code>ksort()</code>对数组按照键名排序</li>
+<li><code>list()</code>把数组中的值赋给一些变量</li>
+<li><code>sort()</code>对数组排序</li>
+<li><code>rsort()</code>对数组逆向排序</li>
+<li><code>shuffle()</code>将数组打乱</li>
+</ul>
+<h2 id="详细列表"><a href="#详细列表" class="headerlink" title="详细列表"></a>详细列表</h2><table>
+<thead>
+<tr>
+<th><a href="https://www.w3school.com.cn/php/func_array.asp" target="_blank" rel="noopener">array()</a></th>
+<th>创建数组。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_change_key_case.asp" target="_blank" rel="noopener">array_change_key_case()</a></td>
+<td>把数组中所有键更改为小写或大写。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_chunk.asp" target="_blank" rel="noopener">array_chunk()</a></td>
+<td>把一个数组分割为新的数组块。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_column.asp" target="_blank" rel="noopener">array_column()</a></td>
+<td>返回输入数组中某个单一列的值。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_combine.asp" target="_blank" rel="noopener">array_combine()</a></td>
+<td>通过合并两个数组来创建一个新数组。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_count_values.asp" target="_blank" rel="noopener">array_count_values()</a></td>
+<td>用于统计数组中所有值出现的次数。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_diff.asp" target="_blank" rel="noopener">array_diff()</a></td>
+<td>比较数组，返回差集（只比较键值）。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_diff_assoc.asp" target="_blank" rel="noopener">array_diff_assoc()</a></td>
+<td>比较数组，返回差集（比较键名和键值）。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_diff_key.asp" target="_blank" rel="noopener">array_diff_key()</a></td>
+<td>比较数组，返回差集（只比较键名）。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_diff_uassoc.asp" target="_blank" rel="noopener">array_diff_uassoc()</a></td>
+<td>比较数组，返回差集（比较键名和键值，使用用户自定义的键名比较函数）。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_diff_ukey.asp" target="_blank" rel="noopener">array_diff_ukey()</a></td>
+<td>比较数组，返回差集（只比较键名，使用用户自定义的键名比较函数）。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_fill.asp" target="_blank" rel="noopener">array_fill()</a></td>
+<td>用给定的键值填充数组。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_fill_keys.asp" target="_blank" rel="noopener">array_fill_keys()</a></td>
+<td>用指定键名的给定键值填充数组。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_filter.asp" target="_blank" rel="noopener">array_filter()</a></td>
+<td>用回调函数过滤数组中的元素。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_flip.asp" target="_blank" rel="noopener">array_flip()</a></td>
+<td>交换数组中的键和值。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_intersect.asp" target="_blank" rel="noopener">array_intersect()</a></td>
+<td>比较数组，返回交集（只比较键值）。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_intersect_assoc.asp" target="_blank" rel="noopener">array_intersect_assoc()</a></td>
+<td>比较数组，返回交集（比较键名和键值）。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_intersect_key.asp" target="_blank" rel="noopener">array_intersect_key()</a></td>
+<td>比较数组，返回交集（只比较键名）。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_intersect_uassoc.asp" target="_blank" rel="noopener">array_intersect_uassoc()</a></td>
+<td>比较数组，返回交集（比较键名和键值，使用用户自定义的键名比较函数）。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_intersect_ukey.asp" target="_blank" rel="noopener">array_intersect_ukey()</a></td>
+<td>比较数组，返回交集（只比较键名，使用用户自定义的键名比较函数）。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_key_exists.asp" target="_blank" rel="noopener">array_key_exists()</a></td>
+<td>检查指定的键名是否存在于数组中。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_keys.asp" target="_blank" rel="noopener">array_keys()</a></td>
+<td>返回数组中所有的键名。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_map.asp" target="_blank" rel="noopener">array_map()</a></td>
+<td>把数组中的每个值发送到用户自定义函数，返回新的值。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_merge.asp" target="_blank" rel="noopener">array_merge()</a></td>
+<td>把一个或多个数组合并为一个数组。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_merge_recursive.asp" target="_blank" rel="noopener">array_merge_recursive()</a></td>
+<td>递归地合并一个或多个数组。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_multisort.asp" target="_blank" rel="noopener">array_multisort()</a></td>
+<td>对多个数组或多维数组进行排序。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_pad.asp" target="_blank" rel="noopener">array_pad()</a></td>
+<td>用值将数组填补到指定长度。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_pop.asp" target="_blank" rel="noopener">array_pop()</a></td>
+<td>删除数组的最后一个元素（出栈）。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_product.asp" target="_blank" rel="noopener">array_product()</a></td>
+<td>计算数组中所有值的乘积。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_push.asp" target="_blank" rel="noopener">array_push()</a></td>
+<td>将一个或多个元素插入数组的末尾（入栈）。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_rand.asp" target="_blank" rel="noopener">array_rand()</a></td>
+<td>返回数组中一个或多个随机的键。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_reduce.asp" target="_blank" rel="noopener">array_reduce()</a></td>
+<td>通过使用用户自定义函数，以字符串返回数组。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_replace.asp" target="_blank" rel="noopener">array_replace()</a></td>
+<td>使用后面数组的值替换第一个数组的值。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_replace_recursive.asp" target="_blank" rel="noopener">array_replace_recursive()</a></td>
+<td>递归地使用后面数组的值替换第一个数组的值。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_reverse.asp" target="_blank" rel="noopener">array_reverse()</a></td>
+<td>以相反的顺序返回数组。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_search.asp" target="_blank" rel="noopener">array_search()</a></td>
+<td>搜索数组中给定的值并返回键名。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_shift.asp" target="_blank" rel="noopener">array_shift()</a></td>
+<td>删除数组中首个元素，并返回被删除元素的值。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_slice.asp" target="_blank" rel="noopener">array_slice()</a></td>
+<td>返回数组中被选定的部分。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_splice.asp" target="_blank" rel="noopener">array_splice()</a></td>
+<td>删除并替换数组中指定的元素。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_sum.asp" target="_blank" rel="noopener">array_sum()</a></td>
+<td>返回数组中值的和。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_udiff.asp" target="_blank" rel="noopener">array_udiff()</a></td>
+<td>比较数组，返回差集（只比较值，使用一个用户自定义的键名比较函数）。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_udiff_assoc.asp" target="_blank" rel="noopener">array_udiff_assoc()</a></td>
+<td>比较数组，返回差集（比较键和值，使用内建函数比较键名，使用用户自定义函数比较键值）。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_udiff_uassoc.asp" target="_blank" rel="noopener">array_udiff_uassoc()</a></td>
+<td>比较数组，返回差集（比较键和值，使用两个用户自定义的键名比较函数）。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_uintersect.asp" target="_blank" rel="noopener">array_uintersect()</a></td>
+<td>比较数组，返回交集（只比较值，使用一个用户自定义的键名比较函数）。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_uintersect_assoc.asp" target="_blank" rel="noopener">array_uintersect_assoc()</a></td>
+<td>比较数组，返回交集（比较键和值，使用内建函数比较键名，使用用户自定义函数比较键值）。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_uintersect_uassoc.asp" target="_blank" rel="noopener">array_uintersect_uassoc()</a></td>
+<td>比较数组，返回交集（比较键和值，使用两个用户自定义的键名比较函数）。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_unique.asp" target="_blank" rel="noopener">array_unique()</a></td>
+<td>删除数组中的重复值。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_unshift.asp" target="_blank" rel="noopener">array_unshift()</a></td>
+<td>在数组开头插入一个或多个元素。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_values.asp" target="_blank" rel="noopener">array_values()</a></td>
+<td>返回数组中所有的值。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_walk.asp" target="_blank" rel="noopener">array_walk()</a></td>
+<td>对数组中的每个成员应用用户函数。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_walk_recursive.asp" target="_blank" rel="noopener">array_walk_recursive()</a></td>
+<td>对数组中的每个成员递归地应用用户函数。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_arsort.asp" target="_blank" rel="noopener">arsort()</a></td>
+<td>对关联数组按照键值进行降序排序。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_asort.asp" target="_blank" rel="noopener">asort()</a></td>
+<td>对关联数组按照键值进行升序排序。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_compact.asp" target="_blank" rel="noopener">compact()</a></td>
+<td>创建包含变量名和它们的值的数组。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_count.asp" target="_blank" rel="noopener">count()</a></td>
+<td>返回数组中元素的数目。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_current.asp" target="_blank" rel="noopener">current()</a></td>
+<td>返回数组中的当前元素。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_each.asp" target="_blank" rel="noopener">each()</a></td>
+<td>返回数组中当前的键／值对。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_end.asp" target="_blank" rel="noopener">end()</a></td>
+<td>将数组的内部指针指向最后一个元素。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_extract.asp" target="_blank" rel="noopener">extract()</a></td>
+<td>从数组中将变量导入到当前的符号表。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_in_array.asp" target="_blank" rel="noopener">in_array()</a></td>
+<td>检查数组中是否存在指定的值。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_key.asp" target="_blank" rel="noopener">key()</a></td>
+<td>从关联数组中取得键名。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_krsort.asp" target="_blank" rel="noopener">krsort()</a></td>
+<td>对数组按照键名逆向排序。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_ksort.asp" target="_blank" rel="noopener">ksort()</a></td>
+<td>对数组按照键名排序。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_list.asp" target="_blank" rel="noopener">list()</a></td>
+<td>把数组中的值赋给一些变量。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_natcasesort.asp" target="_blank" rel="noopener">natcasesort()</a></td>
+<td>用“自然排序”算法对数组进行不区分大小写字母的排序。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_natsort.asp" target="_blank" rel="noopener">natsort()</a></td>
+<td>用“自然排序”算法对数组排序。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_next.asp" target="_blank" rel="noopener">next()</a></td>
+<td>将数组中的内部指针向前移动一位。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_pos.asp" target="_blank" rel="noopener">pos()</a></td>
+<td>current() 的别名。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_prev.asp" target="_blank" rel="noopener">prev()</a></td>
+<td>将数组的内部指针倒回一位。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_range.asp" target="_blank" rel="noopener">range()</a></td>
+<td>创建包含指定范围单元的数组。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_reset.asp" target="_blank" rel="noopener">reset()</a></td>
+<td>将数组的内部指针指向第一个元素。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_rsort.asp" target="_blank" rel="noopener">rsort()</a></td>
+<td>对数组逆向排序。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_shuffle.asp" target="_blank" rel="noopener">shuffle()</a></td>
+<td>将数组打乱。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_sizeof.asp" target="_blank" rel="noopener">sizeof()</a></td>
+<td>count() 的别名。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_sort.asp" target="_blank" rel="noopener">sort()</a></td>
+<td>对数组排序。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_uasort.asp" target="_blank" rel="noopener">uasort()</a></td>
+<td>使用用户自定义的比较函数对数组中的键值进行排序。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_uksort.asp" target="_blank" rel="noopener">uksort()</a></td>
+<td>使用用户自定义的比较函数对数组中的键名进行排序。</td>
+</tr>
+<tr>
+<td><a href="https://www.w3school.com.cn/php/func_array_usort.asp" target="_blank" rel="noopener">usort()</a></td>
+<td>使用用户自定义的比较函数对数组进行排序。</td>
+</tr>
+</tbody></table>
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

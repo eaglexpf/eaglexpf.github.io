@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>flag包基本使用 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">拉到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "关闭"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">flag包基本使用</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2020年03月31日&nbsp;&nbsp;23:23:07</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/golang/">golang</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>flag包实现了命令行参数的解析</p>
+<h2 id="flag参数类型"><a href="#flag参数类型" class="headerlink" title="flag参数类型"></a>flag参数类型</h2><p>flag包支持的命令行参数类型有<code>bool</code>、<code>int</code>、<code>int64</code>、<code>uint</code>、<code>uint64</code>、<code>float</code> <code>float64</code>、<code>string</code>、<code>duration</code>。</p>
+<table>
+<thead>
+<tr>
+<th>字符串flag</th>
+<th>合法字符串</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>整数flag</td>
+<td>1234、0664、0x1234等类型，也可以是负数。</td>
+</tr>
+<tr>
+<td>浮点数flag</td>
+<td>合法浮点数</td>
+</tr>
+<tr>
+<td>bool类型flag</td>
+<td>1, 0, t, f, T, F, true, false, TRUE, FALSE, True, False。</td>
+</tr>
+<tr>
+<td>时间段flag</td>
+<td>任何合法的时间段字符串。如”300ms”、”-1.5h”、”2h45m”。 合法的单位有”ns”、”us”、“µs”、”ms”、”s”、”m”、”h”。</td>
+</tr>
+</tbody></table>
+<h2 id="三种定义方式"><a href="#三种定义方式" class="headerlink" title="三种定义方式"></a>三种定义方式</h2><h3 id="flag-Type"><a href="#flag-Type" class="headerlink" title="flag.Type()"></a>flag.Type()</h3><p>基本格式：其中 Type指针 可以是 Int、String，Bool 等；返回一个相应类型的指针</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">flag.Type(flag名, 默认值, 帮助信息)*Type</span><br><span class="line"></span><br><span class="line">示例：</span><br><span class="line">var ip &#x3D; flag.Int(&quot;flagname&quot;, 1234, &quot;help message for flagname&quot;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>第一个参数 ：flag名称为flagname</p>
+</li>
+<li><p>第二个参数 ：flagname默认值为1234</p>
+</li>
+<li><p>第三个参数 ：flagname的提示信息</p>
+<p>返回的ip是指针类型，所以这种方式获取的值应该<code>fmt.Println(*ip)</code></p>
+</li>
+</ul>
+<h3 id="flag-TypeVar"><a href="#flag-TypeVar" class="headerlink" title="flag.TypeVar()"></a>flag.TypeVar()</h3><p>基本格式：将 flag 绑定到一个变量上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">flag.TypeVar(Type指针, flag名, 默认值, 帮助信息)</span><br><span class="line"></span><br><span class="line">示例：</span><br><span class="line">var flagValue int</span><br><span class="line">flag.IntVar(&amp;flagValue, &quot;flagname&quot;, 1234, &quot;help message for flagname&quot;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>第一个参数 ：接收flagname的实际值的</p>
+</li>
+<li><p>第二个参数 ：flag名称为flagname</p>
+</li>
+<li><p>第三个参数 ：flagname默认值为1234</p>
+</li>
+<li><p>第四个参数 ：flagname的提示信息</p>
+<p>这种方式获取ip的值<code>fmt.Println(ip)</code>就可以了</p>
+</li>
+</ul>
+<h3 id="自定义类型"><a href="#自定义类型" class="headerlink" title="自定义类型"></a>自定义类型</h3><p>自定义一个用于flag的类型（满足Value接口）并将该类型用于flag解析，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag.Var(&amp;flagVal, &quot;name&quot;, &quot;help message for flagname&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>对这种flag，默认值就是该变量的初始值</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;定义一个类型，用于增加该类型方法</span><br><span class="line">type interval []time.Duration</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 格式化flag.value</span><br><span class="line">func (i *interval) String() string &#123;</span><br><span class="line">    return fmt.Sprint(*i)</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; Set is the method to set the flag value, part of the flag.Value interface.</span><br><span class="line">&#x2F;&#x2F; Set&#39;s argument is a string to be parsed to set the flag.</span><br><span class="line">&#x2F;&#x2F; It&#39;s a comma-separated list, so we split it.</span><br><span class="line">func (i *interval) Set(value string) error &#123;</span><br><span class="line">    &#x2F;&#x2F; If we wanted to allow the flag to be set multiple times,</span><br><span class="line">    &#x2F;&#x2F; accumulating values, we would delete this if statement.</span><br><span class="line">    &#x2F;&#x2F; That would permit usages such as</span><br><span class="line">    &#x2F;&#x2F;	-deltaT 10s -deltaT 15s</span><br><span class="line">    &#x2F;&#x2F; and other combinations.</span><br><span class="line">    if len(*i) &gt; 0 &#123;</span><br><span class="line">        return errors.New(&quot;interval flag already set&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    for _, dt :&#x3D; range strings.Split(value, &quot;,&quot;) &#123;</span><br><span class="line">        duration, err :&#x3D; time.ParseDuration(dt)</span><br><span class="line">        if err !&#x3D; nil &#123;</span><br><span class="line">            return err</span><br><span class="line">        &#125;</span><br><span class="line">        *i &#x3D; append(*i, duration)</span><br><span class="line">    &#125;</span><br><span class="line">    return nil</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; Define a flag to accumulate durations. Because it has a special type,</span><br><span class="line">&#x2F;&#x2F; we need to use the Var function and therefore create the flag during</span><br><span class="line">&#x2F;&#x2F; init.</span><br><span class="line">var intervalFlag interval</span><br><span class="line">func init() &#123;</span><br><span class="line">    &#x2F;&#x2F; Tie the command-line flag to the intervalFlag variable and</span><br><span class="line">    &#x2F;&#x2F; set a usage message.</span><br><span class="line">    flag.Var(&amp;intervalFlag, &quot;deltaT&quot;, &quot;comma-separated list of intervals to use between events&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="flag-Parse"><a href="#flag-Parse" class="headerlink" title="flag.Parse()"></a>flag.Parse()</h2><p>通过以上两种方法定义好命令行flag参数后，需要通过调用<code>flag.Parse()</code>来对命令行参数进行解析。</p>
+<p>支持的命令行参数格式有以下几种：</p>
+<ul>
+<li><code>-flag xxx</code> （使用空格，一个<code>-</code>符号）</li>
+<li><code>--flag xxx</code> （使用空格，两个<code>-</code>符号）</li>
+<li><code>-flag=xxx</code> （使用等号，一个<code>-</code>符号）</li>
+<li><code>--flag=xxx</code> （使用等号，两个<code>-</code>符号）</li>
+</ul>
+<p>其中，布尔类型的参数必须使用等号的方式指定。</p>
+<p>Flag解析在第一个非flag参数（单个”-“不是flag参数）之前停止，或者在终止符”–“之后停止。</p>
+<p>如果bool类型的参数在命令行中用了<code>-flag false</code>这种形式时，其后的参数都会被当做非flag（non-flag）参数</p>
+<h2 id="flag其他函数"><a href="#flag其他函数" class="headerlink" title="flag其他函数"></a>flag其他函数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">flag.Args()  &#x2F;&#x2F;以[]string类型返回命令行参数后的其他参数</span><br><span class="line">flag.NArg()  &#x2F;&#x2F;返回命令行参数后的其他参数个数</span><br><span class="line">flag.NFlag() &#x2F;&#x2F;返回使用的命令行参数个数</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">	&#x2F;&#x2F;定义命令行参数方式1</span><br><span class="line">	var name string</span><br><span class="line">	var age int</span><br><span class="line">	var married bool</span><br><span class="line">	var delay time.Duration</span><br><span class="line">	flag.StringVar(&amp;name, &quot;name&quot;, &quot;张三&quot;, &quot;姓名&quot;)</span><br><span class="line">	flag.IntVar(&amp;age, &quot;age&quot;, 18, &quot;年龄&quot;)</span><br><span class="line">	flag.BoolVar(&amp;married, &quot;married&quot;, false, &quot;婚否&quot;)</span><br><span class="line">	flag.DurationVar(&amp;delay, &quot;d&quot;, 0, &quot;延迟的时间间隔&quot;)</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F;解析命令行参数</span><br><span class="line">	flag.Parse()</span><br><span class="line">	fmt.Println(name, age, married, delay)</span><br><span class="line">	&#x2F;&#x2F;返回命令行参数后的其他参数</span><br><span class="line">	fmt.Println(flag.Args())</span><br><span class="line">	&#x2F;&#x2F;返回命令行参数后的其他参数个数</span><br><span class="line">	fmt.Println(flag.NArg())</span><br><span class="line">	&#x2F;&#x2F;返回使用的命令行参数个数</span><br><span class="line">	fmt.Println(flag.NFlag())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; These examples demonstrate more intricate uses of the flag package.</span><br><span class="line">package flag_test</span><br><span class="line">import (</span><br><span class="line">    &quot;errors&quot;</span><br><span class="line">    &quot;flag&quot;</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;strings&quot;</span><br><span class="line">    &quot;time&quot;</span><br><span class="line">)</span><br><span class="line">&#x2F;&#x2F; Example 1: A single string flag called &quot;species&quot; with default value &quot;gopher&quot;.</span><br><span class="line">var species &#x3D; flag.String(&quot;species&quot;, &quot;gopher&quot;, &quot;the species we are studying&quot;)</span><br><span class="line">&#x2F;&#x2F; Example 2: Two flags sharing a variable, so we can have a shorthand.</span><br><span class="line">&#x2F;&#x2F; The order of initialization is undefined, so make sure both use the</span><br><span class="line">&#x2F;&#x2F; same default value. They must be set up with an init function.</span><br><span class="line">var gopherType string</span><br><span class="line">func init() &#123;</span><br><span class="line">    const (</span><br><span class="line">        defaultGopher &#x3D; &quot;pocket&quot;</span><br><span class="line">        usage         &#x3D; &quot;the variety of gopher&quot;</span><br><span class="line">    )</span><br><span class="line">    flag.StringVar(&amp;gopherType, &quot;gopher_type&quot;, defaultGopher, usage)</span><br><span class="line">    flag.StringVar(&amp;gopherType, &quot;g&quot;, defaultGopher, usage+&quot; (shorthand)&quot;)</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; Example 3: A user-defined flag type, a slice of durations.</span><br><span class="line">type interval []time.Duration</span><br><span class="line">&#x2F;&#x2F; String is the method to format the flag&#39;s value, part of the flag.Value interface.</span><br><span class="line">&#x2F;&#x2F; The String method&#39;s output will be used in diagnostics.</span><br><span class="line">func (i *interval) String() string &#123;</span><br><span class="line">    return fmt.Sprint(*i)</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; Set is the method to set the flag value, part of the flag.Value interface.</span><br><span class="line">&#x2F;&#x2F; Set&#39;s argument is a string to be parsed to set the flag.</span><br><span class="line">&#x2F;&#x2F; It&#39;s a comma-separated list, so we split it.</span><br><span class="line">func (i *interval) Set(value string) error &#123;</span><br><span class="line">    &#x2F;&#x2F; If we wanted to allow the flag to be set multiple times,</span><br><span class="line">    &#x2F;&#x2F; accumulating values, we would delete this if statement.</span><br><span class="line">    &#x2F;&#x2F; That would permit usages such as</span><br><span class="line">    &#x2F;&#x2F;	-deltaT 10s -deltaT 15s</span><br><span class="line">    &#x2F;&#x2F; and other combinations.</span><br><span class="line">    if len(*i) &gt; 0 &#123;</span><br><span class="line">        return errors.New(&quot;interval flag already set&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    for _, dt :&#x3D; range strings.Split(value, &quot;,&quot;) &#123;</span><br><span class="line">        duration, err :&#x3D; time.ParseDuration(dt)</span><br><span class="line">        if err !&#x3D; nil &#123;</span><br><span class="line">            return err</span><br><span class="line">        &#125;</span><br><span class="line">        *i &#x3D; append(*i, duration)</span><br><span class="line">    &#125;</span><br><span class="line">    return nil</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; Define a flag to accumulate durations. Because it has a special type,</span><br><span class="line">&#x2F;&#x2F; we need to use the Var function and therefore create the flag during</span><br><span class="line">&#x2F;&#x2F; init.</span><br><span class="line">var intervalFlag interval</span><br><span class="line">func init() &#123;</span><br><span class="line">    &#x2F;&#x2F; Tie the command-line flag to the intervalFlag variable and</span><br><span class="line">    &#x2F;&#x2F; set a usage message.</span><br><span class="line">    flag.Var(&amp;intervalFlag, &quot;deltaT&quot;, &quot;comma-separated list of intervals to use between events&quot;)</span><br><span class="line">&#125;</span><br><span class="line">func Example() &#123;</span><br><span class="line">    &#x2F;&#x2F; All the interesting pieces are with the variables declared above, but</span><br><span class="line">    &#x2F;&#x2F; to enable the flag package to see the flags defined there, one must</span><br><span class="line">    &#x2F;&#x2F; execute, typically at the start of main (not init!):</span><br><span class="line">    &#x2F;&#x2F;	flag.Parse()</span><br><span class="line">    &#x2F;&#x2F; We don&#39;t run it here because this is not a main function and</span><br><span class="line">    &#x2F;&#x2F; the testing suite has already parsed the flags.</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="os-Args"><a href="#os-Args" class="headerlink" title="os.Args"></a>os.Args</h2><p><code>os.Args</code>是一个存储命令行参数的字符串切片，它的第一个元素是执行文件的名称。</p>
+<p>如果你只是简单的想要获取命令行参数，可以像下面的代码示例一样使用<code>os.Args</code>来获取命令行参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;os&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;os.Args demo</span><br><span class="line">func main() &#123;</span><br><span class="line">	&#x2F;&#x2F;os.Args是一个[]string</span><br><span class="line">	if len(os.Args) &gt; 0 &#123;</span><br><span class="line">		for index, arg :&#x3D; range os.Args &#123;</span><br><span class="line">			fmt.Printf(&quot;args[%d]&#x3D;%v\n&quot;, index, arg)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>将上面的代码执行<code>go build -o &quot;args_demo&quot;</code>编译之后，执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;args_demo a b c d</span><br><span class="line">args[0]&#x3D;.&#x2F;args_demo</span><br><span class="line">args[1]&#x3D;a</span><br><span class="line">args[2]&#x3D;b</span><br><span class="line">args[3]&#x3D;c</span><br><span class="line">args[4]&#x3D;d</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

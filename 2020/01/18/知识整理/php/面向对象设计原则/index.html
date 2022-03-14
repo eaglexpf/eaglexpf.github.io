@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>PHP面向对象设计五大原则 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">拉到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "关闭"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">PHP面向对象设计五大原则</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2020年01月18日&nbsp;&nbsp;23:23:07</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/">知识整理</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>SOLID 是 <strong>面向对象编程</strong> 和 <strong>面试对象设计</strong> 的五个基本原则，应用这五个原则能创建一个易于维护和扩展的软件系统。</p>
+<table>
+<thead>
+<tr>
+<th align="center">首字母 - 简写（全称）</th>
+<th align="center">指代</th>
+<th align="center">概念</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">S-SRP(Single Responsibility Principle)</td>
+<td align="center">单一功能原则</td>
+<td align="center">对象应该仅具有一种单一功能</td>
+</tr>
+<tr>
+<td align="center">O-OCP(Opened Closed Principle)</td>
+<td align="center">开闭原则</td>
+<td align="center">软件应该是对于扩展开放的，但对于修改封闭的</td>
+</tr>
+<tr>
+<td align="center">L-LSP(Liskov Substitution Principle)</td>
+<td align="center">里氏替换原则</td>
+<td align="center">程序中的对象应该是可以在不改变程序正确性的前提下被他的子类所替换</td>
+</tr>
+<tr>
+<td align="center">I-ISP(Interface Segregation Principle)</td>
+<td align="center">接口隔离原则</td>
+<td align="center">多个特定客户端接口要好于一个宽泛用途的接口</td>
+</tr>
+<tr>
+<td align="center">D-DIP(Dependency Inversion Principle)</td>
+<td align="center">依赖反转原则</td>
+<td align="center">一个方法应该遵从「依赖于抽象而不是一个实例」</td>
+</tr>
+</tbody></table>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><table>
+<thead>
+<tr>
+<th>SRP</th>
+<th>单一职责原则</th>
+<th>一个类有且只有一个更改的原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OCP</td>
+<td>开闭原则</td>
+<td>能够不更改类而扩展类的行为</td>
+</tr>
+<tr>
+<td>LSP</td>
+<td>里氏替换原则</td>
+<td>派生类可以替换基类使用</td>
+</tr>
+<tr>
+<td>ISP</td>
+<td>接口隔离原则</td>
+<td>使用客户端特定的细粒度接口</td>
+</tr>
+<tr>
+<td>DIP</td>
+<td>依赖反转原则</td>
+<td>依赖抽象而不是具体实现</td>
+</tr>
+</tbody></table>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><ul>
+<li><strong>单一职责（SRP）</strong>如何正确的划分职责，类的职责单一提高代码复用性，降低耦合性</li>
+<li><strong>接口隔离（ISP）</strong>合理划分接口功能，保证接口的专一性，纯洁性，减少依赖关系</li>
+<li><strong>里氏替换（LSP）</strong>合理利用类的继承体系，保证正确的继承关系不被破坏</li>
+<li><strong>依赖倒置（DIP）</strong>抽象接口编程由于抽象具体实现</li>
+<li><strong>开放封闭（OCP）</strong>面向对象编程终极目标所达到的结果，类/模块/系统的功能行为可扩展，内部更改性是封闭的</li>
+</ul>
+<h2 id="单一职责原则"><a href="#单一职责原则" class="headerlink" title="单一职责原则"></a>单一职责原则</h2><h5 id="定义与特性"><a href="#定义与特性" class="headerlink" title="定义与特性"></a>定义与特性</h5><ul>
+<li>仅有一个引起类变化的原因，即一个类只承担一项职责</li>
+<li>避免相同的职责分散到不同的类中，造成功能重复</li>
+</ul>
+<h5 id="优势："><a href="#优势：" class="headerlink" title="优势："></a>优势：</h5><ul>
+<li><strong>减少类之间的耦合</strong>：当需求变化时，只修改一个类，从而隔离了变化带来类对其他职责的影响</li>
+<li><strong>提高类的复用性</strong>：按需引用，一个类负责一个职责，需求的变动只需要修改对应的类或增加某一职责</li>
+<li><strong>降低类的复杂度</strong>：职责单一，功能分散开降低一个类多个职责类的复杂度</li>
+</ul>
+<p>在实际代码开发中的应用：工厂模式、命令模式、代理模式等。</p>
+<h2 id="接口隔离原则"><a href="#接口隔离原则" class="headerlink" title="接口隔离原则"></a>接口隔离原则</h2><h5 id="定义，特性"><a href="#定义，特性" class="headerlink" title="定义，特性"></a>定义，特性</h5><ul>
+<li>客户端不应该依赖他们不需要的方法/功能</li>
+<li>一个类对一个类的依赖应该建立在最小的接口上</li>
+<li>接口的实现类应该只呈现为单一职责原则</li>
+</ul>
+<h5 id="优势：-1"><a href="#优势：-1" class="headerlink" title="优势："></a>优势：</h5><ul>
+<li>将胖接口分离，每一组接口提供特定功能服务于特定一组的客户端程序</li>
+<li>对一组接口的更改不会/较小的影响到其他的接口/客户端程序，保证接口的纯洁性</li>
+</ul>
+<h5 id="单一职责和接口隔离比较"><a href="#单一职责和接口隔离比较" class="headerlink" title="单一职责和接口隔离比较"></a>单一职责和接口隔离比较</h5><ul>
+<li>都是解决软件设计中依赖关系原则</li>
+<li>SRP 注重职责的划分，主要约束类，其实是接口和方法，是程序中的细节和实现。ISP 注重接口的隔离，约束的是接口，从更宏观的角度对接口的抽象设计</li>
+</ul>
+<h2 id="开放封闭原则"><a href="#开放封闭原则" class="headerlink" title="开放封闭原则"></a>开放封闭原则</h2><h5 id="定义，特性-1"><a href="#定义，特性-1" class="headerlink" title="定义，特性"></a>定义，特性</h5><ul>
+<li>一个模块在扩展行为方面应该是开放的而在更改性方面应该是封闭的</li>
+</ul>
+<h5 id="优势：-2"><a href="#优势：-2" class="headerlink" title="优势："></a>优势：</h5><ul>
+<li>模块的行为是可扩展的，可以方便的对现有模块的行为/功能进行扩展</li>
+<li>对于模块行为的扩展不会/较小的影响现有系统/模块</li>
+</ul>
+<h5 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h5><p>OCP核心思想就是抽象接口编程，抽象相对稳定。让类依赖与固定的抽象，通过面向对象的继承和多态让类继承抽象，复写其方法或固有行为，是想新的扩展方法/功能，实现扩展。</p>
+<h2 id="里氏替换原则"><a href="#里氏替换原则" class="headerlink" title="里氏替换原则"></a>里氏替换原则</h2><h5 id="定义，特性-2"><a href="#定义，特性-2" class="headerlink" title="定义，特性"></a>定义，特性</h5><ul>
+<li><strong>子类必须能够替换掉他们的基类型</strong>：任何出现基类的地方都可以替换成子类并且客户端程序不会改变基类行为或者出现异常和错误，反之不行。</li>
+<li>客户端程序只应该使用子类的抽象父类，这样可以实现动态绑定（php多态）</li>
+</ul>
+<h5 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h5><p>LSP是OCP得以应用的最主要的原则之一，正是因为子类性的可替换行是的基类类型在无需修改的情况下扩展功能。</p>
+<h2 id="依赖倒置原则"><a href="#依赖倒置原则" class="headerlink" title="依赖倒置原则"></a>依赖倒置原则</h2><h5 id="定义，特性-3"><a href="#定义，特性-3" class="headerlink" title="定义，特性"></a>定义，特性</h5><ul>
+<li>高层模块不应该依赖与底层模块，二者都应该依赖于抽象</li>
+<li>抽象不应该依赖与细节，细节应该依赖于抽象</li>
+</ul>
+<h5 id="总结-3"><a href="#总结-3" class="headerlink" title="总结"></a>总结</h5><p>DIP原则就是每个高层次模块定义一个它所需服务的接口声明，低层次模块实现这个接口。每个高层次类通过该抽象接口使用服务。</p>
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>php socket读取发送数据 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">php socket读取发送数据</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2016年10月31日&nbsp;&nbsp;8:35:10</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/%E5%85%A8%E9%83%A8%E6%96%87%E7%AB%A0/">全部文章</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>协议：<br>####{‘type’:’测试’}<br>前四位为小端序，表示数据包(不含前4位)长度<br>后面为json数据包<br>workerman协议实现：<br>&lt;?php<br>namespace Protocols;<br>class JsonRX<br>{<br>    public static function input($recv_buffer)<br>    {<br>        // 接收到的数据还不够4字节，无法得知包的长度，返回0继续等待数据<br>        if(strlen($recv_buffer)&lt;4)<br>        {<br>            return 0;<br>        }<br>        // 利用unpack函数将首部4字节转换成数字，首部4字节即为整个数据包长度<br>        $unpack_data = unpack(‘Vtotal_length’, $recv_buffer);<br>        // 接收到的数据长度不够，返回0继续等待数据<br>      if(strlen($recv_buffer)&lt;$unpack_data[‘total_length’]+4){<br>         return 0;<br>      }<br>        return $unpack_data[‘total_length’]+4;<br>    }<br>    public static function decode($recv_buffer)<br>    {<br>        // 去掉首部4字节，得到包体Json数据<br>        $body_json_str = substr($recv_buffer, 4);<br>        // json解码<br>        return json_decode($body_json_str, true);<br>    }<br>    public static function encode($data)<br>    {<br>        // Json编码得到包体<br>        $body_json_str = json_encode($data);<br>        // 计算整个包的长度，包体字节数<br>        $total_length = strlen($body_json_str);var_dump($total_length);<br>        // 返回打包的数据<br>        return pack(‘V’,$total_length) . $body_json_str;<br>    }<br>}<br>原生测试代码数据实现（已知数据包长度）<br>&lt;?php<br>$data  =  json_encode([<br>   ‘cmd’  =&gt; 101,<br>   ‘response’ =&gt; [<br>      ‘page’ =&gt; 1,<br>      ‘page_size’    =&gt; 50,<br>      ‘board_id’ =&gt; 34,<br>   ]<br>]);<br>//发送的数据包<br>$send = pack(‘V’,strlen($data)).$data;<br>$ip = “127.0.0.1”;<br>$port = 8189;<br>//<br>$socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)or die(“Could not create  socket\n”);<br>$connection = socket_connect($socket, $host, $port) or die(“Could not connet server\n”);<br>socket_write($socket, $send) or die(“Write failed\n”);<br>//读取前四位，获取数据包长度<br>$buff = @socket_read($socket, 4);<br>$unpack_data = unpack(‘Vtotal_length’, $buff);<br>$content_len   =  $unpack_data[‘total_length’];<br>$per_len = 20000;     //每次读多少字节<br>$no_read_len = $content_len;  //未读的字节（总字节大小）<br>$str = ‘’;<br>$len = 0;<br>while($len&lt;$content_len)<br>{<br>   $read = socket_read($socket, $per_len,PHP_BINARY_READ);<br>   $str .= $read;//读取的数据<br>   $len += strlen($read);   //总共读了多少字节<br>}<br>var_dump($len);<br>$data  =  json_decode($str,true);<br>var_dump($data);<br>socket_close($socket);</p>
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

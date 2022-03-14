@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>CSRF和XSS | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">拉到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "关闭"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">CSRF和XSS</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2020年01月18日&nbsp;&nbsp;23:23:07</a>
+                        </span>
+                    
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="XSS攻击"><a href="#XSS攻击" class="headerlink" title="XSS攻击"></a>XSS攻击</h2><p>XSS（Cross Site Scripting）攻击的全称是跨站脚本攻击，跨站脚本攻击的方式是恶意攻击者在网页中嵌入恶意脚本程序，当用户打开网页的时候脚本程序便在客户端执行，盗取客户的cookie及用户名和密码，下载执行病毒及木马程序，甚至获得客户端的admin权限等。</p>
+<p>使用过滤函数，禁用cookie</p>
+<h2 id="CSRF攻击"><a href="#CSRF攻击" class="headerlink" title="CSRF攻击"></a>CSRF攻击</h2><p><code>CSRF</code>(跨站请求伪造)是一种恶意的攻击，它凭借已通过身份验证的用户身份来运行未经过授权的命令</p>
+<p>使用token验证，禁用cookie，校验Referer参数</p>
+<p>常用的过滤函数：</p>
+<ul>
+<li><p><code>htmlspecialchars</code>把预定义的字符转换为 HTML 实体</p>
+<p>预定义字符为：</p>
+<ul>
+<li><p>&amp; （和号）成为 &amp;</p>
+</li>
+<li><p>“ （双引号）成为 “</p>
+</li>
+<li><p>‘ （单引号）成为 ‘</p>
+</li>
+<li><p>&lt; （小于）成为 &lt;</p>
+</li>
+<li><p>&gt; （大于）成为 &gt;</p>
+</li>
+</ul>
+<p>注意：在使用<code>htmlspecialchars</code>函数时默认第二个参数为：<code>ENT_COMPAT</code>只编码双引号，使用该函数的时候更多的加上第二个参数，对单引号也编码：<code>htmlspecialchars($string,ENT_QUOTES)</code></p>
+<ul>
+<li>ENT_COMPAT - 默认。仅编码双引号。</li>
+<li>ENT_QUOTES - 编码双引号和单引号。</li>
+<li>ENT_NOQUOTES - 不编码任何引号。</li>
+</ul>
+</li>
+<li><p><code>htmlentities</code>把字符转换成html实体</p>
+</li>
+<li><p><code>stripslashes</code>删除反斜杠</p>
+</li>
+<li><p><code>strip_tags</code>去除字符串中的html标签</p>
+</li>
+</ul>
+<p>防范方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">A.PHP直接输出html的，可以采用以下的方法进行过滤：</span><br><span class="line"></span><br><span class="line">    1.htmlspecialchars函数</span><br><span class="line">    2.htmlentities函数</span><br><span class="line">    3.HTMLPurifier.auto.php插件</span><br><span class="line">    4.RemoveXss函数</span><br><span class="line"></span><br><span class="line">B.PHP输出到JS代码中，或者开发Json API的，则需要前端在JS中进行过滤：</span><br><span class="line"></span><br><span class="line">    1.尽量使用innerText(IE)和textContent(Firefox),也就是jQuery的text()来输出文本内容</span><br><span class="line">    2.必须要用innerHTML等等函数，则需要做类似php的htmlspecialchars的过滤</span><br><span class="line"></span><br><span class="line">C.其它的通用的补充性防御手段</span><br><span class="line"></span><br><span class="line">    1.在输出html时，加上Content Security Policy的Http Header</span><br><span class="line">    （作用：可以防止页面被XSS攻击时，嵌入第三方的脚本文件等）</span><br><span class="line">    （缺陷：IE或低版本的浏览器可能不支持）</span><br><span class="line">    2.在设置Cookie时，加上HttpOnly参数</span><br><span class="line">    （作用：可以防止页面被XSS攻击时，Cookie信息被盗取，可兼容至IE6）</span><br><span class="line">    （缺陷：网站本身的JS代码也无法操作Cookie，而且作用有限，只能保证Cookie的安全）</span><br><span class="line">    3.在开发API时，检验请求的Referer参数</span><br><span class="line">    （作用：可以在一定程度上防止CSRF攻击）</span><br><span class="line">    （缺陷：IE或低版本的浏览器中，Referer参数可以被伪造）</span><br></pre></td></tr></table></figure>
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>jpush极光推送v3 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">jpush极光推送v3</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2015年12月22日&nbsp;&nbsp;10:06:40</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/%E5%85%A8%E9%83%A8%E6%96%87%E7%AB%A0/">全部文章</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>&lt;?php<br>namespace Home\Controller;<br>use Think\Controller;<br>class Jpush{</p>
+<pre><code>private $app_key = &apos;*************&apos;;            //待发送的应用程序(appKey)，只能填一个。
+private $master_secret = &apos;************&apos;;        //主密码
+private $url = &quot;https://api.jpush.cn/v3/push&quot;;      //推送的地址
+
+//若实例化的时候传入相应的值则按新的相应值进行
+public function \_\_construct($app\_key=null, $master_secret=null,$url=null) {
+    if ($app\_key) $this-&gt;app\_key = $app_key;
+    if ($master\_secret) $this-&gt;master\_secret = $master_secret;
+    if ($url) $this-&gt;url = $url;
+}
+
+/*  $receiver 接收者的信息
+    all 字符串 该产品下面的所有用户. 对app_key下的所有用户推送消息
+    tag(20个)Array标签组(并集): tag=&gt;array(&apos;昆明&apos;,&apos;北京&apos;,&apos;曲靖&apos;,&apos;上海&apos;);
+    tag\_and(20个)Array标签组(交集): tag\_and=&gt;array(&apos;广州&apos;,&apos;女&apos;);
+    alias(1000)Array别名(并集): alias=&gt;array(&apos;93d78b73611d886a74\*\*\*\*\*88497f501&apos;,&apos;606d05090896228f66ae10d1\*\*\*\*\*310&apos;);
+    registration\_id(1000)注册ID设备标识(并集): registration\_id=&gt;array(&apos;20effc071de0b45c1a**********2824746e1ff2001bd80308a467d800bed39e&apos;);
+*/
+//$content 推送的内容。
+//$m_type 推送附加字段的类型(可不填) http,tips,chat....
+//$m_txt 推送附加字段的类型对应的内容(可不填) 可能是url,可能是一段文字。
+//$m_time 保存离线时间的秒数默认为一天(可不传)单位为秒
+public function send($receiver=&apos;all&apos;,$content=&apos;&apos;,$title=&apos;&apos;,$extras=&apos;&apos;,$m_time=&apos;86400&apos;){
+    $base64=base64\_encode(&quot;$this-&gt;app\_key:$this-&gt;master_secret&quot;);
+    $header=array(&quot;Authorization:Basic $base64&quot;,&quot;Content-Type:application/json&quot;);
+    $data = array();
+    $data\[&apos;platform&apos;\] = &apos;all&apos;;          //目标用户终端手机的平台类型android,ios,winphone
+    $data\[&apos;audience&apos;\] = $receiver;      //目标用户
+
+    $data\[&apos;notification&apos;\] = array( 
+        //安卓自定义
+        &quot;android&quot;=&gt;array(
+            &quot;alert&quot;=&gt;$content,
+            &quot;title&quot;=&gt;$title,
+            &quot;builder_id&quot;=&gt;1,
+            &quot;extras&quot;=&gt;$extras
+        ),
+        //ios的自定义
+        &quot;ios&quot;=&gt;array(
+             &quot;alert&quot;=&gt;$content,
+            &quot;badge&quot;=&gt;&quot;1&quot;,
+            &quot;sound&quot;=&gt;&quot;default&quot;,
+            &quot;extras&quot;=&gt;$extras
+        ),
+    );
+
+           //苹果自定义---为了弹出值方便调测
+    $data\[&apos;message&apos;\] = array(
+        &quot;msg_content&quot;=&gt;$content,
+        &quot;extras&quot;=&gt;$extras
+    );
+
+    //附加选项
+    $data\[&apos;options&apos;\] = array(
+        &quot;sendno&quot;=&gt;time(),
+        &quot;time\_to\_live&quot;=&gt;$m_time, //保存离线时间的秒数默认为一天
+        &quot;apns_production&quot;=&gt;0,        //指定 APNS 通知发送环境：0开发环境，1生产环境。
+    );
+    $param = json_encode($data);
+    $res = $this-&gt;push_curl($param,$header);
+
+    if($res){       //得到返回值--成功已否后面判断
+        return $res;
+    }else{          //未得到返回值--返回失败
+        return false;
+    }
+}
+
+//推送的Curl方法
+public function push_curl($param=&quot;&quot;,$header=&quot;&quot;) {
+    if (empty($param)) { return false; }
+    $postUrl = $this-&gt;url;
+    $curlPost = $param;
+    $ch = curl_init();                                      //初始化curl
+    curl\_setopt($ch, CURLOPT\_URL,$postUrl);                 //抓取指定网页
+    curl\_setopt($ch, CURLOPT\_HEADER, 0);                    //设置header
+    curl\_setopt($ch, CURLOPT\_RETURNTRANSFER, 1);            //要求结果为字符串且输出到屏幕上
+    curl\_setopt($ch, CURLOPT\_POST, 1);                      //post提交方式
+    curl\_setopt($ch, CURLOPT\_POSTFIELDS, $curlPost);
+    curl\_setopt($ch, CURLOPT\_HTTPHEADER,$header);           // 增加 HTTP Header（头）里的字段 
+    curl\_setopt($ch, CURLOPT\_SSL_VERIFYPEER, FALSE);        // 终止从服务端进行验证
+    curl\_setopt($ch, CURLOPT\_SSL_VERIFYHOST, FALSE);
+    $data = curl_exec($ch);                                 //运行curl
+    curl_close($ch);
+    return $data;
+}</code></pre><p>}<br>class PushController extends Controller{<br>    public function v3_ceshi($alias,$title,$msg,$data){<br>        if(!defined(‘appkeys’))define(‘appkeys’,’<strong>****</strong>‘);    //appkey值 极光portal上面提供<br>        if(!defined(‘masterSecret’))define(‘masterSecret’,’<strong><strong>**</strong></strong>‘);    //API MasterSecert值 极光portal上面提供<br>        if(empty($data)){<br>            $data   =   array(‘type’=&gt;’1’);<br>        }<br>        //require_once(‘./push_v3.php’);<br>        $obj = new jpush(appkeys,masterSecret);<br>        $user=array(<br>            ‘alias’=&gt;array($alias),<br>            //“registration_id”=&gt;array(“060e0db78e8”,),<br>        );<br>        $res=json_decode($obj-&gt;send($user,$msg,$title,$data));<br>//      to_json($res);<br>    }<br>}</p>
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>跨云部署docker swarm | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">拉到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "关闭"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">跨云部署docker swarm</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2020年06月18日&nbsp;&nbsp;23:23:07</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <blockquote>
+<p>跨云部署docker swarm必须使用大于19.03的docker版本</p>
+</blockquote>
+<h3 id="组建跨云服务器的局域网"><a href="#组建跨云服务器的局域网" class="headerlink" title="组建跨云服务器的局域网"></a>组建跨云服务器的局域网</h3><h4 id="安装openvpn服务器"><a href="#安装openvpn服务器" class="headerlink" title="安装openvpn服务器"></a>安装openvpn服务器</h4><ol>
+<li><p>使用GitHub上的一键安装脚本；地址：<a href="https://github.com/Nyr/openvpn-install" target="_blank" rel="noopener">https://github.com/Nyr/openvpn-install</a> </p>
+</li>
+<li><p>配置服务器的配置文件</p>
+<ul>
+<li><p>服务器配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"> vim &#x2F;etc&#x2F;openvpn&#x2F;server&#x2F;server.conf</span><br><span class="line"> </span><br><span class="line"> ;local 172.17.0.10</span><br><span class="line"> port 1194</span><br><span class="line"> proto udp</span><br><span class="line"> dev tun</span><br><span class="line"> ca ca.crt</span><br><span class="line"> cert server.crt</span><br><span class="line"> key server.key</span><br><span class="line"> dh dh.pem</span><br><span class="line"> auth SHA512</span><br><span class="line"> tls-crypt tc.key</span><br><span class="line"> topology subnet</span><br><span class="line"> server 10.8.0.0 255.255.255.0</span><br><span class="line"> push &quot;route 0.0.0.0 0.0.0.0&quot;</span><br><span class="line"> ;push &quot;redirect-gateway def1 bypass-dhcp&quot;</span><br><span class="line"> ifconfig-pool-persist ipp.txt</span><br><span class="line"> ;push &quot;dhcp-option DNS 183.60.83.19&quot;</span><br><span class="line"> ;push &quot;dhcp-option DNS 183.60.82.98&quot;</span><br><span class="line"> keepalive 10 120</span><br><span class="line"> cipher AES-256-CBC</span><br><span class="line"> user nobody</span><br><span class="line"> group nobody</span><br><span class="line"> persist-key</span><br><span class="line"> persist-tun</span><br><span class="line"> status openvpn-status.log</span><br><span class="line"> verb 3</span><br><span class="line"> crl-verify crl.pem</span><br><span class="line"> explicit-exit-notify</span><br><span class="line"> </span><br><span class="line"> ## 主要修改内容：</span><br><span class="line"> 1. 增加&#96;push &quot;route 0.0.0.0 0.0.0.0&quot;&#96;</span><br><span class="line"> 2. 注释&#96;push &quot;redirect-gateway def1 bypass-dhcp&quot;&#96;,&#96;push &quot;dhcp-option DNS 183.60.83.19&quot;&#96;和&#96;push &quot;dhcp-option DNS 183.60.82.98&quot;&#96;</span><br><span class="line"> </span><br><span class="line"> ## 注意：windows使用openvpn gui时会造成只能访问局域网，不能访问外网；解决方式如下</span><br><span class="line"> 原配置：</span><br><span class="line"> client</span><br><span class="line"> dev tun</span><br><span class="line"> proto udp</span><br><span class="line"> remote 49.234.201.19 1194</span><br><span class="line"> resolv-retry infinite</span><br><span class="line"> nobind</span><br><span class="line"> persist-key</span><br><span class="line"> persist-tun</span><br><span class="line"> remote-cert-tls server</span><br><span class="line"> auth SHA512</span><br><span class="line"> cipher AES-256-CBC</span><br><span class="line"> ignore-unknown-option block-outside-dns</span><br><span class="line"> block-outside-dns</span><br><span class="line"> verb 3</span><br><span class="line"> 修改内容：</span><br><span class="line"> 删除&#96;block-outside-dns&#96;</span><br><span class="line"> windows配置删除block-outside-dns这一行，就行了</span><br><span class="line">因为这个设置， OpenVPN 会添加 Windows 防火墙记录</span><br><span class="line"> 参考网址：https:&#x2F;&#x2F;www.v2ex.com&#x2F;t&#x2F;521393#reply19</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>指定客户端ip</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">已有配置：ifconfig-pool-persist ipp.txt</span><br><span class="line">修改ipp.txt的文件内容，指定用户的ip</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 网上查到的方法</span><br><span class="line">1、在server.conf文件中增加客户端配目录，ccd可以任意指定：</span><br><span class="line">	client-config-dir ccd</span><br><span class="line"> </span><br><span class="line">2、进入ccd目录后，用客户名（就是common name）建立文件。</span><br><span class="line">例如：客户名：litifeng  ip：10.8.0.6</span><br><span class="line">则名为litifeng的文件中，写入下面代码：</span><br><span class="line">	ifconfig-push 10.8.0.6 255.255.255.0</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><p>重启服务器的openvpn服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart openvpn-server@server.service</span><br><span class="line">systemctl status openvpn-server@server.service</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h3 id="客户端安装vpn"><a href="#客户端安装vpn" class="headerlink" title="客户端安装vpn"></a>客户端安装vpn</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">yum -y install epel-release</span><br><span class="line">yum -y install openvpn</span><br><span class="line"></span><br><span class="line">启动vpn,client.ovpn为服务器生成的文件</span><br><span class="line">openvpn --daemon --cd &#x2F;etc&#x2F;openvpn&#x2F;client --config client.ovpn --log-append &#x2F;var&#x2F;log&#x2F;openvpn.log</span><br><span class="line">查看log</span><br><span class="line">tail -f &#x2F;var&#x2F;log&#x2F;openvpn.log</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="初始化docker-swarm"><a href="#初始化docker-swarm" class="headerlink" title="初始化docker swarm"></a>初始化docker swarm</h3><p>跨云部署docker swarm时routingMesh等都无法使用，因为docker swarm需要使用4789的udp端口；而部分云服务商将4789端口自用了，所以在19.03版本之前的docker是无法使用docker swarm服务的</p>
+<ol>
+<li><p>开放iptables端口，所有节点全部开放</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># docker</span><br><span class="line">-A INPUT -p tcp -m state --state NEW -m tcp --dport 2376 -j ACCEPT</span><br><span class="line">-A INPUT -p tcp -m state --state NEW -m tcp --dport 2377 -j ACCEPT</span><br><span class="line">-A INPUT -p udp -m state --state NEW -m udp --dport 4789 -j ACCEPT</span><br><span class="line">-A INPUT -p udp -m state --state NEW -m udp --dport 5789 -j ACCEPT</span><br><span class="line">-A INPUT -p tcp -m state --state NEW -m tcp --dport 7946 -j ACCEPT</span><br><span class="line">-A INPUT -p udp -m state --state NEW -m udp --dport 7946 -j ACCEPT</span><br><span class="line"># openvpn</span><br><span class="line">-A INPUT -p tcp -m state --state NEW -m tcp --dport 1194 -j ACCEPT</span><br><span class="line">-A INPUT -p udp -m state --state NEW -m udp --dport 1194 -j ACCEPT</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p>初始化docker swarm</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker swarm init --advertise-addr 10.8.0.1:2377 --listen-addr 10.8.0.1:2377  --data-path-port 5789</span><br><span class="line"></span><br><span class="line">## 参数说明</span><br><span class="line">--advertise-addr 指定其他节点用来连接到当前管理节点的 IP 和端口。这一属性是可选的，当节点上有多个 IP 时，可以用于指定使用哪个IP。此外，还可以用于指定一个节点上没有的 IP，比如一个负载均衡的 IP。</span><br><span class="line"></span><br><span class="line">--listen-addr 指定用于承载 Swarm 流量的 IP 和端口。其设置通常与 --advertise-addr 相匹配，但是当节点上有多个 IP 的时候，可用于指定具体某个 IP。并且，如果 --advertise-addr 设置了一个远程 IP 地址（如负载均衡的IP地址），该属性也是需要设置的。建议执行命令时总是使用这两个属性来指定具体 IP 和端口。</span><br><span class="line"></span><br><span class="line">--data-path-port</span><br><span class="line">该标志允许您配置用于数据路径通信的UDP端口号。提供的端口号必须在1024-49151范围内。如果未设置此标志或将其设置为0，则使用默认端口号4789。数据路径端口只能在初始化群集时配置，并且适用于加入群集的所有节点。以下示例初始化一个新的Swarm，并将数据路径端口配置为UDP端口5789。</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="3">
+<li><p>加入docker swarm</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">## 获取加入集群的命令</span><br><span class="line">docker swarm join-token worker      &#x2F;&#x2F;获取工作节点的token</span><br><span class="line">docker swarm join-token manager     &#x2F;&#x2F;获取管理节点的token</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<ol start="4">
+<li><p>创建overlay网络</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">docker network create \</span><br><span class="line">--driver overlay \</span><br><span class="line">--attachable \</span><br><span class="line">server_net</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 如果创建的ingress网络未指定--attachable参数，则ingress网络只允许服务连接到overlay网络中</span><br><span class="line">&#x2F;&#x2F; 想要连接单一容器到overlay网络，就必须在创建overlay网络时添加--attachable参数，</span><br><span class="line">&#x2F;&#x2F; 并且单一容器并不是暴露所有端口到overlay网络中，需要自己发布</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<ol start="5">
+<li><p>测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker service create --name web --network server_net --publish 80:80 --replicas 2 httpd</span><br><span class="line"></span><br><span class="line">docker service scale web&#x3D;1</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<h3 id="安装kong"><a href="#安装kong" class="headerlink" title="安装kong"></a>安装kong</h3><ol>
+<li><p>安装postgres</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"># 生成随机密码</span><br><span class="line">openssl rand -base64 20 &gt;&gt; postgres_password.txt</span><br><span class="line"></span><br><span class="line"># 使用docker-compose</span><br><span class="line">version: &quot;3.3&quot;</span><br><span class="line">services:</span><br><span class="line">  postgres:</span><br><span class="line">    container_name: &quot;postgres&quot;</span><br><span class="line">    image: &quot;postgres:9.6&quot;</span><br><span class="line">    restart: &quot;always&quot;</span><br><span class="line">    environment:</span><br><span class="line">      POSTGRES_USER: kong</span><br><span class="line">      POSTGRES_DB: kong</span><br><span class="line">      POSTGRES_PASSWORD_FILE: &#x2F;run&#x2F;secrets&#x2F;postgres_password</span><br><span class="line">    secrets:</span><br><span class="line">      - postgres_password</span><br><span class="line">    volumes:</span><br><span class="line">      - &quot;&#x2F;data&#x2F;docker&#x2F;postgres&#x2F;data:&#x2F;var&#x2F;lib&#x2F;postgresql&#x2F;data&quot;</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;5432:5432&quot;</span><br><span class="line">networks:</span><br><span class="line">  default:</span><br><span class="line">    external:</span><br><span class="line">      name: server_net</span><br><span class="line">secrets:</span><br><span class="line">  postgres_password:</span><br><span class="line">    file: .&#x2F;postgres_password.txt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 直接运行</span><br><span class="line">docker run -d --restart always --name postgres \</span><br><span class="line">               --network&#x3D;server_net \</span><br><span class="line">               -p 5432:5432 \</span><br><span class="line">               -e POSTGRES_USER&#x3D;kong \</span><br><span class="line">               -e POSTGRES_DB&#x3D;kong \</span><br><span class="line">               -e POSTGRES_PASSWORD&#x3D;123456 \</span><br><span class="line">               -v &#x2F;data&#x2F;docker&#x2F;postgres&#x2F;data:&#x2F;var&#x2F;lib&#x2F;postgresql&#x2F;data \</span><br><span class="line">               postgres:9.6</span><br><span class="line">               </span><br><span class="line">               </span><br><span class="line"># 创建用户</span><br><span class="line">create user harbor with password &#39;123456&#39;;</span><br><span class="line"># 创建数据库</span><br><span class="line">create database harbor owner harbor;</span><br><span class="line"># 将数据库的权限全部赋予某个用户</span><br><span class="line">grant all on database harbor to harbor;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p>初始化及更新数据库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">docker run --rm \</span><br><span class="line">     --network&#x3D;server_net \</span><br><span class="line">     -e &quot;KONG_DATABASE&#x3D;postgres&quot; \</span><br><span class="line">     -e &quot;KONG_PG_HOST&#x3D;postgres&quot; \</span><br><span class="line">     -e &quot;KONG_PG_PASSWORD&#x3D;123456&quot; \</span><br><span class="line">     kong:latest kong migrations bootstrap</span><br><span class="line">     </span><br><span class="line">docker run --rm \</span><br><span class="line">     --network&#x3D;server_net \</span><br><span class="line">     -e &quot;KONG_DATABASE&#x3D;postgres&quot; \</span><br><span class="line">     -e &quot;KONG_PG_HOST&#x3D;postgres&quot; \</span><br><span class="line">     -e &quot;KONG_PG_PASSWORD&#x3D;123456&quot; \</span><br><span class="line">     kong:latest kong migrations up</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="3">
+<li><p>设置数据库主机label</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker node update --label-add kong&#x3D;master [主机名称]</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="4">
+<li><p>创建kong服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"># 使用docker-compose</span><br><span class="line">version: &quot;3.3&quot;</span><br><span class="line">services:</span><br><span class="line">  kong:</span><br><span class="line">    image: &quot;kong:latest&quot;</span><br><span class="line">    environment:</span><br><span class="line">      KONG_DATABASE: postgres</span><br><span class="line">      KONG_PG_HOST: postgres</span><br><span class="line">      KONG_PG_PASSWORD_FILE: &#x2F;run&#x2F;secrets&#x2F;postgres_password</span><br><span class="line">      KONG_PROXY_ACCESS_LOG: &#x2F;dev&#x2F;stdout</span><br><span class="line">      KONG_ADMIN_ACCESS_LOG: &#x2F;dev&#x2F;stdout</span><br><span class="line">      KONG_PROXY_ERROR_LOG: &#x2F;dev&#x2F;stderr</span><br><span class="line">      KONG_ADMIN_ERROR_LOG: &#x2F;dev&#x2F;stderr</span><br><span class="line">      KONG_ADMIN_LISTEN: &quot;0.0.0.0:8001, 0.0.0.0:8444 ssl&quot;</span><br><span class="line">    secrets:</span><br><span class="line">      - postgres_password</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;8000:8000&quot;</span><br><span class="line">      - &quot;8001:8001&quot;</span><br><span class="line">      - &quot;8443:8443&quot;</span><br><span class="line">    deploy:</span><br><span class="line">      mode: replicated</span><br><span class="line">      replicas: 1</span><br><span class="line">  konga:</span><br><span class="line">    image: pantsel&#x2F;konga</span><br><span class="line">    environment:</span><br><span class="line">      DB_ADAPTER: mysql</span><br><span class="line">      DB_HOST: mysql_master</span><br><span class="line">      DB_PORT: 3306</span><br><span class="line">      DB_USER: konga</span><br><span class="line">      DB_PASSWORD: 123456</span><br><span class="line">      DB_DATABASE: konga</span><br><span class="line">    deploy:</span><br><span class="line">      mode: replicated</span><br><span class="line">      replicas: 1</span><br><span class="line">networks:</span><br><span class="line">  default:</span><br><span class="line">    external:</span><br><span class="line">      name: server_net</span><br><span class="line">secrets:</span><br><span class="line">  postgres_password:</span><br><span class="line">    file: .&#x2F;postgres_password.txt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 直接运行</span><br><span class="line">docker service create --name kong \</span><br><span class="line">     --network&#x3D;server_net \</span><br><span class="line">     -e &quot;KONG_DATABASE&#x3D;postgres&quot; \</span><br><span class="line">     -e &quot;KONG_PG_HOST&#x3D;postgres&quot; \</span><br><span class="line">     -e &quot;KONG_PG_PASSWORD&#x3D;123456&quot; \</span><br><span class="line">     -e &quot;KONG_PROXY_ACCESS_LOG&#x3D;&#x2F;dev&#x2F;stdout&quot; \</span><br><span class="line">     -e &quot;KONG_ADMIN_ACCESS_LOG&#x3D;&#x2F;dev&#x2F;stdout&quot; \</span><br><span class="line">     -e &quot;KONG_PROXY_ERROR_LOG&#x3D;&#x2F;dev&#x2F;stderr&quot; \</span><br><span class="line">     -e &quot;KONG_ADMIN_ERROR_LOG&#x3D;&#x2F;dev&#x2F;stderr&quot; \</span><br><span class="line">     -e &quot;KONG_ADMIN_LISTEN&#x3D;0.0.0.0:8001, 0.0.0.0:8444 ssl&quot; \</span><br><span class="line">     -p 8000:8000 \</span><br><span class="line">     -p 8001:8001 \</span><br><span class="line">     -p 8443:8443 \</span><br><span class="line">     kong:latest</span><br><span class="line">     </span><br><span class="line">     </span><br><span class="line"># 创建konga服务和路由</span><br><span class="line">curl http:&#x2F;&#x2F;127.0.0.1:8001&#x2F;services -X POST -d &#39;name&#x3D;konga&amp;host&#x3D;konga&amp;port&#x3D;1337&#39;</span><br><span class="line">curl http:&#x2F;&#x2F;127.0.0.1:8001&#x2F;services&#x2F;konga&#x2F;routes -X POST -d &#39;hosts[]&#x3D;konga.xupengfei.net&#39;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装mysql</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"># 生成随机密码</span><br><span class="line">openssl rand -base64 20 &gt;&gt; mysql_password.txt</span><br><span class="line">openssl rand -base64 20 &gt;&gt; mysql_konga_password.txt</span><br><span class="line"></span><br><span class="line"># 使用docker-compose</span><br><span class="line">version: &quot;3.3&quot;</span><br><span class="line">services:</span><br><span class="line">  mysql:</span><br><span class="line">    container_name: &quot;mysql_master&quot;</span><br><span class="line">    image: &quot;mysql:5.7&quot;</span><br><span class="line">    restart: &quot;always&quot;</span><br><span class="line">    environment:</span><br><span class="line">      MYSQL_ROOT_PASSWORD_FILE: &#x2F;run&#x2F;secrets&#x2F;mysql_password</span><br><span class="line">    secrets:</span><br><span class="line">      - mysql_password</span><br><span class="line">    volumes:</span><br><span class="line">      - &quot;&#x2F;data&#x2F;docker&#x2F;mysql&#x2F;conf:&#x2F;etc&#x2F;mysql&#x2F;conf.d&quot;</span><br><span class="line">      - &quot;&#x2F;data&#x2F;docker&#x2F;mysql&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql&quot;</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;3306:3306&quot;</span><br><span class="line">networks:</span><br><span class="line">  default:</span><br><span class="line">    external:</span><br><span class="line">      name: server_net</span><br><span class="line">secrets:</span><br><span class="line">  mysql_password:</span><br><span class="line">    file: .&#x2F;mysql_password.txt</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"># 创建新用户</span><br><span class="line">create user konga identified by &#39;123456&#39;;</span><br><span class="line"># 创建数据库</span><br><span class="line">CREATE DATABASE IF NOT EXISTS konga DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_general_ci;</span><br><span class="line"># 查看用户权限</span><br><span class="line">show grants for &quot;konga&quot;@&quot;%&quot;;</span><br><span class="line"># 取消用户权限</span><br><span class="line">revoke all on *.* from &quot;konga&quot;@&quot;%&quot;;</span><br><span class="line"># 授权</span><br><span class="line">grant all privileges on konga.* to konga@&#39;%&#39; identified by &#39;123456&#39;;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装redis</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3.3&quot;</span><br><span class="line">services:</span><br><span class="line">  redis:</span><br><span class="line">    container_name: &quot;redis&quot;</span><br><span class="line">    image: &quot;redis&quot;</span><br><span class="line">    restart: &quot;always&quot;</span><br><span class="line">    volumes:</span><br><span class="line">      - &quot;&#x2F;data&#x2F;docker&#x2F;redis&#x2F;data:&#x2F;data&quot;</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;6379:6379&quot;</span><br><span class="line">networks:</span><br><span class="line">  default:</span><br><span class="line">    external:</span><br><span class="line">      name: server_net</span><br><span class="line"></span><br><span class="line">docker run -d -p 6379:6379 --restart always --network server_net --name redis -v &#x2F;data&#x2F;docker&#x2F;redis&#x2F;data:&#x2F;data redis</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="7">
+<li><p>创建konga管理面板</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"># 使用docker-compose</span><br><span class="line">version: &quot;3.3&quot;</span><br><span class="line">services:</span><br><span class="line">  konga:</span><br><span class="line">    image: pantsel&#x2F;konga</span><br><span class="line">    environment:</span><br><span class="line">      DB_ADAPTER: mysql</span><br><span class="line">      DB_HOST: mysql_master</span><br><span class="line">      DB_PORT: 3306</span><br><span class="line">      DB_USER: konga</span><br><span class="line">      DB_PASSWORD: 123456</span><br><span class="line">      DB_DATABASE: konga</span><br><span class="line">    deploy:</span><br><span class="line">      mode: replicated</span><br><span class="line">      replicas: 1</span><br><span class="line">networks:</span><br><span class="line">  default:</span><br><span class="line">    external:</span><br><span class="line">      name: server_net</span><br><span class="line"></span><br><span class="line"># 直接运行</span><br><span class="line">docker service create --network server_net --name konga pantsel&#x2F;konga</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="8">
+<li><p>安装gitlab</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"># 使用docker-compose</span><br><span class="line">version: &quot;3.3&quot;</span><br><span class="line">services:</span><br><span class="line">  konga:</span><br><span class="line">    container_name: &quot;gitlab&quot;</span><br><span class="line">    image: gitlab&#x2F;gitlab-ce</span><br><span class="line">    restart: &quot;always&quot;</span><br><span class="line">    volumes:</span><br><span class="line">      - &quot;&#x2F;data&#x2F;docker&#x2F;gitlab&#x2F;config:&#x2F;etc&#x2F;gitlab&quot;</span><br><span class="line">      - &quot;&#x2F;data&#x2F;docker&#x2F;gitlab&#x2F;logs:&#x2F;var&#x2F;log&#x2F;gitlab&quot;</span><br><span class="line">      - &quot;&#x2F;data&#x2F;docker&#x2F;gitlab&#x2F;data:&#x2F;var&#x2F;opt&#x2F;gitlab&quot;</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;9922:22&quot;</span><br><span class="line">networks:</span><br><span class="line">  default:</span><br><span class="line">    external:</span><br><span class="line">      name: server_net</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 直接运行</span><br><span class="line">docker run -d \</span><br><span class="line"> -p 9980:80 \</span><br><span class="line"> -p 9922:22 \</span><br><span class="line"> -v &#x2F;data&#x2F;docker&#x2F;gitlab&#x2F;config:&#x2F;etc&#x2F;gitlab  \</span><br><span class="line"> -v &#x2F;data&#x2F;docker&#x2F;gitlab&#x2F;logs:&#x2F;var&#x2F;log&#x2F;gitlab \</span><br><span class="line"> -v &#x2F;data&#x2F;docker&#x2F;gitlab&#x2F;data:&#x2F;var&#x2F;opt&#x2F;gitlab \</span><br><span class="line"> --restart always \</span><br><span class="line"> --network server_net \</span><br><span class="line"> --name gitlab \</span><br><span class="line"> gitlab&#x2F;gitlab-ce</span><br><span class="line"> </span><br><span class="line">## 修改配置文件</span><br><span class="line">vim &#x2F;data&#x2F;docker&#x2F;gitlab&#x2F;config&#x2F;gitlab.rb</span><br><span class="line">external_url &#39;http:&#x2F;&#x2F;gitlab.xupengfei.net&#39;</span><br><span class="line">gitlab_rails[&#39;gitlab_ssh_host&#39;] &#x3D; &#39;gitlab.xupengfei.net&#39;</span><br><span class="line">gitlab_rails[&#39;gitlab_shell_ssh_port&#39;] &#x3D; 9922</span><br><span class="line">## 重启gitlab</span><br><span class="line">docker restart gitlab</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="9">
+<li><p>安装邮件服务器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># 设置服务器主机名</span><br><span class="line">hostnamectl set-hostname mail.xupengfei.net</span><br><span class="line"></span><br><span class="line">docker pull centos:7.4.1708</span><br><span class="line"># 运行新容器并设置主机名,开放端口等</span><br><span class="line">docker run -itd --name ewomail -h mail.xupengfei.net --privileged&#x3D;true \</span><br><span class="line">  -p 25:25 \</span><br><span class="line">  -p 110:110 \</span><br><span class="line">  -p 143:143 \</span><br><span class="line">  -p 465:465 \</span><br><span class="line">  -p 587:587 \</span><br><span class="line">  -p 993:993 \</span><br><span class="line">  -p 995:995  \</span><br><span class="line">  -p 13000:8000 \</span><br><span class="line">  -p 13010:8010 \</span><br><span class="line">  -p 13020:8020 \</span><br><span class="line">  --restart always \</span><br><span class="line">  -v &#x2F;data&#x2F;docker&#x2F;ewomail&#x2F;data:&#x2F;ewomail centos:7.4.1708 init &#x2F;bin&#x2F;bash</span><br><span class="line"># 进入容器</span><br><span class="line">docker exec -it ewomail &#x2F;bin&#x2F;bash</span><br><span class="line"></span><br><span class="line">yum clean all &amp;&amp; rm -rf &#x2F;var&#x2F;cache&#x2F;yum &amp;&amp; yum update -y &amp;&amp; yum -y install git &amp;&amp; cd &#x2F;root &amp;&amp; git clone https:&#x2F;&#x2F;gitee.com&#x2F;laowu5&#x2F;EwoMail.git &amp;&amp; cd &#x2F;root&#x2F;EwoMail&#x2F;install  &amp;&amp; chmod +x start.sh &amp;&amp; sh start.sh xupengfei.net</span><br><span class="line"> </span><br><span class="line"># 获取DKIM（防止被判定为垃圾邮件）</span><br><span class="line">amavisd -c &#x2F;etc&#x2F;amavisd&#x2F;amavisd.conf showkeys</span><br><span class="line"># 容器打包成镜像</span><br><span class="line">docker commit ewomail ewomail</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="10">
+<li><p>安装Jenkins</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># 使用docker-compose</span><br><span class="line">version: &quot;3.3&quot;</span><br><span class="line">services:</span><br><span class="line">  jenkins:</span><br><span class="line">    container_name: &quot;jenkins&quot;</span><br><span class="line">    image: jenkins</span><br><span class="line">    restart: &quot;always&quot;</span><br><span class="line">    user: root</span><br><span class="line">    privileged: true</span><br><span class="line">    volumes:</span><br><span class="line">      - &quot;&#x2F;data&#x2F;docker&#x2F;jenkins&#x2F;data:&#x2F;var&#x2F;jenkins_home&quot;</span><br><span class="line">      - &quot;&#x2F;var&#x2F;run&#x2F;docker.sock:&#x2F;var&#x2F;run&#x2F;docker.sock&quot;</span><br><span class="line">      - &quot;&#x2F;usr&#x2F;bin&#x2F;docker:&#x2F;usr&#x2F;bin&#x2F;docker&quot;</span><br><span class="line">      - &quot;&#x2F;etc&#x2F;localtime:&#x2F;etc&#x2F;localtime&quot;</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;58080:8080&quot;</span><br><span class="line">      - &quot;50000:50000&quot;</span><br><span class="line">networks:</span><br><span class="line">  default:</span><br><span class="line">    external:</span><br><span class="line">      name: server_net</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="11">
+<li><p>安装gogs</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"># 使用docker-compose</span><br><span class="line">version: &quot;3.3&quot;</span><br><span class="line">services:</span><br><span class="line">  gogs:</span><br><span class="line">    container_name: &quot;gogs&quot;</span><br><span class="line">    image: gogs&#x2F;gogs</span><br><span class="line">    restart: &quot;always&quot;</span><br><span class="line">    volumes:</span><br><span class="line">      - &quot;&#x2F;data&#x2F;docker&#x2F;gogs&#x2F;data:&#x2F;data&quot;</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;10022:22&quot;</span><br><span class="line">      - &quot;10080:3000&quot;</span><br><span class="line">networks:</span><br><span class="line">  default:</span><br><span class="line">    external:</span><br><span class="line">      name: server_net</span><br><span class="line"></span><br><span class="line"># mysql 创建用户</span><br><span class="line"># 创建新用户</span><br><span class="line">create user gogs identified by &#39;123456&#39;;</span><br><span class="line"># 创建数据库</span><br><span class="line">CREATE DATABASE IF NOT EXISTS gogs DEFAULT CHARSET utf8 COLLATE utf8_general_ci;</span><br><span class="line"># 查看用户权限</span><br><span class="line">show grants for &quot;gogs&quot;@&quot;%&quot;;</span><br><span class="line"># 取消用户权限</span><br><span class="line">revoke all on *.* from &quot;gogs&quot;@&quot;%&quot;;</span><br><span class="line"># 授权</span><br><span class="line">grant all privileges on gogs.* to gogs@&#39;%&#39; identified by &#39;123456&#39;;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<ol start="12">
+<li><p>mysql，postgres添加用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"># mysql </span><br><span class="line">    </span><br><span class="line"># 创建新用户--konga</span><br><span class="line">create user konga identified by &#39;123456&#39;;</span><br><span class="line"># 创建数据库</span><br><span class="line">CREATE DATABASE IF NOT EXISTS konga DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_general_ci;</span><br><span class="line"># 查看用户权限</span><br><span class="line">show grants for &quot;konga&quot;@&quot;%&quot;;</span><br><span class="line"># 取消用户权限</span><br><span class="line">revoke all on *.* from &quot;konga&quot;@&quot;%&quot;;</span><br><span class="line"># 授权</span><br><span class="line">grant all privileges on konga.* to konga@&#39;%&#39; identified by &#39;123456&#39;;</span><br><span class="line">flush privileges;</span><br><span class="line"></span><br><span class="line"># 创建新用户--gogs</span><br><span class="line">create user gogs identified by &#39;123456&#39;;</span><br><span class="line"># 创建数据库</span><br><span class="line">CREATE DATABASE IF NOT EXISTS gogs DEFAULT CHARSET utf8 COLLATE utf8_general_ci;</span><br><span class="line"># 查看用户权限</span><br><span class="line">show grants for &quot;gogs&quot;@&quot;%&quot;;</span><br><span class="line"># 取消用户权限</span><br><span class="line">revoke all on *.* from &quot;gogs&quot;@&quot;%&quot;;</span><br><span class="line"># 授权</span><br><span class="line">grant all privileges on gogs.* to gogs@&#39;%&#39; identified by &#39;123456&#39;;</span><br><span class="line">flush privileges;</span><br><span class="line"></span><br><span class="line"># postgres</span><br><span class="line"></span><br><span class="line"># 创建用户--harbor</span><br><span class="line">create user harbor with password &#39;123456&#39;;</span><br><span class="line"># 创建数据库</span><br><span class="line">create database harbor owner harbor;</span><br><span class="line"># 将数据库的权限全部赋予某个用户</span><br><span class="line">grant all on database harbor to harbor;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="13">
+<li><p>harbor</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 使用nginx代理harbor</span><br><span class="line"># 1. 代理nginx增加&#96;client_max_body_size 0;&#96;取消限制上传文件的大小</span><br><span class="line"># 2. 修改harbor的nginx配置</span><br><span class="line"># 删除&#x2F;注释掉common&#x2F;config&#x2F;nginx&#x2F;nginx.conf中的proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line"></span><br><span class="line"># 登录</span><br><span class="line">docker login hub.xupengfei.net -u xupengfei -p 123456</span><br><span class="line"># 打标签</span><br><span class="line">docker tag jenkins:proxy hub.xupengfei.net&#x2F;library&#x2F;jenkins</span><br><span class="line"># 推送</span><br><span class="line">docker push hub.xupengfei.net&#x2F;library&#x2F;jenkins</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

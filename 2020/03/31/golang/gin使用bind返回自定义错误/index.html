@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>gin binding返回自定义错误信息 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">拉到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "关闭"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">gin binding返回自定义错误信息</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2020年03月31日&nbsp;&nbsp;23:23:07</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/golang/">golang</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="使用ShouldBind示例"><a href="#使用ShouldBind示例" class="headerlink" title="使用ShouldBind示例"></a>使用<code>ShouldBind</code>示例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 定义一个结构体绑定请求数据</span><br><span class="line">type RequestUserLogin struct &#123;</span><br><span class="line">	Username string &#96;form:&quot;username&quot; json:&quot;username&quot; xml:&quot;username&quot; binding:&quot;required&quot;&#96;</span><br><span class="line">	Password string &#96;form:&quot;password&quot; json:&quot;password&quot; xml:&quot;password&quot; binding:&quot;required&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">data :&#x3D; new(RequestUserLogin)</span><br><span class="line">if err :&#x3D; c.ShouldBind(data); err !&#x3D; nil &#123;</span><br><span class="line">	c.JSON(http.StatusForbidden, gin.H&#123;&quot;error&quot;: err.Error()&#125;)</span><br><span class="line">    return</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>得到的错误提示大概时这样子的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;error&quot;:&quot;Key: &#39;RequestAdminUserLogin.Password&#39; Error:Field validation for &#39;Password&#39; failed on the &#39;required&#39; tag&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="该怎么样给api提供一个友好的错误信息呢？"><a href="#该怎么样给api提供一个友好的错误信息呢？" class="headerlink" title="该怎么样给api提供一个友好的错误信息呢？"></a>该怎么样给api提供一个友好的错误信息呢？</h3><ol>
+<li><p>首先，判断<code>ShouldBind</code>返回的底层类型是什么</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fmt.Println(reflect.TypeOf(err))</span><br></pre></td></tr></table></figure>
+
+<p>打印的信息是：<code>validator.ValidationErrors</code></p>
+</li>
+<li><p>让我们看看<code>validator.ValidationErrors</code>究竟是什么</p>
+<p>通过查看源码我们可以看到：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type ValidationErrors []FieldError</span><br></pre></td></tr></table></figure>
+
+<p>原来它是一个<code>FieldError</code>类型的切片；</p>
+</li>
+<li><p>查看<code>FieldError</code>类型</p>
+<p>源码上是这样子说的：<code>FieldError</code>包含获取错误信息的所有方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; FieldError contains all functions to get error details</span><br><span class="line">type FieldError interface &#123;</span><br><span class="line"></span><br><span class="line">	Tag() string</span><br><span class="line"></span><br><span class="line">	ActualTag() string</span><br><span class="line"></span><br><span class="line">	Namespace() string</span><br><span class="line"></span><br><span class="line">	StructNamespace() string</span><br><span class="line"></span><br><span class="line">	Field() string</span><br><span class="line"></span><br><span class="line">	StructField() string</span><br><span class="line"></span><br><span class="line">	Value() interface&#123;&#125;</span><br><span class="line"></span><br><span class="line">	Param() string</span><br><span class="line"></span><br><span class="line">	Kind() reflect.Kind</span><br><span class="line"></span><br><span class="line">	Type() reflect.Type</span><br><span class="line"></span><br><span class="line">	Translate(ut ut.Translator) string</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>让我打印下<code>FieldError</code>看下吧</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fmt.Println(field.Tag(), field.ActualTag(), field.Namespace(), field.StructNamespace(), field.Field(), field.StructField(), field.Value(), field.Param(), field.Kind(), field.Type())</span><br></pre></td></tr></table></figure>
+
+<p>得到的结果是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">required required RequestAdminUserLogin.Password RequestAdminUserLogin.Password Password Password &quot;&quot; string string</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="让我们自定义一个友好的错误信息吧"><a href="#让我们自定义一个友好的错误信息吧" class="headerlink" title="让我们自定义一个友好的错误信息吧"></a>让我们自定义一个友好的错误信息吧</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 定义一个结构体绑定请求数据</span><br><span class="line">type RequestUserLogin struct &#123;</span><br><span class="line">	Username string &#96;form:&quot;username&quot; json:&quot;username&quot; xml:&quot;username&quot; binding:&quot;required&quot;&#96;</span><br><span class="line">	Password string &#96;form:&quot;password&quot; json:&quot;password&quot; xml:&quot;password&quot; binding:&quot;required&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func getParamError(err validator.ValidationErrors) map[string]string &#123;</span><br><span class="line">	result :&#x3D; make(map[string]string, 0)</span><br><span class="line">	for _, v :&#x3D; range err &#123;</span><br><span class="line">		if field, ok :&#x3D; v.(validator.FieldError); ok &#123;</span><br><span class="line">			result[field.Field()] &#x3D; field.Tag()</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return result</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">data :&#x3D; new(RequestUserLogin)</span><br><span class="line">if err :&#x3D; c.ShouldBind(data); err !&#x3D; nil &#123;</span><br><span class="line">    result :&#x3D; getParamError(err.(validator.ValidationErrors))</span><br><span class="line">	c.JSON(http.StatusForbidden, gin.H&#123;&quot;error&quot;: result&#125;)</span><br><span class="line">    return</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>返回的结果是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;error&quot;: &#123;</span><br><span class="line">        &quot;Password&quot;: &quot;required&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在，你可以通过<code>getParamError</code>自由自在的返回你想要的错误信息了</p>
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>GRPC安装及简单使用 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">拉到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "关闭"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">GRPC安装及简单使用</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2021年09月06日&nbsp;&nbsp;23:23:07</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/golang/">golang</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="安装protoc"><a href="#安装protoc" class="headerlink" title="安装protoc"></a>安装<code>protoc</code></h3><p>地址：<a href="https://github.com/protocolbuffers/protobuf/releases" target="_blank" rel="noopener">https://github.com/protocolbuffers/protobuf/releases</a></p>
+<h3 id="安装protoc-gen-go"><a href="#安装protoc-gen-go" class="headerlink" title="安装protoc-gen-go"></a>安装<code>protoc-gen-go</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com&#x2F;golang&#x2F;protobuf&#x2F;protoc-gen-go</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装grpc包"><a href="#安装grpc包" class="headerlink" title="安装grpc包"></a>安装<code>grpc</code>包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;grpc&#x2F;grpc-go.git $GOPATH&#x2F;src&#x2F;google.golang.org&#x2F;grpc</span><br><span class="line"></span><br><span class="line">cd $GOPATH&#x2F;src&#x2F;grpc&#x2F;cmd&#x2F;protoc-gen-go-grpc</span><br><span class="line">go install</span><br></pre></td></tr></table></figure>
+
+<h3 id="HelloWorld"><a href="#HelloWorld" class="headerlink" title="HelloWorld"></a>HelloWorld</h3><ul>
+<li>创建项目目录</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mkdir hello-world</span><br><span class="line">mkdir -p hello-world&#x2F;cmd</span><br><span class="line">mkdir -p hello-world&#x2F;protos</span><br><span class="line">mkdir -p hello-world&#x2F;sh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">目录结构</span><br><span class="line">└─hello-world</span><br><span class="line">    ├─cmd</span><br><span class="line">    ├─protos</span><br><span class="line">    └─sh</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>编辑<code>proto</code>文件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&gt; vim hello-world&#x2F;cmd&#x2F;hello-world.proto</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">syntax&#x3D;&quot;proto3&quot;;</span><br><span class="line">package protos;</span><br><span class="line"></span><br><span class="line">option go_package&#x3D;&quot;.&#x2F;protos&quot;;</span><br><span class="line"></span><br><span class="line">service HelloWorld&#123;</span><br><span class="line">	rpc Send(SendRequest) returns(SendResponse)&#123;&#125;</span><br><span class="line">	rpc Count(CountRequest) returns (CountResponse)&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message SendRequest&#123;</span><br><span class="line">	string msg &#x3D; 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message SendResponse&#123;</span><br><span class="line">	int32 code &#x3D; 1;</span><br><span class="line">	string msg &#x3D; 2;</span><br><span class="line">	repeated SendRequest data &#x3D; 3;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message CountRequest&#123;</span><br><span class="line">	int32 a &#x3D; 1;</span><br><span class="line">	int32 b &#x3D; 2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message CountResponse&#123;</span><br><span class="line">	int32 code &#x3D; 1;</span><br><span class="line">	string msg &#x3D; 2;</span><br><span class="line">	int32 sum &#x3D; 3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>编辑代码生成脚本</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt; vim hello-world&#x2F;sh&#x2F;gen.sh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env bash</span><br><span class="line"></span><br><span class="line">protoDir&#x3D;&quot;..&#x2F;protos&quot;</span><br><span class="line">outDir&#x3D;&quot;..&#x2F;&quot;</span><br><span class="line"></span><br><span class="line">protoc -I $&#123;protoDir&#125;&#x2F; $&#123;protoDir&#125;&#x2F;*proto --go_out&#x3D;$&#123;outDir&#125;</span><br><span class="line">protoc -I $&#123;protoDir&#125;&#x2F; $&#123;protoDir&#125;&#x2F;*proto --go-grpc_out&#x3D;$&#123;outDir&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>生成服务端和客户端代码</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd hello-world&#x2F;sh</span><br><span class="line">.&#x2F;gen.sh</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>编辑服务端代码</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">&gt; vim hello-world&#x2F;cmd&#x2F;server.go</span><br><span class="line"></span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	pb &quot;app&#x2F;protos&quot;</span><br><span class="line">	&quot;context&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;log&quot;</span><br><span class="line">	&quot;net&quot;</span><br><span class="line"></span><br><span class="line">	&quot;google.golang.org&#x2F;grpc&quot;</span><br><span class="line">	&quot;google.golang.org&#x2F;grpc&#x2F;reflection&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">const (</span><br><span class="line">	port &#x3D; &quot;:50051&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type server struct &#123;</span><br><span class="line">	pb.UnimplementedHelloWorldServer</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (s *server) Send(ctx context.Context, request *pb.SendRequest) (*pb.SendResponse, error) &#123;</span><br><span class="line">	fmt.Println(&quot;client send msg: &quot;, request.Msg)</span><br><span class="line">	return &amp;pb.SendResponse&#123;</span><br><span class="line">		Code: 0,</span><br><span class="line">		Msg:  &quot;success&quot;,</span><br><span class="line">		Data: []*pb.SendRequest&#123;</span><br><span class="line">			&amp;pb.SendRequest&#123;</span><br><span class="line">				Msg: request.Msg + &quot; response&quot;,</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;,</span><br><span class="line">	&#125;, nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (s *server) Count(ctx context.Context, request *pb.CountRequest) (*pb.CountResponse, error) &#123;</span><br><span class="line">	fmt.Println(&quot;client count A:&quot;, request.A, &quot; client count B: &quot;, request.B)</span><br><span class="line">	return &amp;pb.CountResponse&#123;</span><br><span class="line">		Code: 0,</span><br><span class="line">		Msg:  &quot;success&quot;,</span><br><span class="line">		Sum: request.A + request.B,</span><br><span class="line">	&#125;,nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	listen, err :&#x3D; net.Listen(&quot;tcp&quot;, port)</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		log.Fatalf(&quot;listener error: $v&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	s :&#x3D; grpc.NewServer()</span><br><span class="line">	pb.RegisterHelloWorldServer(s, &amp;server&#123;&#125;)</span><br><span class="line"></span><br><span class="line">	reflection.Register(s)</span><br><span class="line"></span><br><span class="line">	if err :&#x3D; s.Serve(listen); err !&#x3D; nil &#123;</span><br><span class="line">		log.Fatalf(&quot;failed to serve: %v&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>编辑客户端代码</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	pb &quot;app&#x2F;protos&quot;</span><br><span class="line">	&quot;context&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;google.golang.org&#x2F;grpc&quot;</span><br><span class="line">	&quot;log&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">const (</span><br><span class="line">	address &#x3D; &quot;localhost:50051&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	conn, err :&#x3D; grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		log.Fatalf(&quot;did not connect: %v&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line">	defer conn.Close()</span><br><span class="line"></span><br><span class="line">	c :&#x3D; pb.NewHelloWorldClient(conn)</span><br><span class="line"></span><br><span class="line">	ctx, cancel :&#x3D; context.WithTimeout(context.Background(), time.Second)</span><br><span class="line">	defer cancel()</span><br><span class="line"></span><br><span class="line">	r, err :&#x3D; c.Send(ctx, &amp;pb.SendRequest&#123;</span><br><span class="line">		Msg: &quot;Hello World&quot;,</span><br><span class="line">	&#125;)</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		log.Fatalf(&quot;send error: %v&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(&quot;send response&quot;, r)</span><br><span class="line"></span><br><span class="line">	countResponse,err :&#x3D; c.Count(ctx, &amp;pb.CountRequest&#123;</span><br><span class="line">		A:5,</span><br><span class="line">		B:10,</span><br><span class="line">	&#125;)</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		log.Fatalf(&quot;count error: %v&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(&quot;count response&quot;, countResponse)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>运行服务端和客户端</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cd hello-world</span><br><span class="line"></span><br><span class="line">go mod init</span><br><span class="line"></span><br><span class="line">go mod tidy</span><br><span class="line"></span><br><span class="line">go run cmd&#x2F;server.go</span><br><span class="line"></span><br><span class="line">go run cmd&#x2F;client.go</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用<code>grpcui</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 安装</span><br><span class="line">go get github.com&#x2F;fullstorydev&#x2F;grpcui</span><br><span class="line">go install github.com&#x2F;fullstorydev&#x2F;grpcui&#x2F;cmd&#x2F;grpcui</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 使用</span><br><span class="line">grpcui -plaintext localhost:12345</span><br><span class="line"></span><br><span class="line">## localhost:12345 为 grpc 服务端监听地址</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="参考地址："><a href="#参考地址：" class="headerlink" title="参考地址："></a>参考地址：</h4><ul>
+<li><a href="https://github.com/fullstorydev/grpcui" target="_blank" rel="noopener">https://github.com/fullstorydev/grpcui</a></li>
+<li><a href="https://github.com/grpc/grpc-go" target="_blank" rel="noopener">https://github.com/grpc/grpc-go</a></li>
+</ul>
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

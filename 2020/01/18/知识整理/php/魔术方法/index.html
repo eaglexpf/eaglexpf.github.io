@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>魔术方法与常量 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">魔术方法与常量</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2020年01月18日&nbsp;&nbsp;23:23:07</a>
+                        </span>
+                    
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>方法：<code>__construct()</code>，<code>__destruct()</code>。   </p>
+<p>方法重载：<code>__call()</code>，<code>__callStatic()</code>。</p>
+<p>属性重载：<code>__get()</code>，<code>__set()</code>，<code>__isset()</code>，<code>__unset()</code> //这四个只对类中私有受保护的成员属性有效</p>
+<p><code>__toString()</code>，<code>__autoload()</code>;</p>
+<p><code>__set_state()</code>； //自 PHP 5.1.0 起当调用 var_export() 导出类时，此静态 方法会被调用。 本方法的唯一参数是一个数组。</p>
+<p><code>__clone()</code>;    //通常用于对副本进行重新初始化，</p>
+<p>说明：this指副本对象引用，that指原对象引用 等方法在 PHP 中被称为”魔术方法”。PHP 将所有以 __（两个下划线）开头的类方法保留为魔术方法。所以在定义类方法时，除了上述魔术方法，建议不要以 __ 为前缀。在命名自己的类方法时不能使用这些方法名，除非是想使用其魔术功能。</p>
+<p>常量：</p>
+<p><code>__LINK__</code>   //文件中的当前行号。</p>
+<p><code>__FILE__</code>   //文件的完整路径和文件名。如果用在被包含文件中，则返回被包含的文件名。</p>
+<p><code>__DIR__</code>    //文件所在的目录。如果用在被包括文件中，则返回被包括的文件所在的目录，它等价于 <code>dirname(__FILE__)</code>。</p>
+<p><code>__FUNCTION__</code>   //函数名称。自 PHP 5 起本常量返回该函数被定义时的名字（区分大小写）。在 PHP 4 中该值总是小写字母的。</p>
+<p> <code>__CLASS__</code>      //类的名称。自 PHP 5 起本常量返回该类被定义时的名字（区分大小写）。在 PHP 4 中该值总是小写字母的。</p>
+<p><code>__METHOD__</code>     //类的方法名（PHP 5.0.0 新加）。返回该方法被定义时的名字（区分大小写</p>
+<p><code>__NAMESPACE__</code>  //当前命名空间的名称（大小写敏感）。这个常量是在编译时定义的（PHP 5.3.0 新增）</p>
+<ol>
+<li><p>__construct()，类的构造函数</p>
+<p>通常构造方法被用来执行一些有用的初始化任务</p>
+</li>
+<li><p>__destruct()，类的析构函数</p>
+<p>析构方法允许在销毁一个类之前执行的一些操作或完成一些功能，比如说关闭文件、释放结果集等。</p>
+</li>
+<li><p>__call()，在对象中调用一个不可访问方法时调用</p>
+</li>
+<li><p>__callStatic()，用静态方式中调用一个不可访问方法时调用</p>
+</li>
+<li><p>__get()，获得一个类的成员变量时调用</p>
+</li>
+<li><p>__set()，设置一个类的成员变量时调用</p>
+</li>
+<li><p>__isset()，当对不可访问属性调用isset()或empty()时调用</p>
+</li>
+<li><p>__unset()，当对不可访问属性调用unset()时被调用。</p>
+</li>
+<li><p>__sleep()，执行<code>serialize()</code>时，先会调用这个函数</p>
+<p>__sleep() 方法常用于提交未提交的数据，或类似的清理操作。同时，如果有一些很大的对象，但不需要全部保存，这个功能就很好用。</p>
+<p><code>serialize()</code> 函数会检查类中是否存在一个魔术方法 <code>__sleep()</code>。如果存在，则该方法会优先被调用，然后才执行序列化操作。</p>
+<p>此功能可以用于清理对象，并返回一个包含对象中所有应被序列化的变量名称的数组。</p>
+<p>如果该方法未返回任何内容，则 NULL 被序列化，并产生一个 E_NOTICE 级别的错误。</p>
+<p>__sleep() 不能返回父类的私有成员的名字。这样做会产生一个 E_NOTICE 级别的错误。</p>
+</li>
+<li><p>__wakeup()，执行unserialize()时，先会调用这个函数</p>
+<p>__wakeup() 经常用在反序列化操作中，例如重新建立数据库连接，或执行其它初始化操作。</p>
+</li>
+<li><p>__toString()，类被当成字符串时的回应方法</p>
+</li>
+<li><p>__invoke()，调用函数的方式调用一个对象时的回应方法</p>
+</li>
+<li><p>__set_state()，调用var_export()导出类时，此静态方法会被调用。</p>
+</li>
+<li><p>__clone()，当对象复制完成时调用</p>
+</li>
+<li><p>__autoload()，尝试加载未定义的类</p>
+</li>
+<li><p>__debugInfo()，打印所需调试信息</p>
+</li>
+</ol>
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

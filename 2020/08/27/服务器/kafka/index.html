@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>php使用Kafka生产和消费 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">拉到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "关闭"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">php使用Kafka生产和消费</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2020年08月27日&nbsp;&nbsp;19:23:07</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="使用docker快速部署kafka"><a href="#使用docker快速部署kafka" class="headerlink" title="使用docker快速部署kafka"></a>使用docker快速部署kafka</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">vim docker-compose.yml</span><br><span class="line"></span><br><span class="line">version: &quot;3.3&quot;</span><br><span class="line">services:</span><br><span class="line">  zookeeper:</span><br><span class="line">    image: wurstmeister&#x2F;zookeeper</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;2181:2181&quot;</span><br><span class="line">  kafka:</span><br><span class="line">    image: wurstmeister&#x2F;kafka</span><br><span class="line">    depends_on: </span><br><span class="line">      - zookeeper</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;9092:9092&quot;</span><br><span class="line">    environment:</span><br><span class="line">      KAFKA_ADVERTISED_HOST_NAME: 192.168.56.112</span><br><span class="line">      KAFKA_LISTENERS: PLAINTEXT:&#x2F;&#x2F;0.0.0.0:9092</span><br><span class="line">      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181</span><br><span class="line">      KAFKA_CREATE_TOPICS: &quot;test&quot;</span><br><span class="line">  kafka-manager:</span><br><span class="line">    image: sheepkiller&#x2F;kafka-manager</span><br><span class="line">    depends_on: </span><br><span class="line">      - zookeeper</span><br><span class="line">      - kafka</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;9000:9000&quot;</span><br><span class="line">    environment:</span><br><span class="line">      ZK_HOSTS: zookeeper:2181</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="安装php的Kafka扩展"><a href="#安装php的Kafka扩展" class="headerlink" title="安装php的Kafka扩展"></a>安装php的Kafka扩展</h3><ol>
+<li><p>安装<code>librdkafka</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;edenhill&#x2F;librdkafka.git</span><br><span class="line">cd librdkafka</span><br><span class="line">.&#x2F;configure</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装<code>php-rdkafka</code>扩展</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;arnaud-lb&#x2F;php-rdkafka.git</span><br><span class="line"> </span><br><span class="line">#生成configure文件</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;php&#x2F;bin&#x2F;phpize </span><br><span class="line"> </span><br><span class="line">#编译安装</span><br><span class="line">.&#x2F;configure --with-php-config&#x3D;&#x2F;usr&#x2F;local&#x2F;php&#x2F;bin&#x2F;php-config</span><br><span class="line">make</span><br><span class="line">make install </span><br><span class="line"> </span><br><span class="line">#在php.ini 文件中配置 rdkafka扩展</span><br><span class="line">vim &#x2F;usr&#x2F;local&#x2F;php&#x2F;etc&#x2F;php.ini</span><br><span class="line">extension&#x3D;rdkafka.so</span><br><span class="line"> </span><br><span class="line">#查看扩展是否生效</span><br><span class="line">php -m | grep kafka</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+</li>
+</ol>
+<h3 id="php使用Kafka"><a href="#php使用Kafka" class="headerlink" title="php使用Kafka"></a>php使用Kafka</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br></pre></td><td class="code"><pre><span class="line">class kafka</span><br><span class="line">&#123;</span><br><span class="line">    public $broker_list;</span><br><span class="line">    public $topic;</span><br><span class="line">    public $group_id;</span><br><span class="line">    protected $producer &#x3D; null;</span><br><span class="line">    protected $consumer &#x3D; null;</span><br><span class="line">    protected $receive_wait_time;</span><br><span class="line">    protected $receive_wait_num;</span><br><span class="line"></span><br><span class="line">    public function __construct()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;broker_list &#x3D; config(&#39;kafka.broker_list&#39;);</span><br><span class="line">        $this-&gt;topic &#x3D; config(&#39;kafka.default_topic&#39;);</span><br><span class="line">        $this-&gt;group_id &#x3D; config(&#39;kafka.default_group_id&#39;);</span><br><span class="line">        $this-&gt;producer &#x3D; null;</span><br><span class="line">        $this-&gt;consumer &#x3D; null;</span><br><span class="line">        $this-&gt;receive_wait_time &#x3D; config(&#39;kafka.default_receive_wait_time&#39;, 10);</span><br><span class="line">        $this-&gt;receive_wait_num &#x3D; config(&#39;kafka.default_receive_wait_num&#39;, 100);</span><br><span class="line">    &#125;</span><br><span class="line">	&#x2F;**</span><br><span class="line">     * 获取生产者</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public function Producer()</span><br><span class="line">    &#123;</span><br><span class="line">        $conf &#x3D; new \RdKafka\Conf();</span><br><span class="line">        $conf-&gt;set(&#39;bootstrap.servers&#39;, $this-&gt;broker_list);</span><br><span class="line">        &#x2F;&#x2F; 0:不会等待服务器的反馈。该消息会被立刻添加到 socket buffer 中并认为已经发送完成</span><br><span class="line">        &#x2F;&#x2F; 1:leader节点会将记录写入本地日志，并且在所有 follower 节点反馈之前就先确认成功</span><br><span class="line">        &#x2F;&#x2F; all:leader 节点会等待所有同步中的副本确认之后再确认这条记录是否发送完成</span><br><span class="line">        $conf-&gt;set(&#39;acks&#39;, &#39;0&#39;);</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;If you need to produce exactly once and want to keep the original produce order, uncomment the line below</span><br><span class="line">        &#x2F;&#x2F;$conf-&gt;set(&#39;enable.idempotence&#39;, &#39;true&#39;);</span><br><span class="line"></span><br><span class="line">        $producer &#x3D; new \RdKafka\Producer($conf);</span><br><span class="line"></span><br><span class="line">        $this-&gt;producer &#x3D; $producer;</span><br><span class="line">        return $this;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 发送消息</span><br><span class="line">     *</span><br><span class="line">     * @param string|array $msg</span><br><span class="line">     * @param string $topic</span><br><span class="line">     * @return void</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public function SendMsg($msg &#x3D; &#39;&#39;, $topic &#x3D; &#39;&#39;)</span><br><span class="line">    &#123;</span><br><span class="line">        if (empty($topic)) &#123;</span><br><span class="line">            $topic &#x3D; $this-&gt;topic;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        $producer &#x3D; $this-&gt;producer;</span><br><span class="line"></span><br><span class="line">        $topic &#x3D; $producer-&gt;newTopic($topic);</span><br><span class="line"></span><br><span class="line">        if (!is_array($msg)) &#123;</span><br><span class="line">            $msg &#x3D; [$msg];</span><br><span class="line">        &#125;</span><br><span class="line">        foreach ($msg as $value) &#123;</span><br><span class="line">            $topic-&gt;produce(RD_KAFKA_PARTITION_UA, 0, $value);</span><br><span class="line">            $producer-&gt;poll(0);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        for ($flushRetries &#x3D; 0; $flushRetries &lt; count($msg); $flushRetries++) &#123;</span><br><span class="line">            $result &#x3D; $producer-&gt;flush(10000);</span><br><span class="line">            if (RD_KAFKA_RESP_ERR_NO_ERROR &#x3D;&#x3D;&#x3D; $result) &#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (RD_KAFKA_RESP_ERR_NO_ERROR !&#x3D;&#x3D; $result) &#123;</span><br><span class="line">            throw new \RuntimeException(&#39;Kafka消息发送失败&#39;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 获取消费者</span><br><span class="line">     *</span><br><span class="line">     * @param string $group_id</span><br><span class="line">     * @return void</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public function Consumer($group_id &#x3D; &#39;&#39;)</span><br><span class="line">    &#123;</span><br><span class="line">        $conf &#x3D; new \RdKafka\Conf();</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; Set a rebalance callback to log partition assignments (optional)</span><br><span class="line">        $conf-&gt;setRebalanceCb(function (\RdKafka\KafkaConsumer $kafka, $err, array $partitions &#x3D; null) &#123;</span><br><span class="line">            switch ($err) &#123;</span><br><span class="line">                case RD_KAFKA_RESP_ERR__ASSIGN_PARTITIONS:</span><br><span class="line">                    echo &quot;Assign: &quot;;</span><br><span class="line">                    var_dump($partitions);</span><br><span class="line">                    $kafka-&gt;assign($partitions);</span><br><span class="line">                    break;</span><br><span class="line"></span><br><span class="line">                case RD_KAFKA_RESP_ERR__REVOKE_PARTITIONS:</span><br><span class="line">                    echo &quot;Revoke: &quot;;</span><br><span class="line">                    var_dump($partitions);</span><br><span class="line">                    $kafka-&gt;assign(NULL);</span><br><span class="line">                    break;</span><br><span class="line"></span><br><span class="line">                default:</span><br><span class="line">                    throw new \Exception($err);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; Configure the group.id. All consumer with the same group.id will consume</span><br><span class="line">        &#x2F;&#x2F; different partitions.</span><br><span class="line">        if (empty($group_id)) &#123;</span><br><span class="line">            $group_id &#x3D; $this-&gt;group_id;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; 设置相同的group，防止一次消息被多次消费。</span><br><span class="line">        &#x2F;&#x2F; 消费者启动的进程数应小于等于topic的分区数，否则多余的进程是无用的</span><br><span class="line">        $conf-&gt;set(&#39;group.id&#39;, $group_id);</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; Initial list of Kafka brokers</span><br><span class="line">        $conf-&gt;set(&#39;bootstrap.servers&#39;, $this-&gt;broker_list);</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; Set where to start consuming messages when there is no initial offset in</span><br><span class="line">        &#x2F;&#x2F; offset store or the desired offset is out of range.</span><br><span class="line">        &#x2F;&#x2F; &#39;smallest&#39;: start from the beginning</span><br><span class="line">        &#x2F;&#x2F;earliest：简单理解为从头开始消费，latest：简单理解为从最新的开始消费</span><br><span class="line">        $conf-&gt;set(&#39;auto.offset.reset&#39;, &#39;earliest&#39;);</span><br><span class="line">        &#x2F;&#x2F; 在interval.ms的时间内定期向ZooKeeper提交使用者已获取的消息的偏移量</span><br><span class="line">        &#x2F;&#x2F; 自动提交分区消费的位置，手动可确保消息被消费</span><br><span class="line">        $conf-&gt;set(&#39;enable.auto.commit&#39;, true);</span><br><span class="line">        $conf-&gt;set(&#39;auto.commit.interval.ms&#39;, 1000);</span><br><span class="line"></span><br><span class="line">        $consumer &#x3D; new \RdKafka\KafkaConsumer($conf);</span><br><span class="line"></span><br><span class="line">        $this-&gt;consumer &#x3D; $consumer;</span><br><span class="line">        return $this;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 接收消息</span><br><span class="line">     *</span><br><span class="line">     * @param string $topic</span><br><span class="line">     * @param array $callback</span><br><span class="line">     * @return void</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public function ReceiveMsg($topic &#x3D; &#39;&#39;, array $callback &#x3D; [])</span><br><span class="line">    &#123;</span><br><span class="line">        $consumer &#x3D; $this-&gt;consumer;</span><br><span class="line"></span><br><span class="line">        if (empty($topic)) &#123;</span><br><span class="line">            $topic &#x3D; $this-&gt;topic;</span><br><span class="line">        &#125;</span><br><span class="line">        if (!is_array($topic)) &#123;</span><br><span class="line">            $topic &#x3D; [$topic];</span><br><span class="line">        &#125;</span><br><span class="line">        &#x2F;&#x2F; Subscribe to topic &#39;test&#39;</span><br><span class="line">        $consumer-&gt;subscribe($topic);</span><br><span class="line"></span><br><span class="line">        echo &quot;Waiting for partition assignment... (make take some time when\n&quot;;</span><br><span class="line">        echo &quot;quickly re-joining the group after leaving it.)\n&quot;;</span><br><span class="line"></span><br><span class="line">        $i &#x3D; 0;</span><br><span class="line">        $msg_list &#x3D; [];</span><br><span class="line">        while (true) &#123;</span><br><span class="line">            $i++;</span><br><span class="line">            if ($i &gt; $this-&gt;receive_wait_time) &#123;</span><br><span class="line">                $i &#x3D; 0;</span><br><span class="line">                if (empty($msg_list)) &#123;</span><br><span class="line">                    continue;</span><br><span class="line">                &#125;</span><br><span class="line">                if (!empty($callback)) &#123;</span><br><span class="line">                    call_user_func_array($callback, [$msg_list]);</span><br><span class="line">                &#125;</span><br><span class="line">                $msg_list &#x3D; [];</span><br><span class="line">            &#125;</span><br><span class="line">            &#x2F;&#x2F; 阻塞一秒钟</span><br><span class="line">            $message &#x3D; $consumer-&gt;consume(1000);</span><br><span class="line">            switch ($message-&gt;err) &#123;</span><br><span class="line">                case RD_KAFKA_RESP_ERR_NO_ERROR:</span><br><span class="line">                    $msg_list[] &#x3D; $message-&gt;payload;</span><br><span class="line">                    if (count($msg_list) &lt; $this-&gt;receive_wait_num) &#123;</span><br><span class="line">                        continue;</span><br><span class="line">                    &#125;</span><br><span class="line">                    if (!empty($callback)) &#123;</span><br><span class="line">                        call_user_func_array($callback, [$msg_list]);</span><br><span class="line">                    &#125;</span><br><span class="line">                    $i &#x3D; 0;</span><br><span class="line">                    $msg_list &#x3D; [];</span><br><span class="line">                    break;</span><br><span class="line">                case RD_KAFKA_RESP_ERR__PARTITION_EOF:</span><br><span class="line">                    &#x2F;&#x2F; echo &quot;No more messages; will wait for more\n&quot;;</span><br><span class="line">                    break;</span><br><span class="line">                case RD_KAFKA_RESP_ERR__TIMED_OUT:</span><br><span class="line">                    &#x2F;&#x2F; echo &quot;Timed out\n&quot;;</span><br><span class="line">                    break;</span><br><span class="line">                default:</span><br><span class="line">                    throw new \Exception($message-&gt;errstr(), $message-&gt;err);</span><br><span class="line">                    break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="创建topic"><a href="#创建topic" class="headerlink" title="创建topic"></a>创建topic</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 查看topic列表</span><br><span class="line">&gt; bin&#x2F;kafka-topics.sh --list --zookeeper zookeeper:2181</span><br><span class="line"></span><br><span class="line"># 创建topic</span><br><span class="line">&gt; bin&#x2F;kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 2 --topic test</span><br><span class="line"></span><br><span class="line"># 查看topic分区情况</span><br><span class="line">&gt; bin&#x2F;kafka-topics.sh --zookeeper zookeeper:2181 --describe --topic test</span><br><span class="line"></span><br><span class="line"># 修改topic分区数</span><br><span class="line">&gt; bin&#x2F;kafka-topics.sh --zookeeper zookeeper:2181 -alter --partitions 5 --topic test1</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">生产者：</span><br><span class="line"></span><br><span class="line">$service &#x3D; new kafka();</span><br><span class="line">$service-&gt;Producer()-&gt;sendMsg(json_encode([&#39;msg&#39;&#x3D;&gt;&#39;hello world&#39;, &#39;name&#39;&#x3D;&gt;&#39;xupengfei&#39;], 320), &#39;test_topic&#39;);</span><br><span class="line"></span><br><span class="line">消费者：</span><br><span class="line">$callbak是指定的类方法</span><br><span class="line"></span><br><span class="line">$service &#x3D; new kafka();</span><br><span class="line">$service-&gt;Consumer()-&gt;receiveMsg($topic, $callback);</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h4><ol>
+<li><a href="https://arnaud.le-blanc.net/php-rdkafka-doc/phpdoc/book.rdkafka.html" target="_blank" rel="noopener">https://arnaud.le-blanc.net/php-rdkafka-doc/phpdoc/book.rdkafka.html</a></li>
+<li><a href="https://github.com/BCEBIGDATA/kafka-sample-php/blob/master/setup-librdkafka.sh" target="_blank" rel="noopener">https://github.com/BCEBIGDATA/kafka-sample-php/blob/master/setup-librdkafka.sh</a></li>
+</ol>
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

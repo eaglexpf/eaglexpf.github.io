@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>原博客数据导出 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">原博客数据导出</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2018年07月26日&nbsp;&nbsp;16:19:26</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/%E5%85%A8%E9%83%A8%E6%96%87%E7%AB%A0/">全部文章</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <pre><code>public function index(){
+        $xml = &apos;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;rss version=&quot;2.0&quot;
+    xmlns:excerpt=&quot;http://wordpress.org/export/1.2/excerpt/&quot;
+    xmlns:content=&quot;http://purl.org/rss/1.0/modules/content/&quot;
+    xmlns:wfw=&quot;http://wellformedweb.org/CommentAPI/&quot;
+    xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot;
+    xmlns:wp=&quot;http://wordpress.org/export/1.2/&quot;
+&gt;
+
+&lt;channel&gt;
+    &lt;title&gt;唯物鹰扬&lt;/title&gt;
+    &lt;link&gt;http://wordpress.xupengfei.net&lt;/link&gt;
+    &lt;description&gt;又一个WordPress站点&lt;/description&gt;
+    &lt;pubDate&gt;Thu, 26 Jul 2018 02:16:53 +0000&lt;/pubDate&gt;
+    &lt;language&gt;zh-CN&lt;/language&gt;
+    &lt;wp:wxr_version&gt;1.2&lt;/wp:wxr_version&gt;
+    &lt;wp:base_site_url&gt;http://wordpress.xupengfei.net&lt;/wp:base_site_url&gt;
+    &lt;wp:base_blog_url&gt;http://wordpress.xupengfei.net&lt;/wp:base_blog_url&gt;
+
+    &lt;wp:author&gt;&lt;wp:author_id&gt;1&lt;/wp:author_id&gt;&lt;wp:author_login&gt;&lt;![CDATA[admin]]&gt;&lt;/wp:author_login&gt;&lt;wp:author_email&gt;&lt;![CDATA[1121252990@qq.com]]&gt;&lt;/wp:author_email&gt;&lt;wp:author_display_name&gt;&lt;![CDATA[admin]]&gt;&lt;/wp:author_display_name&gt;&lt;wp:author_first_name&gt;&lt;![CDATA[]]&gt;&lt;/wp:author_first_name&gt;&lt;wp:author_last_name&gt;&lt;![CDATA[]]&gt;&lt;/wp:author_last_name&gt;&lt;/wp:author&gt;
+
+
+    &lt;generator&gt;https://wordpress.org/?v=4.9.7&lt;/generator&gt;&apos;;
+
+        $db = Db::instance(&apos;blog&apos;);
+        $data = $db-&gt;select()-&gt;from(&apos;blog&apos;)-&gt;query();
+
+        foreach ($data as $k=&gt;$v){
+            $xml .= &apos;&lt;item&gt;&apos;;
+            $xml .= &apos;&lt;title&gt;&apos;.$v[&apos;title&apos;].&apos;&lt;/title&gt;&apos;;
+            $xml .= &apos;&lt;link&gt; &lt;/link&gt;&apos;;
+            $xml .= &apos;&lt;pubDate&gt;&lt;/pubDate&gt;&apos;;
+            $xml .= &apos;&lt;dc:creator&gt;&lt;![CDATA[admin]]&gt;&lt;/dc:creator&gt;&apos;;
+            $xml .= &apos;&lt;description&gt;&lt;/description&gt;&apos;;
+            $xml .= &apos;&lt;content:encoded&gt;&lt;![CDATA[&apos;.$v[&apos;content&apos;].&apos;]]&gt;&lt;/content:encoded&gt;&apos;;
+            $xml .= &apos;&lt;excerpt:encoded&gt;&lt;![CDATA[]]&gt;&lt;/excerpt:encoded&gt;&apos;;
+            $xml .= &apos;&lt;wp:post_id&gt;&apos;.($k+5).&apos;&lt;/wp:post_id&gt;&apos;;
+            $xml .= &apos;&lt;wp:post_date&gt;&lt;![CDATA[&apos;.date(&apos;Y-m-d H:i:s&apos;,$v[&apos;create_time&apos;]).&apos;]]&gt;&lt;/wp:post_date&gt;&apos;;
+            $xml .= &apos;&lt;wp:post_date_gmt&gt;&lt;![CDATA[&apos;.date(&apos;Y-m-d H:i:s&apos;,$v[&apos;create_time&apos;]).&apos;]]&gt;&lt;/wp:post_date_gmt&gt;&apos;;
+            $xml .= &apos;&lt;wp:comment_status&gt;&lt;![CDATA[open]]&gt;&lt;/wp:comment_status&gt;&apos;;
+            $xml .= &apos;&lt;wp:ping_status&gt;&lt;![CDATA[open]]&gt;&lt;/wp:ping_status&gt;&apos;;
+            $xml .= &apos;&lt;wp:post_name&gt;&lt;![CDATA[&apos;.$v[&apos;title&apos;].&apos;]]&gt;&lt;/wp:post_name&gt;&apos;;
+            $xml .= &apos;&lt;wp:status&gt;&lt;![CDATA[publish]]&gt;&lt;/wp:status&gt;&apos;;
+            $xml .= &apos;&lt;wp:post_parent&gt;0&lt;/wp:post_parent&gt;&apos;;
+            $xml .= &apos;&lt;wp:menu_order&gt;0&lt;/wp:menu_order&gt;&apos;;
+            $xml .= &apos;&lt;wp:post_type&gt;&lt;![CDATA[post]]&gt;&lt;/wp:post_type&gt;&apos;;
+            $xml .= &apos;&lt;wp:post_password&gt;&lt;![CDATA[]]&gt;&lt;/wp:post_password&gt;&apos;;
+            $xml .= &apos;&lt;wp:is_sticky&gt;0&lt;/wp:is_sticky&gt;&apos;;
+            $xml .= &apos;&lt;category domain=&quot;category&quot; nicename=&quot;uncategorized&quot;&gt;&lt;![CDATA[未分类]]&gt;&lt;/category&gt;&apos;;
+            $xml .= &apos;&lt;wp:postmeta&gt;&apos;;
+            $xml .= &apos;&lt;wp:meta_key&gt;&lt;![CDATA[post_views_count]]&gt;&lt;/wp:meta_key&gt;&apos;;
+            $xml .= &apos;&lt;wp:meta_value&gt;&lt;![CDATA[&apos;.$v[&apos;onclicks&apos;].&apos;]]&gt;&lt;/wp:meta_value&gt;&apos;;
+            $xml .= &apos;&lt;/wp:postmeta&gt;&apos;;
+            $xml .= &apos;&lt;/item&gt;&apos;;
+        }
+
+        $xml .= &apos;&lt;/channel&gt;
+&lt;/rss&gt;&apos;;
+        Http::header(&apos;Content-type: text/xml&apos;);
+        return $this-&gt;send($xml);
+    }</code></pre>
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>yii表单radioList样式设置 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">yii表单radioList样式设置</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2015年12月03日&nbsp;&nbsp;8:53:14</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/%E5%85%A8%E9%83%A8%E6%96%87%E7%AB%A0/">全部文章</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>今天在用yii2.0做用户个人信息设置时遇到这样一个问题，关于radioList： <a href="https://i.loli.net/2018/08/09/5b6bdb1623c87.png" target="_blank" rel="noopener"><img src="https://i.loli.net/2018/08/09/5b6bdb1623c87.png" alt></a> 做了这样一个表单，代码如下：</p>
+<?php $form = ActiveForm::begin(\['id' => 'form-user-site','options'=>\['class'=>'form-horizontal','role'=>"form"\],'fieldConfig' => \[
+                'template' => "{label}\\n<div class="\\"col-sm-6\\"">{input}</div>\\n{hint}\\n{error}",
+                'labelOptions' => \['class' => 'control-label col-sm-3'\],
+            \]\]); ?>
+<pre><code>&lt;?= $form-&gt;field($model, &apos;user_email&apos;)-&gt;label(&apos;用户邮箱&apos;) ?&gt;
+&lt;?= $form-&gt;field($model, &apos;nickname&apos;)-&gt;label(&apos;用户昵称&apos;) ?&gt;
+&lt;?= $form-&gt;field($model, &apos;sex&apos;)-&gt;inline(true)-&gt;radioList(\[&apos;0&apos;=&gt;&apos;保密&apos;,&apos;1&apos;=&gt;&apos;男&apos;,&apos;2&apos;=&gt;&apos;女&apos;\])-&gt;label(&apos;用户性别&apos;) ?&gt;
+&lt;?= $form-&gt;field($model, &apos;user_QQ&apos;)-&gt;label(&apos;用户QQ&apos;) ?&gt;
+&lt;?= $form-&gt;field($model, &apos;user_city&apos;)-&gt;label(&apos;所在城市&apos;) ?&gt;
+&lt;?= $form-&gt;field($model, &apos;user_birthday&apos;)-&gt;label(&apos;用户生日&apos;) ?&gt;
+&lt;?= $form-&gt;field($model, &apos;user_signature&apos;)-&gt;label(&apos;个性签名&apos;) ?&gt;
+&lt;div class=&quot;form-group field-usersiteform-user_email&quot;&gt;
+    &lt;div class=&quot;col-sm-3&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;col-sm-6&quot;&gt;
+        &lt;?= Html::submitButton(&apos;修改&apos;, \[&apos;class&apos;=&gt;&apos;btn btn-primary&apos;\]); ?&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre><?php ActiveForm::end(); ?>
+
+<p>但通过图片可以看出用户性别一栏样式不正确：<br><a href="https://i.loli.net/2018/08/09/5b6bdb4b6067b.png" target="_blank" rel="noopener"><img src="https://i.loli.net/2018/08/09/5b6bdb4b6067b.png" alt></a> 查看源码后可以看出radioList和其他input样式不同，没有class=’col-sm-6’。 后经百度发现： 使用 $form-&gt;field生成的textarea跟checkbox是不一样的,应该说.checkbox,checkboxList,radio,radioList这四个跟其它的input都不一样 在多次测试后发现以下代码可使radioList与其他input样式一致：</p>
+<?= $form->field($model, 'sex')->inline(true)->radioList(\['0'=>'保密','1'=>'男','2'=>'女'\],\['template' => '{label}<div class="col-sm-6">{input}</div>{hint}{error}'\])->label('用户性别') ?>
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

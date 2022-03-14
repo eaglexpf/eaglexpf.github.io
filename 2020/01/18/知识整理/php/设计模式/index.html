@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>常用的设计模式 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">拉到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "关闭"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">常用的设计模式</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2020年01月18日&nbsp;&nbsp;23:23:07</a>
+                        </span>
+                    
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <table>
+<thead>
+<tr>
+<th>模式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单例模式</td>
+<td>类只允许被创建一次</td>
+</tr>
+<tr>
+<td>工厂模式</td>
+<td>通过工厂方法或类生成对象，而不是在代码中直接new</td>
+</tr>
+<tr>
+<td>适配器模式</td>
+<td>将某个对象的接口适配成另一个对象所期望的接口（不同的数据库适配）</td>
+</tr>
+<tr>
+<td>装饰器模式</td>
+<td>类作为参数，并修改这个操作类的数据；这样在操作类执行最终输出方法前，只需要实例化装饰器类，无需修改原来代码即可达到需求更改的目的</td>
+</tr>
+<tr>
+<td>观察者模式</td>
+<td>当一个对象状态发生变化时，依赖它的对象全部会收到通知，并自动更新</td>
+</tr>
+<tr>
+<td>策略模式</td>
+<td>将一组特定的行为和算法封装成类，以适应某些特定的上下文环境</td>
+</tr>
+<tr>
+<td>原型模式</td>
+<td>对象克隆以避免创建对象时的消耗</td>
+</tr>
+</tbody></table>
+<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><p>定义：</p>
+<p>使某个类的对象仅允许创建一次</p>
+<p>构造函数，析构函数和克隆函数都必须私有，使用private定义；声明一个static的getInstance方法，在该方法中创建该对象的实例。如果实例已存在，则不创建。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">class InventoryConnection&#123;</span><br><span class="line">    protected static $_instance &#x3D; NULL;</span><br><span class="line">    protected $_handle &#x3D; NULL;</span><br><span class="line">    </span><br><span class="line">    public static function getInstance()&#123;</span><br><span class="line">        if(!self::$_instance instanceof self)&#123;</span><br><span class="line">            self::$_instance &#x3D; new self;</span><br><span class="line">        &#125;</span><br><span class="line">        return self::$_instance;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    protected function __construct()&#123;</span><br><span class="line">        $this-&gt;_handle &#x3D; mysql_connect(&#39;localhost&#39;,&#39;user&#39;,&#39;pass&#39;);</span><br><span class="line">        mysql_select_db(&#39;CD&#39;,$this-&gt;_handle);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public function updateQuantity($band,$title,$number)&#123;</span><br><span class="line">        $query &#x3D; &quot;update CDs set amount&#x3D;amount+&quot;.intval($number);</span><br><span class="line">        $query .&#x3D; &quot; where band&#x3D;&#39;&quot;.mysql_real_escape_string($band).&quot;&#39;&quot;;</span><br><span class="line">        $query .&#x3D; &quot; and title&#x3D;&#39;&quot;.mysql_real_excape_string($title).&quot;&#39;&quot;;</span><br><span class="line">        </span><br><span class="line">        mysql_query($query,$this-&gt;_handle);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h3><p>个人理解：相当于实例化一个第三方类的类</p>
+<p>工厂模式，工厂方法或者类生成对象，而不是在代码中直接new。<br>使用工厂模式，可以避免当改变某个类的名字或者方法之后，在调用这个类的所有的代码中都修改它的名字或者参数。</p>
+<p>工厂模式提供获取某个对象的新实例的一个接口，同时使调用代码避免重复实例化基类的步骤</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Test1&#123;</span><br><span class="line">    static function test()&#123;</span><br><span class="line">        echo __FILE__;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Factory&#123;</span><br><span class="line">    &#x2F;*</span><br><span class="line">     * 如果某个类在很多的文件中都new ClassName()，那么万一这个类的名字</span><br><span class="line">     * 发生变更或者参数发生变化，如果不使用工厂模式，就需要修改每一个PHP</span><br><span class="line">     * 代码，使用了工厂模式之后，只需要修改工厂类或者方法就可以了。</span><br><span class="line">     *&#x2F;</span><br><span class="line">    static function createDatabase()&#123;</span><br><span class="line">        $test &#x3D; new Test1();</span><br><span class="line">        return $test;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$test &#x3D; Factory::createDatabase();</span><br><span class="line">$test-&gt;test();</span><br></pre></td></tr></table></figure>
+
+<h3 id="适配器模式"><a href="#适配器模式" class="headerlink" title="适配器模式"></a>适配器模式</h3><p>个人理解：调用相似的不同种类的api时，继承一个统一的接口，使用同样的方法封装不同类的操作方法</p>
+<p>将各种截然不同的函数接口封装成统一的API</p>
+<p>将某个对象的接口适配为另一个对象所期望的接口</p>
+<p>例如：PHP中的数据库操作有MySQL,MySQLi,PDO三种，可以用适配器模式统一成一致，使不同的数据库操作，统一成一样的API。类似的场景还有cache适配器，可以将memcache,redis,file,apc等不同的缓存函数，统一成一致。 </p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">interface IDatabase</span><br><span class="line">&#123;</span><br><span class="line">    function connect($host, $user, $passwd, $dbname);</span><br><span class="line">    function query($sql);</span><br><span class="line">    function close();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; MySQL</span><br><span class="line">class MySQL implements IDatabase</span><br><span class="line">&#123;</span><br><span class="line">    protected $conn;</span><br><span class="line">    function connect($host, $user, $passwd, $dbname)</span><br><span class="line">    &#123;</span><br><span class="line">        $conn &#x3D; mysql_connect($host, $user, $passwd);</span><br><span class="line">        mysql_select_db($dbname, $conn);</span><br><span class="line">        $this-&gt;conn &#x3D; $conn;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function query($sql)</span><br><span class="line">    &#123;</span><br><span class="line">        $res &#x3D; mysql_query($sql, $this-&gt;conn);</span><br><span class="line">        return $res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function close()</span><br><span class="line">    &#123;</span><br><span class="line">        mysql_close($this-&gt;conn);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; MySQLi</span><br><span class="line">class MySQLi implements IDatabase</span><br><span class="line">&#123;</span><br><span class="line">    protected $conn;</span><br><span class="line"></span><br><span class="line">    function connect($host, $user, $passwd, $dbname)</span><br><span class="line">    &#123;</span><br><span class="line">        $conn &#x3D; mysqli_connect($host, $user, $passwd, $dbname);</span><br><span class="line">        $this-&gt;conn &#x3D; $conn;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function query($sql)</span><br><span class="line">    &#123;</span><br><span class="line">        return mysqli_query($this-&gt;conn, $sql);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function close()</span><br><span class="line">    &#123;</span><br><span class="line">        mysqli_close($this-&gt;conn);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; PDO</span><br><span class="line">class PDO implements IDatabase</span><br><span class="line">&#123;</span><br><span class="line">    protected $conn;</span><br><span class="line">    function connect($host, $user, $passwd, $dbname)</span><br><span class="line">    &#123;</span><br><span class="line">        $conn &#x3D; new \PDO(&quot;mysql:host&#x3D;$host;dbname&#x3D;$dbname&quot;, $user, $passwd);</span><br><span class="line">        $this-&gt;conn &#x3D; $conn;</span><br><span class="line">    &#125;</span><br><span class="line">function query($sql)</span><br><span class="line">    &#123;</span><br><span class="line">        return $this-&gt;conn-&gt;query($sql);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function close()</span><br><span class="line">    &#123;</span><br><span class="line">        unset($this-&gt;conn);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过以上案例，PHP与MySQL的数据库交互有三套API，在不同的场景下可能使用不同的API，那么开发好的代码，换一个环境，可能就要改变它的数据库API，那么就要改写所有的代码，使用适配器模式之后，就可以使用统一的API去屏蔽底层的API差异带来的环境改变之后需要改写代码的问题。</p>
+<h3 id="装饰器模式"><a href="#装饰器模式" class="headerlink" title="装饰器模式"></a>装饰器模式</h3><p>个人理解：增加一个类，对原有类的功能进行改变；实例化一个要操作的类，比如这个类的功能是返回输入的字符（输入的字符保存在类变量中）；现在需要对这个类的需求进行更改，此时新建一个类，这个人接受实例化的操作类作为参数，并修改这个操作类的数据；这样在操作类执行最终输出方法前，只需要实例化装饰器类，无需更改原来代码即可达到需求更改的目的</p>
+<p>1：装饰器模式，可以动态的添加修改类的功能<br>2：一个类提供了一项功能，如果要在修改并添加额外的功能，传统的编程模式，需要写一个子类继承它，并重写实现类的方法<br>3：使用装饰器模式，仅需要在运行时添加一个装饰器对象即可实现，可以实现最大额灵活性</p>
+<p>如果已有对象的部分内容或功能性发生改变，但是不需要修改原始对象的结构，那么使用装饰器设计模式最合适</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">class CD&#123;</span><br><span class="line">    public $trackList;</span><br><span class="line">    public function __construct()&#123;</span><br><span class="line">        $this-&gt;trackList &#x3D; [];</span><br><span class="line">    &#125;</span><br><span class="line">    public function addTrack($track)&#123;</span><br><span class="line">        $this-&gt;trackList[] &#x3D; $track;</span><br><span class="line">    &#125;</span><br><span class="line">    public function getTrackList()&#123;</span><br><span class="line">        $output &#x3D; &#39;&#39;;</span><br><span class="line">        foreach($this-&gt;trackList as $num&#x3D;&gt;$track)&#123;</span><br><span class="line">            $output .&#x3D; ($num+1).&quot;) &#123;$track&#125;. &quot;;</span><br><span class="line">        &#125;</span><br><span class="line">        return $output;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$tracksFromExternalSource &#x3D; [&#39;What It Means&#39;,&#39;Brr&#39;,&#39;Goodbye&#39;];</span><br><span class="line"></span><br><span class="line">$myCD &#x3D; new CD();</span><br><span class="line"></span><br><span class="line">foreach($tracksFromExternalSource as $track)&#123;</span><br><span class="line">    $myCD-&gt;addTrack($track);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">print &quot;The CD contains&quot;.$myCD-&gt;getTrackList();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;更改需求，要求输出的内容全部大写</span><br><span class="line"></span><br><span class="line">class CDTrackListDecoratorCaps&#123;</span><br><span class="line">    private $_cd;</span><br><span class="line">    public function __construct(CD $cd)&#123;</span><br><span class="line">        $this-&gt;_cd &#x3D; $cd;</span><br><span class="line">    &#125;</span><br><span class="line">    public function makeCaps()&#123;</span><br><span class="line">        foreach($this-&gt;_cd-&gt;trackList as &amp;$strack)&#123;</span><br><span class="line">            $track &#x3D; strtoupper($track);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$myCD &#x3D; new CD();</span><br><span class="line"></span><br><span class="line">foreach($tracksFromExternalSource as $track)&#123;</span><br><span class="line">    $myCD-&gt;addTrack($track);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$myCDCaps &#x3D; new CDTrackListDecoratorCaps($myCD);</span><br><span class="line">$myCDCaps-&gt;makeCaps();</span><br><span class="line"></span><br><span class="line">print &quot;The CD contains the following tracks: &quot;.$myCD-&gt;getTrackList();</span><br></pre></td></tr></table></figure>
+
+<h3 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h3><p>个人理解：相当于将各个不同的类的操作方法都继承于一个统一的接口；在这个接口中注册所有的类实例，当接到触发方法后，循环处理这个接口中所有类实例的对应方法</p>
+<p>1：观察者模式(Observer)，当一个对象状态发生变化时，依赖它的对象全部会收到通知，并自动更新。<br>2：场景:一个事件发生后，要执行一连串更新操作。传统的编程方式，就是在事件的代码之后直接加入处理的逻辑。当更新的逻辑增多之后，代码会变得难以维护。这种方式是耦合的，侵入式的，增加新的逻辑需要修改事件的主体代码。<br>3：观察者模式实现了低耦合，非侵入式的通知与更新机制。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 定义一个事件触发抽象类</span><br><span class="line">abstract class EventGenerator&#123;</span><br><span class="line">    private $observers &#x3D; array();</span><br><span class="line">    function addObserver(Observer $observer)&#123;</span><br><span class="line">        $this-&gt;observers[]&#x3D;$observer;</span><br><span class="line">    &#125;</span><br><span class="line">    function notify()&#123;</span><br><span class="line">        foreach ($this-&gt;observers as $observer)&#123;</span><br><span class="line">            $observer-&gt;update();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 定义一个观察者接口</span><br><span class="line">interface Observer&#123;</span><br><span class="line">    function update();&#x2F;&#x2F;这里就是在事件发生后要执行的逻辑</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;一个实现了EventGenerator抽象类的类，用于具体定义某个发生的事件</span><br><span class="line">class Event extends EventGenerator&#123;</span><br><span class="line">    function triger()&#123;</span><br><span class="line">        echo &quot;Event&lt;br&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 实现了观察者接口的类</span><br><span class="line">class Observer1 implements Observer&#123;</span><br><span class="line">    function update()&#123;</span><br><span class="line">        echo &quot;逻辑1&lt;br&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 实现了观察者接口的类</span><br><span class="line">class Observer2 implements Observer&#123;</span><br><span class="line">    function update()&#123;</span><br><span class="line">        echo &quot;逻辑2&lt;br&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$event &#x3D; new Event();</span><br><span class="line">$event-&gt;addObserver(new Observer1());</span><br><span class="line">$event-&gt;addObserver(new Observer2());</span><br><span class="line">$event-&gt;triger();</span><br><span class="line">$event-&gt;notify();</span><br></pre></td></tr></table></figure>
+
+<p>当某个事件发生后，需要执行的逻辑增多时，可以以松耦合的方式去增删逻辑。也就是观察者接口的方法，只需要定义一个实现了观察者接口的类，实现复杂的逻辑，然后在观察者接口增加对应的方法即可。这样实现了低耦合。</p>
+<h3 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h3><p>个人理解：将不同模式【策略】下的操作方法抽象成不同的类；在执行代码中根据模式调用不同的类</p>
+<p>策略模式，将一组特定的行为和算法封装成类，以适应某些特定的上下文环境。<br>示例：假如有一个电商网站系统，针对男性女性用户要各自跳转到不同的商品类目，并且所有的广告位展示不同的广告。在传统的代码中，都是在系统中加入各种if else的判断，硬编码的方式。如果有一天增加了一种用户，就需要改写代码。使用策略模式，如果新增加一种用户类型，只需要增加一种策略就可以。其他所有的地方只需要使用不同的策略就可以。<br>首先声明策略的接口文件，约定了策略的包含的行为。然后，定义各个具体的策略实现类。</p>
+<p>代码示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line"> * 声明策略文件的接口，约定策略包含的行为。</span><br><span class="line"> *&#x2F;</span><br><span class="line">interface UserStrategy</span><br><span class="line">&#123;</span><br><span class="line">    function showAd();</span><br><span class="line">    function showCategory();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class FemaleUser implements UserStrategy</span><br><span class="line">&#123;</span><br><span class="line">    function showAd()&#123;</span><br><span class="line">        echo &quot;2016冬季女装&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    function showCategory()&#123;</span><br><span class="line">        echo &quot;女装&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MaleUser implements UserStrategy</span><br><span class="line">&#123;</span><br><span class="line">    function showAd()&#123;</span><br><span class="line">        echo &quot;IPhone6s&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    function showCategory()&#123;</span><br><span class="line">        echo &quot;电子产品&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Page</span><br><span class="line">&#123;</span><br><span class="line">    protected $strategy;</span><br><span class="line">    function index()&#123;</span><br><span class="line">        echo &quot;AD&quot;;</span><br><span class="line">        $this-&gt;strategy-&gt;showAd();</span><br><span class="line">        echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">        echo &quot;Category&quot;;</span><br><span class="line">        $this-&gt;strategy-&gt;showCategory();</span><br><span class="line">        echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    function setStrategy(UserStrategy $strategy)&#123;</span><br><span class="line">        $this-&gt;strategy&#x3D;$strategy;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$page &#x3D; new Page();</span><br><span class="line">if(isset($_GET[&#39;male&#39;]))&#123;</span><br><span class="line">    $strategy &#x3D; new MaleUser();</span><br><span class="line">&#125;else &#123;</span><br><span class="line">    $strategy &#x3D; new FemaleUser();</span><br><span class="line">&#125;</span><br><span class="line">$page-&gt;setStrategy($strategy);</span><br><span class="line">$page-&gt;index();</span><br></pre></td></tr></table></figure>
+
+<h3 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h3><p>个人理解：很类似于单例模式，对象只初始化一次；原型通过clone的方式使得对象可以有不同的状态；而单例只会有一种状态</p>
+<p>原型模式（对象克隆以避免创建对象时的消耗）<br>1：与工厂模式类似，都是用来创建对象。<br>2：与工厂模式的实现不同，原型模式是先创建好一个原型对象，然后通过clone原型对象来创建新的对象。这样就免去了类创建时重复的初始化操作。<br>3：原型模式适用于大对象的创建，创建一个大对象需要很大的开销，如果每次new就会消耗很大，原型模式仅需要内存拷贝即可。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">class Canvas&#123;</span><br><span class="line">	private $data;</span><br><span class="line">	function init($width &#x3D; 20, $height &#x3D; 10)</span><br><span class="line">    &#123;</span><br><span class="line">        $data &#x3D; array();</span><br><span class="line">        for($i &#x3D; 0; $i &lt; $height; $i++)</span><br><span class="line">        &#123;</span><br><span class="line">            for($j &#x3D; 0; $j &lt; $width; $j++)</span><br><span class="line">            &#123;</span><br><span class="line">                $data[$i][$j] &#x3D; &#39;*&#39;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        $this-&gt;data &#x3D; $data;</span><br><span class="line">    &#125;</span><br><span class="line">	function rect($x1, $y1, $x2, $y2)</span><br><span class="line">    &#123;</span><br><span class="line">        foreach($this-&gt;data as $k1 &#x3D;&gt; $line)</span><br><span class="line">        &#123;</span><br><span class="line">            if ($x1 &gt; $k1 or $x2 &lt; $k1) continue;</span><br><span class="line">           foreach($line as $k2 &#x3D;&gt; $char)</span><br><span class="line">            &#123;</span><br><span class="line">              if ($y1&gt;$k2 or $y2&lt;$k2) continue;</span><br><span class="line">                $this-&gt;data[$k1][$k2] &#x3D; &#39;#&#39;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function draw()&#123;</span><br><span class="line">        foreach ($this-&gt;data as $line)&#123;</span><br><span class="line">            foreach ($line as $char)&#123;</span><br><span class="line">                echo $char;</span><br><span class="line">            &#125;</span><br><span class="line">            echo &quot;&lt;br&gt;;&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$c &#x3D; new Canvas();</span><br><span class="line">$c-&gt;init();</span><br><span class="line">&#x2F; $canvas1 &#x3D; new Canvas();</span><br><span class="line">&#x2F;&#x2F; $canvas1-&gt;init();</span><br><span class="line">$canvas1 &#x3D; clone $c;&#x2F;&#x2F;通过克隆，可以省去init()方法，这个方法循环两百次</span><br><span class="line">&#x2F;&#x2F;去产生一个数组。当项目中需要产生很多的这样的对象时，就会new很多的对象，那样</span><br><span class="line">&#x2F;&#x2F;是非常消耗性能的。</span><br><span class="line">$canvas1-&gt;rect(2, 2, 8, 8);</span><br><span class="line">$canvas1-&gt;draw();</span><br><span class="line">echo &quot;-----------------------------------------&lt;br&gt;&quot;;</span><br><span class="line">&#x2F;&#x2F; $canvas2 &#x3D; new Canvas();</span><br><span class="line">&#x2F;&#x2F; $canvas2-&gt;init();</span><br><span class="line">$canvas2 &#x3D; clone $c;</span><br><span class="line">$canvas2-&gt;rect(1, 4, 8, 8);</span><br><span class="line">$canvas2-&gt;draw();</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>

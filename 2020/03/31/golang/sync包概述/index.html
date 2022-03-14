@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Roc xu">
+
+
+
+    <meta name="description" content="神不会去救任何人，能救你的只有你自己">
+
+
+
+<title>sync包基本使用 | 唯吾鹰扬</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">唯吾鹰扬</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+		<a class="menu-item nav-item-link nav-item-search">
+		  搜索
+	        </a>
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">唯吾鹰扬</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776;</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+        <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索...">
+        <div id="local-search-result" class="local-search-result"></div>
+      </div>
+    </div>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/search.js"></script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">拉到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "关闭"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">sync包基本使用</h1>
+            
+                <div class="post-meta">
+                    
+                        作者: <a itemprop="author" rel="author" href="/">Roc xu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        日期: <a href="#">2020年03月31日&nbsp;&nbsp;23:23:07</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类:
+                            
+                                <a href="/categories/golang/">golang</a>
+                            
+                        </span>
+                    
+			<span id="busuanzi_container_page_pv">
+			访问量:<span id="busuanzi_value_page_pv"></span>次
+			</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>sync包提供了基本的同步基元，如互斥锁。除了Once和WaitGroup类型，大部分都是适用于低水平程序线程，高水平的同步使用channel通信更好一些。</p>
+<p>本包的类型的值不应被拷贝。</p>
+<p>主要类型有：Locker, Cond, Map, Mutex, Once, Pool,RWMutex, WaitGroup</p>
+<h2 id="Locker"><a href="#Locker" class="headerlink" title="Locker"></a>Locker</h2><p>Locker接口代表一个可以加锁和解锁的对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; A Locker represents an object that can be locked and unlocked.</span><br><span class="line">type Locker interface &#123;</span><br><span class="line">	Lock()</span><br><span class="line">	Unlock()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Once"><a href="#Once" class="headerlink" title="Once"></a>Once</h2><p>Once是只执行一次动作的对象。</p>
+<p>Once 是一个可以被多次调用但是只执行一次，若每次调用Do时传入参数f不同，但是只有第一个才会被执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">var once sync.Once</span><br><span class="line">onceBody :&#x3D; func() &#123;</span><br><span class="line">    fmt.Println(&quot;Only once&quot;)</span><br><span class="line">&#125;</span><br><span class="line">done :&#x3D; make(chan bool)</span><br><span class="line">for i :&#x3D; 0; i &lt; 10; i++ &#123;</span><br><span class="line">    go func() &#123;</span><br><span class="line">        once.Do(onceBody)</span><br><span class="line">        done &lt;- true</span><br><span class="line">    &#125;()</span><br><span class="line">&#125;</span><br><span class="line">for i :&#x3D; 0; i &lt; 10; i++ &#123;</span><br><span class="line">    &lt;-done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 如果你执行这段代码会发现，虽然调用了10次，但是只执行了1次。</span><br><span class="line">&#x2F;&#x2F; Output:</span><br><span class="line">Only once</span><br></pre></td></tr></table></figure>
+
+<h3 id="Do方法"><a href="#Do方法" class="headerlink" title="Do方法"></a>Do方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func (o *Once) Do(f func())</span><br></pre></td></tr></table></figure>
+
+<p>Do方法当且仅当第一次被调用时才执行函数f。换句话说，给定变量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var once Once</span><br></pre></td></tr></table></figure>
+
+<p>如果once.Do(f)被多次调用，只有第一次调用会执行f，即使f每次调用Do 提供的f值不同。需要给每个要执行仅一次的函数都建立一个Once类型的实例。</p>
+<p>Do用于必须刚好运行一次的初始化。因为f是没有参数的，因此可能需要使用闭包来提供给Do方法调用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.once.Do(func() &#123; config.init(filename) &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>因为只有f返回后Do方法才会返回，f若引起了Do的调用，会导致死锁。</p>
+<h2 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h2><h3 id="type-Mutex"><a href="#type-Mutex" class="headerlink" title="type Mutex"></a>type Mutex</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">type Mutex struct &#123;</span><br><span class="line">    &#x2F;&#x2F; 包含隐藏或非导出字段</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Mutex是一个互斥锁，可以创建为其他结构体的字段；零值为解锁状态。Mutex类型的锁和线程无关，可以由不同的线程加锁和解锁。 <strong>第一次使用后不得复制 Mutex</strong> 。</p>
+<h4 id="func-Mutex-Lock"><a href="#func-Mutex-Lock" class="headerlink" title="func (*Mutex) Lock"></a>func (*Mutex) Lock</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func (m *Mutex) Lock()</span><br></pre></td></tr></table></figure>
+
+<p>Lock方法锁住m，如果m已经加锁，则阻塞直到m解锁。</p>
+<h4 id="func-Mutex-Unlock"><a href="#func-Mutex-Unlock" class="headerlink" title="func (*Mutex) Unlock"></a>func (*Mutex) Unlock</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func (m *Mutex) Unlock()</span><br></pre></td></tr></table></figure>
+
+<p>Unlock方法解锁m，如果m未加锁会导致运行时错误。锁和线程无关，可以由不同的线程加锁和解锁。</p>
+<h4 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;sync&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type SafeInt struct &#123;</span><br><span class="line">	sync.Mutex</span><br><span class="line">	Num int</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	waitNum :&#x3D; 10 &#x2F;&#x2F; 设置等待的个数（继续往下看）</span><br><span class="line"></span><br><span class="line">	count :&#x3D; SafeInt&#123;&#125;</span><br><span class="line"></span><br><span class="line">	done :&#x3D; make(chan bool)</span><br><span class="line"></span><br><span class="line">	for i :&#x3D; 0; i &lt; waitNum; i++ &#123;</span><br><span class="line">		go func(i int) &#123;</span><br><span class="line">			fmt.Print(i)</span><br><span class="line">			count.Lock() &#x2F;&#x2F; 加锁，防止其它例程修改 count</span><br><span class="line">			count.Num &#x3D; count.Num + i</span><br><span class="line">			fmt.Print(&quot;    &quot;,count.Num, &quot; \n&quot;)</span><br><span class="line">			count.Unlock()</span><br><span class="line"></span><br><span class="line">			done &lt;- true</span><br><span class="line">		&#125;(i)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	for i :&#x3D; 0; i &lt; waitNum; i++ &#123;</span><br><span class="line">		&lt;-done</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">输出结果：</span><br><span class="line">9    9 </span><br><span class="line">0    9 </span><br><span class="line">2    11 </span><br><span class="line">7    18 </span><br><span class="line">8    26 </span><br><span class="line">4    30</span><br><span class="line">3    33</span><br><span class="line">6    39</span><br><span class="line">5    44</span><br><span class="line">1    45</span><br><span class="line"></span><br><span class="line">多次输出结果不一致，但和是45</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="读写互斥锁"><a href="#读写互斥锁" class="headerlink" title="读写互斥锁"></a>读写互斥锁</h2><h3 id="type-RWMutex"><a href="#type-RWMutex" class="headerlink" title="type RWMutex"></a>type RWMutex</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">type RWMutex struct &#123;</span><br><span class="line">    &#x2F;&#x2F; 包含隐藏或非导出字段</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>RWMutex是读写互斥锁。该锁可以被同时多个读取者持有或唯一个写入者持有。RWMutex可以创建为其他结构体的字段；零值为解锁状态。RWMutex类型的锁也和线程无关，可以由不同的线程加读取锁/写入和解读取锁/写入锁。</p>
+<h4 id="func-RWMutex-Lock"><a href="#func-RWMutex-Lock" class="headerlink" title="func (*RWMutex) Lock"></a>func (*RWMutex) Lock</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func (rw *RWMutex) Lock()</span><br></pre></td></tr></table></figure>
+
+<p>Lock方法将rw锁定为写入状态，禁止其他线程读取或者写入。</p>
+<h4 id="func-RWMutex-Unlock"><a href="#func-RWMutex-Unlock" class="headerlink" title="func (*RWMutex) Unlock"></a>func (*RWMutex) Unlock</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func (rw *RWMutex) Unlock()</span><br></pre></td></tr></table></figure>
+
+<p>Unlock方法解除rw的写入锁状态，如果m未加写入锁会导致运行时错误。</p>
+<h4 id="func-RWMutex-RLock"><a href="#func-RWMutex-RLock" class="headerlink" title="func (*RWMutex) RLock"></a>func (*RWMutex) RLock</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func (rw *RWMutex) RLock()</span><br></pre></td></tr></table></figure>
+
+<p>RLock方法将rw锁定为读取状态，禁止其他线程写入，但不禁止读取。</p>
+<h4 id="func-RWMutex-RUnlock"><a href="#func-RWMutex-RUnlock" class="headerlink" title="func (*RWMutex) RUnlock"></a>func (*RWMutex) RUnlock</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func (rw *RWMutex) RUnlock()</span><br></pre></td></tr></table></figure>
+
+<p>Runlock方法解除rw的读取锁状态，如果m未加读取锁会导致运行时错误。</p>
+<h4 id="func-RWMutex-RLocker"><a href="#func-RWMutex-RLocker" class="headerlink" title="func (*RWMutex) RLocker"></a>func (*RWMutex) RLocker</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func (rw *RWMutex) RLocker() Locker</span><br></pre></td></tr></table></figure>
+
+<p>Rlocker方法返回一个互斥锁，通过调用rw.Rlock和rw.Runlock实现了Locker接口。</p>
+<h4 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;sync&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var m *sync.RWMutex</span><br><span class="line">var wg sync.WaitGroup</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	m &#x3D; new(sync.RWMutex)</span><br><span class="line">	wg.Add(2)</span><br><span class="line">	go write(1)</span><br><span class="line">	time.Sleep(1 * time.Second)</span><br><span class="line">	go read(2)</span><br><span class="line">	wg.Wait()</span><br><span class="line">&#125;</span><br><span class="line">func write(i int) &#123;</span><br><span class="line">	fmt.Println(i, &quot;写开始.&quot;)</span><br><span class="line">	m.Lock()</span><br><span class="line">	fmt.Println(i, &quot;正在写入中......&quot;)</span><br><span class="line">	time.Sleep(3 * time.Second)</span><br><span class="line">	m.Unlock()</span><br><span class="line">	fmt.Println(i, &quot;写入结束.&quot;)</span><br><span class="line">	wg.Done()</span><br><span class="line">&#125;</span><br><span class="line">func read(i int) &#123;</span><br><span class="line">	fmt.Println(i, &quot;读开始.&quot;)</span><br><span class="line">	m.RLock()</span><br><span class="line">	fmt.Println(i, &quot;正在读取中......&quot;)</span><br><span class="line">	time.Sleep(1 * time.Second)</span><br><span class="line">	m.RUnlock()</span><br><span class="line">	fmt.Println(i, &quot;读取结束.&quot;)</span><br><span class="line">	wg.Done()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="并发等待"><a href="#并发等待" class="headerlink" title="并发等待"></a>并发等待</h2><h3 id="type-WaitGroup"><a href="#type-WaitGroup" class="headerlink" title="type WaitGroup"></a>type WaitGroup</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">type WaitGroup struct &#123;</span><br><span class="line">    &#x2F;&#x2F; 包含隐藏或非导出字段</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 计数器增加 delta，delta 可以是负数。</span><br><span class="line">func (wg *WaitGroup) Add(delta int)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 计数器减少 1</span><br><span class="line">func (wg *WaitGroup) Done()</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 等待直到计数器归零。如果计数器小于 0，则该操作会引发 panic。</span><br><span class="line">func (wg *WaitGroup) Wait()</span><br></pre></td></tr></table></figure>
+
+<p>WaitGroup用于等待一组线程的结束。父线程调用Add方法来设定应等待的线程的数量。每个被等待的线程在结束时应调用Done方法。同时，主线程里可以调用Wait方法阻塞至所有线程结束。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">var wg sync.WaitGroup</span><br><span class="line">var urls &#x3D; []string&#123;</span><br><span class="line">    &quot;http:&#x2F;&#x2F;www.golang.org&#x2F;&quot;,</span><br><span class="line">    &quot;http:&#x2F;&#x2F;www.google.com&#x2F;&quot;,</span><br><span class="line">    &quot;http:&#x2F;&#x2F;www.somestupidname.com&#x2F;&quot;,</span><br><span class="line">&#125;</span><br><span class="line">for _, url :&#x3D; range urls &#123;</span><br><span class="line">    &#x2F;&#x2F; Increment the WaitGroup counter.</span><br><span class="line">    wg.Add(1)</span><br><span class="line">    &#x2F;&#x2F; Launch a goroutine to fetch the URL.</span><br><span class="line">    go func(url string) &#123;</span><br><span class="line">        &#x2F;&#x2F; Decrement the counter when the goroutine completes.</span><br><span class="line">        defer wg.Done()</span><br><span class="line">        &#x2F;&#x2F; Fetch the URL.</span><br><span class="line">        http.Get(url)</span><br><span class="line">    &#125;(url)</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; Wait for all HTTP fetches to complete.</span><br><span class="line">wg.Wait()</span><br></pre></td></tr></table></figure>
+
+<h4 id="func-WaitGroup-Add"><a href="#func-WaitGroup-Add" class="headerlink" title="func (*WaitGroup) Add"></a>func (*WaitGroup) Add</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func (wg *WaitGroup) Add(delta int)</span><br></pre></td></tr></table></figure>
+
+<p>Add方法向内部计数加上delta，delta可以是负数；如果内部计数器变为0，Wait方法阻塞等待的所有线程都会释放，如果计数器小于0，方法panic。注意Add加上正数的调用应在Wait之前，否则Wait可能只会等待很少的线程。一般来说本方法应在创建新的线程或者其他应等待的事件之前调用。</p>
+<h4 id="func-WaitGroup-Done"><a href="#func-WaitGroup-Done" class="headerlink" title="func (*WaitGroup) Done"></a>func (*WaitGroup) Done</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func (wg *WaitGroup) Done()</span><br></pre></td></tr></table></figure>
+
+<p>Done方法减少WaitGroup计数器的值，应在线程的最后执行。</p>
+<h4 id="func-WaitGroup-Wait"><a href="#func-WaitGroup-Wait" class="headerlink" title="func (*WaitGroup) Wait"></a>func (*WaitGroup) Wait</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func (wg *WaitGroup) Wait()</span><br></pre></td></tr></table></figure>
+
+<p>Wait方法阻塞直到WaitGroup计数器减为0。</p>
+<h2 id="Cond"><a href="#Cond" class="headerlink" title="Cond"></a>Cond</h2><p>sync.Cond用于goroutine之间的协作，用于协程的挂起和唤醒。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">type Cond struct &#123;</span><br><span class="line">	noCopy noCopy  &#x2F;&#x2F; noCopy可以嵌入到结构中，在第一次使用后不可复制,使用go vet作为检测使用</span><br><span class="line"> </span><br><span class="line">	L Locker &#x2F;&#x2F; 根据需求初始化不同的锁，如*Mutex 和 *RWMutex</span><br><span class="line"> </span><br><span class="line">	notify  notifyList  &#x2F;&#x2F; 通知列表,调用Wait()方法的goroutine会被放入list中,每次唤醒,从这里取出</span><br><span class="line">	checker copyChecker &#x2F;&#x2F; 复制检查,检查cond实例是否被复制</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="func-NewCond"><a href="#func-NewCond" class="headerlink" title="func NewCond"></a>func NewCond</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func NewCond(l Locker) *Cond</span><br></pre></td></tr></table></figure>
+
+<p>使用锁l创建一个*Cond。</p>
+<h4 id="func-Cond-Broadcast"><a href="#func-Cond-Broadcast" class="headerlink" title="func (*Cond) Broadcast"></a>func (*Cond) Broadcast</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">func (c *Cond) Broadcast() &#123;</span><br><span class="line">    &#x2F;&#x2F; 检查c是否是被复制的，如果是就panic</span><br><span class="line">	c.checker.check()</span><br><span class="line">	&#x2F;&#x2F; 唤醒等待队列中所有的goroutine</span><br><span class="line">	runtime_notifyListNotifyAll(&amp;c.notify)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Broadcast唤醒所有等待c的线程。调用者在调用本方法时，建议（但并非必须）保持c.L的锁定。</p>
+<p>功能：唤醒等待队列中的所有goroutine</p>
+<h4 id="func-Cond-Signal"><a href="#func-Cond-Signal" class="headerlink" title="func (*Cond) Signal"></a>func (*Cond) Signal</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">func (c *Cond) Signal() &#123;</span><br><span class="line">       &#x2F;&#x2F; 检查c是否是被复制的，如果是就panic</span><br><span class="line">	c.checker.check()</span><br><span class="line">	&#x2F;&#x2F; 通知等待列表中的一个 </span><br><span class="line">	runtime_notifyListNotifyOne(&amp;c.notify)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Signal唤醒等待c的一个线程（如果存在）。调用者在调用本方法时，建议（但并非必须）保持c.L的锁定。</p>
+<p>功能：唤醒等待队列中的一个goroutine，一般都是任意唤醒队列中的一个goroutine</p>
+<h4 id="func-Cond-Wait"><a href="#func-Cond-Wait" class="headerlink" title="func (*Cond) Wait"></a>func (*Cond) Wait</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func (c *Cond) Wait() &#123;</span><br><span class="line">        &#x2F;&#x2F; 检查c是否是被复制的，如果是就panic</span><br><span class="line">	c.checker.check()</span><br><span class="line">	&#x2F;&#x2F; 将当前goroutine加入等待队列</span><br><span class="line">	t :&#x3D; runtime_notifyListAdd(&amp;c.notify)</span><br><span class="line">	&#x2F;&#x2F; 解锁</span><br><span class="line">	c.L.Unlock()</span><br><span class="line">	&#x2F;&#x2F; 等待队列中的所有的goroutine执行等待唤醒操作</span><br><span class="line">	runtime_notifyListWait(&amp;c.notify, t)</span><br><span class="line">	c.L.Lock()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Wait自行解锁c.L并阻塞当前线程，在之后线程恢复执行时，Wait方法会在返回前锁定c.L。和其他系统不同，Wait除非被Broadcast或者Signal唤醒，不会主动返回。</p>
+<p>因为线程中Wait方法是第一个恢复执行的，而此时c.L未加锁。调用者不应假设Wait恢复时条件已满足，相反，调用者应在循环中等待：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">c.L.Lock()</span><br><span class="line">for !condition() &#123;</span><br><span class="line">    c.Wait()</span><br><span class="line">&#125;</span><br><span class="line">... make use of condition ...</span><br><span class="line">c.L.Unlock()</span><br></pre></td></tr></table></figure>
+
+<p>功能： 必须获取该锁之后才能调用Wait()方法，Wait方法在调用时会释放底层锁Locker，并且将当前goroutine挂起，直到另一个goroutine执行Signal或者Broadcase，该goroutine才有机会重新唤醒，并尝试获取Locker，完成后续逻辑。</p>
+<p>也就是在等待被唤醒的过程中是不占用锁Locker的，这样就可以有多个goroutine可以同时处于Wait(等待被唤醒的状态)</p>
+<h4 id="示例：-2"><a href="#示例：-2" class="headerlink" title="示例："></a>示例：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"> </span><br><span class="line">import (</span><br><span class="line">	&quot;sync&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line">)</span><br><span class="line"> </span><br><span class="line">func main() &#123;</span><br><span class="line">	locker :&#x3D; new(sync.Mutex)</span><br><span class="line">	cond :&#x3D; sync.NewCond(locker)</span><br><span class="line"> </span><br><span class="line">	for i :&#x3D; 0 ; i &lt; 30 ; i++ &#123;</span><br><span class="line">		go func(x int) &#123;</span><br><span class="line">			cond.L.Lock()</span><br><span class="line">			fmt.Println(x,&quot; 获取锁&quot;)</span><br><span class="line">			defer cond.L.Unlock()</span><br><span class="line">			cond.Wait()</span><br><span class="line">			fmt.Println(x,&quot; 被唤醒&quot;)</span><br><span class="line">			time.Sleep(time.Second)</span><br><span class="line">		&#125;(i)</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">	time.Sleep(time.Second)</span><br><span class="line">	fmt.Println(&quot;Signal...&quot;)</span><br><span class="line">	cond.Signal()</span><br><span class="line">	time.Sleep(time.Second)</span><br><span class="line">	cond.Signal()</span><br><span class="line">	time.Sleep(time.Second*3)</span><br><span class="line">	cond.Broadcast()</span><br><span class="line"> </span><br><span class="line">	fmt.Println(&quot;Broadcast...&quot;)</span><br><span class="line">	time.Sleep(time.Minute)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Pool"><a href="#Pool" class="headerlink" title="Pool"></a>Pool</h2><p>Golang中sync.Pool用来提高对象复用几率，减少gc的压力，减少内存分配，它是线程安全的，常用来存储并复用临时对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">type Pool struct &#123;</span><br><span class="line">	noCopy noCopy   &#x2F;&#x2F;该对象不能被copy使用</span><br><span class="line"> </span><br><span class="line">	local     unsafe.Pointer &#x2F;&#x2F; [p]poolLocal,固定长度</span><br><span class="line">	localSize uintptr        &#x2F;&#x2F;本地缓冲池poolLocal的数量</span><br><span class="line"> </span><br><span class="line">	New func() interface&#123;&#125;  &#x2F;&#x2F;用户自定义的用于生成对象的方法</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Pool是一个可以分别存取的临时对象的集合。</p>
+<p>Pool中保存的任何item都可能随时不做通告的释放掉。如果Pool持有该对象的唯一引用，这个item就可能被回收。</p>
+<p>Pool可以安全的被多个线程同时使用。</p>
+<p>Pool的目的是缓存申请但未使用的item用于之后的重用，以减轻GC的压力。也就是说，让创建高效而线程安全的空闲列表更容易。但Pool并不适用于所有空闲列表。</p>
+<p>Pool的合理用法是用于管理一组静静的被多个独立并发线程共享并可能重用的临时item。Pool提供了让多个线程分摊内存申请消耗的方法。</p>
+<p>Pool的一个好例子在fmt包里。该Pool维护一个动态大小的临时输出缓存仓库。该仓库会在过载（许多线程活跃的打印时）增大，在沉寂时缩小。</p>
+<p>另一方面，管理着短寿命对象的空闲列表不适合使用Pool，因为这种情况下内存申请消耗不能很好的分配。这时应该由这些对象自己实现空闲列表。</p>
+<h4 id="func-Pool-Get"><a href="#func-Pool-Get" class="headerlink" title="func (*Pool) Get"></a>func (*Pool) Get</h4><p>作用：从Pool中获取一个对象，如果获取不到并且New函数不为空，则通过New创建一个对象并返回。否则返回nil</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func (p *Pool) Get() interface&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Get方法从池中选择任意一个item，删除其在池中的引用计数，并提供给调用者。Get方法也可能选择无视内存池，将其当作空的。调用者不应认为Get的返回这和传递给Put的值之间有任何关系。</p>
+<p>假使Get方法没有取得item：如p.New非nil，Get返回调用p.New的结果；否则返回nil。</p>
+<h4 id="func-Pool-Put"><a href="#func-Pool-Put" class="headerlink" title="func (*Pool) Put"></a>func (*Pool) Put</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func (p *Pool) Put(x interface&#123;&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>Put方法将x放入池中。</p>
+
+        </div>
+
+
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 唯吾鹰扬 2015-<font class="year">2020</font> 
+	<a target="_blank" style="background-color: transparent;text-decoration: none;" 
+	href="http://www.beian.miit.gov.cn">京ICP备15033188号-1 </a>
+	</span>
+	<span id="busuanzi_container_site_uv">
+	访客:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	<span id="busuanzi_container_site_pv">
+	访问量:<span id="busuanzi_value_site_pv"></span>
+	</span>
+    </div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+</body>
+</html>
